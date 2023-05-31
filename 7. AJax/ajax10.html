@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax10</title>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script src="js/window_event_handlers.js"></script>
+    <script src="js/ajax_common_setup.js"></script>
+    <script src="js/aJax_globalEvents_Lifecyle.js"></script>
+
+
+    <script>
+
+        // callback for JSONP
+        function jsonpFunc(doc) {
+            console.log('>>> jsonpFunc(doc) invoked.')
+            console.log('\t+ doc:', doc)
+
+
+            //---------------------------------------------------//
+            // JSON Binding
+            //---------------------------------------------------//
+            if (doc.length > 0) {
+
+                var tb = $('<table/>')
+
+                for (var person of doc) {
+
+                    var row = $("<tr/>").
+                        append(
+                            $('<td/>').text(person.id),
+                            $('<td/>').text(person.first_name),
+                            $('<td/>').text(person.last_name),
+                            $('<td/>').text(person.email),
+                            $('<td/>').text(person.gender)
+                        )   // append
+
+                    // console.log('- row:', row)
+
+                    tb.append(row)
+                } // for-of
+
+                $('#wrap').append(tb)
+
+            } else {
+                $('#wrap').html('<h2>No data.</h2>')
+            } // if-else
+
+        } // myFunc
+
+
+        $(function () {
+            console.clear()
+
+
+            $.ajax({
+
+                url: 'http://localhost:8080/myweb/GetJSONP?callback=jsonpFunc',
+                dataType: 'jsonp',
+
+
+                // (*중요*) JSONP 로 할 경우, error(XHR) function 을 정의해서는 안됨!!!
+                // 이는 약속된 callback 메소드가 받은 문서로 바인딩을 수행하도록 할 기회를 줌
+
+                // error: function (XHR) {
+                //     console.log('----------------------------------------')
+                //     console.log('2. error(XHR) invoked.')
+                //     console.log('----------------------------------------')
+
+                //     printXHR1(XHR)
+
+
+                //     //---------------------------------------------------//
+                //     // HTML Binding
+                //     //---------------------------------------------------//
+                //     $('#wrap').html('<h2>Error !!!</h2>')
+                // }   // error
+
+                // }).done(jsonpFunc)  // $.ajax    // OK
+            })// $.ajax                         // OK
+
+        })  // jq
+
+
+    </script>
+</head>
+
+<body>
+
+    <div id="wrap"></div>
+
+</body>
+
+</html>

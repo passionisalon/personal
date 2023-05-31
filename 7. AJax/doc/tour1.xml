@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attractions>
+    <attraction country="미국">
+        <name>자유의 여신상</name>
+        <location>뉴욕</location>
+        <picture>https://picsum.photos/id/363/100/100</picture>
+    </attraction>
+    <attraction country="한국">
+        <name>경복궁</name>
+        <location>서울</location>
+        <picture>https://picsum.photos/id/100/100/100</picture>
+    </attraction>
+</attractions>

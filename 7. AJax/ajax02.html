@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax02</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.1/jquery.mobile.css">
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.1/jquery.mobile.min.js"></script>
+
+    <script src="./js/window_event_handlers.js"></script>
+    <script src="./js/aJax_globalEvents_Lifecyle.js"></script>
+
+
+    <script>
+
+        $(function () {
+            console.clear()
+
+            $('#btnLoad2').click(function (e) {
+                console.log('>>> onclick event for #btnLoad2 triggered.')
+
+                //------------------------------------------------//
+                // $.getJSON( url [, sendData] [, function(doc)] )
+                //------------------------------------------------//
+                $.getJSON('./doc/studentinfo.json', function (doc) {
+                    console.log('\t+ $.getSON() invoked.')
+                    console.log('\t\t- this:', this)        // this == aJax settings
+                    console.log('\t\t- doc:', doc)
+
+
+                    var tagList = ''
+
+                    $.each(doc.studentinfo, function (index, item) {
+                        console.log('\t\t- index:', index, ', item:', item, ', this === item:', (this === item))
+
+                        tagList += '<li>' + item.schoolyear + '</li>'
+                        // tagList += '<li>'+ this.schoolyear + '</li>'
+                    })  // $.each
+
+                    console.log('\t\t- tagList:', tagList)
+
+                    $('#listArea').empty()
+                    $('#listArea').append(tagList)
+                    $('#listArea').listview('refresh')      // jquery-mobile method
+
+                })  // $.getJSON
+
+            }) // onclick event handler for #btnLoad2
+
+        })  // jq
+
+
+    </script>
+</head>
+
+<body>
+
+    <div data-role="page">
+
+        <div data-role="header">
+            <h1>Ajax 활용</h1>
+        </div>
+
+
+        <div data-role="content">
+
+            <button id="btnLoad1" data-inline="true">XML</button>
+            <button id="btnLoad2" data-inline="true">JSON</button>
+            <button id="btnLoad3" data-inline="true">HTML</button>
+
+
+            <p></p>
+
+
+            <ul data-role="listview" id="listArea" data-insect="true">
+                <li id="item">데이터 로드하기전....</li>
+            </ul>
+
+        </div>
+
+
+        <div data-role="footer">
+            <h4>꼬리말</h4>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

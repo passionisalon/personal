@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tourapp</title>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.1/jquery.mobile.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.1/jquery.mobile.theme.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.1/jquery.mobile.min.js"></script>
+
+    <script src="./js/window_event_handlers.js"></script>
+    <script src="./js/ajax_common_setup.js"></script>
+    <script src="./js/aJax_globalEvents_Lifecyle.js"></script>
+
+
+    <script>
+
+        var count = 0
+
+
+        $(function () {
+            console.log('>>> onready for document triggered.')
+
+
+            $.ajax({
+
+                // url: './doc/tour1.xml',
+                url: './doc/tour2.xml',
+                type: 'GET',
+                dataType: 'XML',
+
+
+                success: function (doc, status, XHR) {
+                    console.log('----------------------------------------')
+                    console.log('2. success(doc, status, XHR) invoked.')
+                    console.log('----------------------------------------')
+                    console.log('+ status:', status)
+                    console.log('+ doc:', doc)
+
+                    printXHR1(XHR)
+
+
+                    count = $(doc).find('attraction').size()
+                    console.log('+ count:', count)
+
+                    displayAttractions(count, doc)
+                }, // success
+
+                error: function (XHR) {
+                    console.log('----------------------------------------')
+                    console.log('2. error(XHR) invoked.')
+                    console.log('----------------------------------------')
+
+                    printXHR1(XHR)
+
+
+                    $('body').html('<h1>Error !!</h1>')
+                }   // error
+
+            })  // $.ajax
+
+        })  // jq
+
+
+        function displayAttractions(count, doc) {
+            console.log('+ displayAttractions(doc) invoked.')
+            console.log('\t- doc:', doc)
+
+
+            var i
+            var tagList = ''
+
+            var country = ''
+            var name = ''
+            var location = ''
+            var picture = ''
+
+
+            tagList += '<li data-role="list-divider">관광지 목록</li>'
+
+            if (count > 0) {
+
+                for (i = 0; i < count; ++i) {
+                    $record = $(doc).find('attraction').eq(i);
+                    // console.log('\t- $record:', $record)
+
+                    country = $record.attr('country')
+                    name = $record.find('name').text()
+                    location = $record.find('location').text()
+                    picture = $record.find('picture').text()
+
+                    // console.log('\t\t+ country:', country)
+                    // console.log('\t\t+ name:', name)
+                    // console.log('\t\t+ location:', location)
+                    // console.log('\t\t+ picture:', picture)
+
+                    tagList += '<li><a href="#"><img src="' + picture + '">'
+                    tagList += '<p class="ui-li-aside">' + country + '</p>'
+                    tagList += '<h2>' + name + '</h2>'
+                    tagList += '<p>지역:' + location + '</p></a></li>'
+                } // for
+
+            } // if
+
+            // console.log('+ tagList:', tagList)
+
+            $('#attractionListArea').html(tagList)
+            $('#attractionListArea').listview('refresh')        // jquery-mobile method
+
+        } // displayAttractions
+
+    </script>
+</head>
+
+<body>
+
+    <div data-role="page">
+
+        <div data-role="header">
+            <h1>세계 유명관광지 안내</h1>
+        </div>
+
+
+        <div data-role="content">
+            <ul data-role="listview" id="attractionListArea" data-divider-theme="b">
+
+            </ul>
+        </div>
+
+
+        <div data-role="footer" data-position='fixed'>
+            <h4>월드관광</h4>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

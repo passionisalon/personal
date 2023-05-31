@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax04</title>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script src="./js/window_event_handlers.js"></script>
+    <script src="./js/aJax_globalEvents_Lifecyle.js"></script>
+
+
+    <script>
+
+        $(function () {
+            console.clear()
+
+            $('#newsWrap_1').load('doc/news.html #news_1')
+            $('#newsWrap_2').load('doc/news.html #news_2')
+
+        })  // jq
+
+
+    </script>
+
+</head>
+
+<body>
+
+    <h1>LOAD 1</h1>
+    <div id="newsWrap_1"></div>
+
+    <h1>LOAD 2</h1>
+    <div id="newsWrap_2"></div>
+
+</body>
+
+</html>

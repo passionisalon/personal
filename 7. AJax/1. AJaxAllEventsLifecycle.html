@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJaxAllEventsLifecycle</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+
+    <script>
+
+        $(document).ajaxStart((event) => {
+            console.log('********** 1. ajaxStart invoked **********');
+
+            // console.log('\t+ event:', event);
+            console.log(Object.keys(event));
+            console.log(Object.values(event));
+            console.log('\t+ this:', this, this instanceof Window);             // Buil-in window object.
+
+        }); // ajaxStart
+
+
+        $(document).ajaxSend((event, jqXHR, ajaxOptions) => {
+            console.log('********** 3. ajaxSend invoked **********');
+
+            // console.log('\t+ event:', event);
+            console.log(Object.keys(event));
+            console.log(Object.values(event));
+            console.log('\t+ ajaxOptions:', ajaxOptions);
+            console.log('\t+ this:', this, this instanceof Window);             // Buil-in window object.
+
+        }); // ajaxSend
+
+
+        $(document).ajaxSuccess((event, xhr, ajaxOptions) => {
+            console.log('********** 5. ajaxSuccess invoked **********');
+
+            // console.log('\t+ event:', event);
+            console.log(Object.keys(event));
+            console.log(Object.values(event));
+            console.log('\t+ ajaxOptions:', ajaxOptions);
+            console.log('\t+ this:', this, this instanceof Window);             // Buil-in window object.
+
+        }); // ajaxSuccess
+
+
+        $(document).ajaxError((event, jqXHR, ajaxSettings, thrownError) => {
+            console.log('********** 5. ajaxError invoked **********');
+
+            // console.log('\t+ event:', event);
+            console.log(Object.keys(event));
+            console.log(Object.values(event));
+            console.log('\t+ ajaxSettings:', ajaxSettings);
+            console.log('\t+ thrownError:', thrownError);
+            console.log('\t+ this:', this, this instanceof Window);             // Buil-in window object.
+
+        });   // ajaxError
+
+
+        $(document).ajaxComplete((event, xhr, ajaxOptions) => {
+            console.log('********** 7. ajaxComplete invoked **********');
+
+            // console.log('\t+ event:', event);
+            console.log(Object.keys(event));
+            console.log(Object.values(event));
+            console.log('\t+ xhr:', xhr);
+            console.log('\t+ ajaxOptions:', ajaxOptions);
+            console.log('\t+ this:', this, this instanceof Window);             // Buil-in window object.
+
+        }); // ajaxComplete
+
+
+        $(document).ajaxStop((event) => {
+            console.log('********** 8. ajaxStop invoked **********');
+
+            // console.log('\t+ event:', event);
+            console.log(Object.keys(event));
+            console.log(Object.values(event));
+            console.log('\t+ this:', this, this instanceof Window);             // Buil-in window object.
+
+        }); // ajaxStop
+
+
+
+        //----------------------------------------------------------------//
+
+
+        $.ajaxSetup({
+
+            async: true,                    // Whether to use Async.
+            cache: false,                   // Whether to use web browser cache for the current ajax response.
+            timeout: 1000,                  // Time unit: milliseconds
+            global: false,                  // Whether to use Gobal Events.
+            crossDomain: false,
+
+            headers: {
+                "X-Requested-With": "XMLHttpRequest",       // Always added automatically
+                "Custom-Header1": "Custom-Value1",
+                "Custom-Header2": "Custom-Value2"
+            },
+
+
+            statusCode: {
+                200: function () {
+                    console.log('\t>>>> 200 called.');
+                    
+                },  // 200
+
+                404: function () {
+                    console.log('\t>>>> 404 called.');
+
+                },   // 404
+
+                500: function () {
+                    console.log('\t>>>> 500 called.');
+                    
+                },  // 500
+            },
+
+
+
+            beforeSend: (jqXHR, settings) => {
+                console.log('********** 2. beforeSend invoked **********');
+                console.log('\t+ jqXHR:', jqXHR);
+                console.log('\t+ settings:', settings);
+
+            },
+
+
+            dataFilter: (data, dataType) => {
+                console.log('********** 4-0. dataFilter invoked **********');
+                console.log('\t+ dataType:', dataType);
+                console.log('\t+ data:', data);
+
+                return data;
+            },
+
+
+            // Deprecation Notice: The jqXHR.success(), jqXHR.error(), and jqXHR.complete() callbacks are removed as of jQuery 3.0.
+            // You can use jqXHR.done(), jqXHR.fail(), and jqXHR.always() instead.
+            complete: (jqXHR, textStatus) => {
+                console.log('********** 6. complete invoked **********');
+                console.log('\t+ jqXHR:', jqXHR);
+                console.log('\t+ textStatus:', textStatus);
+                
+            }, // complete
+
+        }); // ajaxSetup
+
+
+
+
+        //----------------------------------------------------------------//
+
+
+        $(function () {
+            console.clear(); console.log('* jquery started.....');
+
+            console.log('- this:', this, this instanceof Document);     // Built-in document
+
+
+
+            let jqXHR = $.ajax({
+
+                // type: 'get',
+                method: 'get',
+
+                data: 'name=Yoseph&age=23',
+                contentType: 'application/x-www-form-urlencoded; charset=utf8',
+
+
+                url: './doc/persons.json',
+                dataType: 'json',
+
+
+
+                // Deprecation Notice: The jqXHR.success(), jqXHR.error(), and jqXHR.complete() callbacks are removed as of jQuery 3.0.
+                // You can use jqXHR.done(), jqXHR.fail(), and jqXHR.always() instead.
+                success: (data, textStatus, jqXHR) => {
+                    console.log('********** 4-1. success invoked **********');
+                    console.log('\t+ data:', data);
+                    console.log('\t+ textStatus:', textStatus);
+                    console.log('\t+ jqXHR:', jqXHR);
+
+                },  // success
+
+
+                // Deprecation Notice: The jqXHR.success(), jqXHR.error(), and jqXHR.complete() callbacks are removed as of jQuery 3.0.
+                // You can use jqXHR.done(), jqXHR.fail(), and jqXHR.always() instead.
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log('********** 4-2. error invoked **********');
+                    console.log('\t+ jqXHR:', jqXHR);
+                    console.log('\t+ textStatus:', textStatus);
+                    console.log('\t+ errorThrown:', errorThrown);
+                    
+                },  // error
+
+            }); // $.ajax
+
+
+
+            //******************************* jQuery 3.0 and above *******************************//
+
+        
+            //-------------------------- jqXHR.done  <= $.ajax.success  --------------------------//
+            // jqXHR.done((data, textStatus, jqXHR) => {
+            //     console.log('********** 4-1. done invoked **********');
+            //     console.log('\t+ data:', data);
+            //     console.log('\t+ textStatus:', textStatus);
+            //     console.log('\t+ jqXHR:', jqXHR);
+               
+            // });  // done
+
+
+            //-------------------------- jqXHR.fail  <= $.ajax.error  --------------------------//
+            // jqXHR.fail((jqXHR, textStatus, errorThrown) => {
+            //     console.log('********** 4-2. fail invoked **********');
+            //     console.log('\t+ jqXHR:', jqXHR);
+            //     console.log('\t+ textStatus:', textStatus);
+            //     console.log('\t+ errorThrown:', errorThrown);
+
+            // });  // error
+
+
+            //-------------------------- jqXHR.always  <= $.ajax.complete  --------------------------//
+            // jqXHR.always((op1, op2, op3) => {
+            //     console.log('********** 4-2. always invoked **********');
+            //     console.log('\t+ op1:', op1);
+            //     console.log('\t+ op2:', op2);
+            //     console.log('\t+ op3:', op3);
+
+            // });  // always
+
+            //******************************* jQuery 3.0 and above *******************************//
+
+
+            
+        }); // jq
+
+    </script>
+</head>
+
+<body>
+    <img>
+</body>
+
+</html>

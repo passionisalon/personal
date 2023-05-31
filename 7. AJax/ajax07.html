@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax07</title>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script src="../js/window_event_handlers.js"></script>
+    <script src="../js/ajax_common_setup.js"></script>
+    <script src="../js/aJax_globalEvents_Lifecyle.js"></script>
+
+
+    <script>
+
+        $(function () {
+            console.clear()
+
+
+            $.ajax({
+
+                url: 'http://localhost:8090/doc/persons.json',
+                type: 'get',
+                dataType: 'json',
+                timeout: 1000,
+
+
+                success: function (doc, status, XHR) {
+                    console.log('----------------------------------------')
+                    console.log('2. success(doc, XHR$state, XHR) invoked.')
+                    console.log('----------------------------------------')
+
+                    console.log('+ doc:', doc, ', $(this):', $(this))
+                    console.log('+ status:', status)
+
+                    printXHR1(XHR)
+
+
+                    //---------------------------------------------------//
+                    // JSON Binding
+                    //---------------------------------------------------//
+                    // console.log('\t+ count:', doc.length)
+
+                    if (doc.length > 0) {
+
+                        var table = $('<table/>')
+
+
+                        for (var person of doc) {
+                            // console.log('\t+ person:', person)
+
+                            var tr = $('<tr/>').
+                                append(
+                                    $('<td/>').text(person.id),
+                                    $('<td/>').text(person.first_name),
+                                    $('<td/>').text(person.last_name),
+                                    $('<td/>').text(person.email),
+                                    $('<td/>').text(person.gender)
+                                )   // append
+
+                            table.append(tr)
+                        } // enhanced for-of
+
+
+                        $('#wrap').append(table)
+
+                    } else {
+                        $('#wrap').html('<h2>No Data Found.</h2>')
+                    } // if-else
+                },  // success
+
+
+                error: function (XHR) {
+                    console.log('----------------------------------------')
+                    console.log('2. error(XHR) invoked.')
+                    console.log('----------------------------------------')
+
+                    printXHR1(XHR)
+
+
+                    //---------------------------------------------------//
+                    // HTML Binding
+                    //---------------------------------------------------//
+                    $('#wrap').html('<h2>Error !!!</h2>')
+                }   // error
+
+            })  // $.ajax
+
+        })  // jq
+
+
+    </script>
+</head>
+
+<body>
+
+    <div id="wrap"></div>
+
+</body>
+
+</html>

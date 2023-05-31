@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+    $(function(){
+        $("#requestBtn1").on("click",function(){
+            $("#text1").load("/../doc/file.txt");
+            // $('#text').load("/Users/wisdlogos/file.txt");
+        });
+        $("#requestBtn2").on("click",function(){
+            $("#text2").load("따라쓰기.txt");
+        });
+    });
+</script>
+<body>
+    <h1>Ajax(Asynchronous JavaScript andXML)</h1>
+    <p id="text1">이 단락에 다른 텍스트를 불러와보죠!</p>
+    <button id="requestBtn1" type="button">데이터 불러오기!</button>
+    <p id="text2">이 단란에 다른 텍스트를 불러와보죠!</p>
+    <button id="requestBtn2">데이터 불러오기!</button>
+</body>
+</html>

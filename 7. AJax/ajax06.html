@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax06</title>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.3.2/jquery-migrate.min.js"></script>
+
+    <script src="./js/window_event_handlers.js"></script>
+    <script src="./js/ajax_common_setup.js"></script>
+    <script src="./js/aJax_globalEvents_Lifecyle.js"></script>
+
+
+    <script>
+
+        $(function () {
+            console.clear()
+
+
+            $.ajax({
+
+                url: './doc/persons.xml',
+                type: 'GET',
+                dataType: 'XML',
+                timeout: 1000,
+
+                success: function (doc, status, XHR) {
+                    console.log('----------------------------------------')
+                    console.log('2. success(doc, XHR$state, XHR) invoked.')
+                    console.log('----------------------------------------')
+
+                    console.log('+ doc:', doc, ', $(this):', $(this))
+                    console.log('+ status:', status)
+
+                    printXHR1(XHR)
+
+
+                    //---------------------------------------------------//
+                    // XML Binding
+                    //---------------------------------------------------//
+                    var xml = $(doc).find('person')
+                    // console.log('\t+ xml:', xml.length)
+
+                    if (xml.length > 0) {
+
+                        var tb = $('<table/>')
+
+                        $.each(xml, function (index, person) {
+                            // console.log('\t- index:', index, ', person:', person)
+
+                            var $id = $(person).find('id').text()
+                            var $first_name = $(person).find('first_name').text()
+                            var $last_name = $(person).find('last_name').text()
+                            var $email = $(person).find('email').text()
+                            var $gender = $(person).find('gender').text()
+
+                            var row = $('<tr/>').
+                                append(
+                                    $('<td/>').text($id),
+                                    $('<td/>').text($first_name),
+                                    $('<td/>').text($last_name),
+                                    $('<td/>').text($email),
+                                    $('<td/>').text($gender)
+                                )   // append
+
+                            tb.append(row)
+                        }) // $.each
+
+                        $('.wrap').append(tb)
+
+                    } else {
+                        $('.wrap').html("<h2>No data found.</h2>")
+                    } // if-else
+                },  // success
+
+
+                error: function (XHR) {
+                    console.log('----------------------------------------')
+                    console.log('2. error(XHR) invoked.')
+                    console.log('----------------------------------------')
+
+                    printXHR1(XHR)
+
+
+                    //---------------------------------------------------//
+                    // HTML Binding
+                    //---------------------------------------------------//
+                    $('.wrap').html('<h2>Error !!!</h2>')
+                }   // error
+
+
+            })  // $.ajax
+
+        })  // jq
+
+    </script>
+</head>
+
+<body>
+
+    <div class="wrap"></div>
+
+</body>
+
+</html>
