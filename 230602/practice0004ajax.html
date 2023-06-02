@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>removeChild() 메소드</h1>
+    <button onclick="remove()">요소 노드 삭제!</button>
+    <div id="list">
+        <p>HTML</p>
+        <p id="item">CSS</p>
+        <p>JavaScript</p>
+    </div>
+
+    <h1>cloneNode() 메소드</h1>
+    <button onclick="cloneElement()">노드 복제!</button>
+    <h2 id="item1">JavaScript</h2>
+    <div id="list1">
+        <p>HTML</p>
+        <p>CSS</p>
+        <p>JQuery</p>
+    </div>
+
+    <script>
+        function remove(){
+            var parent = document.getElementById("list");
+            var removedItem = document.getElementById("item");
+            parent.removeChild(removedItem);
+        }
+
+        function cloneElement(){
+            var parent = document.getElementById("list1");
+            var originItem = document.getElementById("item1");
+            parent.appendChild(originItem.cloneNode(true));
+        }
+    
+
+    </script>
+</body>
+</html>
