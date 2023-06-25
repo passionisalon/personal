@@ -1,0 +1,111 @@
+<p> Ajax
+<p>$.ajax({
+<p>     url : '요청 URL 주소를 입력합니다. // URL은 필수요소이므로 반드시 구현해야하는 Property입니다.
+<p>     [,options]  // 다양한 속성들 중에서 필요한 Option을 선택해서 구현합니다.('[]'는 반복해서 사용할 수 있다는 의미입니다.
+<p>});
+<p>
+<style>
+    table,tr,td{
+        border : 1px solid black;
+        text-align:center;
+        font-size:20px;
+        font-family:border;
+        background-color:#49539E;
+        color:#fff;
+    }
+</style>
+<table>
+    <tr>
+        <td>
+            속성
+        </td>
+        <td>
+            설명
+        </td>
+    </tr>
+    <tr>
+        <td>
+            date
+        </td>
+        <td>
+            서버에 전송 할 데이터, key/value 형식의 객체
+        </td>
+    </tr>
+         <td>
+            dataType
+        </td>
+        <td>
+            서버가 리턴하는 데이터 타입(xml,json,script,html), 서버가 전달 해 주는 데이터 
+        </td>
+    <tr>
+         <td>
+            type
+        </td>
+        <td>
+            서버로 전송하는 데이터 타입(POST,GET)
+        </td>
+    </tr>
+    <tr>
+         <td>
+            url
+        </td>
+    
+        <td>
+            데이터를 전송 할 URL
+        </td>
+    </tr>
+    <tr>
+         <td>
+            success
+        </td>
+        <td>
+            Ajax 통신에 성공했을 때 호출 될 이벤트 핸들러
+        </td>
+    </tr>
+</table>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
+<p>
