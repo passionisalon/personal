@@ -1,0 +1,48 @@
+@charset "utf-8";
+@import url('../cs/reset.css');
+.container{
+    padding-top:100px;
+    width:500px;
+    height:700px;
+    margin:150px auto;
+}
+h1{
+    text-align: center;
+}
+.wrap{
+    display:flex;
+    width: 500px;
+    /* border: 1px solid red; */
+}
+.wrap1{
+    display:flex;
+    width: 110px;
+    /* border : 1px solid blue; */
+}
+.wrap1_1{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width:110px;
+}
+.wrap1_block {
+    width: 100px;
+}
+.wrap2{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* width:100%; */
+}
+#wrapLast{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.wrap3>input{
+    width:100px;
+    height: 30px;
+    font-size: large;
+    font-weight: bold;
+}
+.wrap_blockLast{
+    height: 100px;
+}

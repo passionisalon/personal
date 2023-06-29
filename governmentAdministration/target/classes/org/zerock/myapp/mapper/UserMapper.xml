@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.myapp.mapper.UserMapper">
+
+	<select id="UserInfo" resultType="org.zerock.myapp.domain.UserDTO">
+		SELECT *
+		FROM tbl_user
+		WHERE email = #{email}
+	</select>
+
+	<select id="loginUser" resultType="org.zerock.myapp.domain.UserVO">
+		SELECT * 
+		FROM tbl_user 
+		WHERE email = #{email} AND password = #{password}
+	</select>
+	
+	<insert id="insertJoin">
+		INSERT INTO tbl_user
+		(email,password,name,gender,userauth,depart)
+		VALUES
+		(#{email},#{password},#{name},#{gender},#{userauth},#{depart})
+	</insert>
+
+	<select id="checkDistinctEmail">
+		SELECT count(email) FROM tbl_user WHERE email = #{email}
+	</select>
+	
+	<update id="updateUserInformation">
+		UPDATE
+			tbl_user
+		SET
+			name = #{name},
+			gender = #{gender},
+			userauth = #{userauth},
+			depart = #{depart}
+		WHERE
+			email = #{email}
+	</update>
+</mapper>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.myapp.mapper.BoardMapper">
+
+	<sql id="searchAuditor">
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test='AuditorDTO.status != ""'>
+				status = #{auditorDTO.status}
+			</if>
+			<if test='AuditorDTO.title !=""'>
+				title like '%' || #{auditorDTO.keyword}|| '%'
+			</if>
+		</trim>
+	</sql>
+<!-- 국정감사게시판 게시물출력 -->
+	<select id="selectPostingSearch" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT * 
+		FROM 
+		(
+			SELECT 
+				/*+ INDEX_DESC(tbl_auditor PK_board) */
+				*
+			FROM 
+				tbl_auditor
+
+		)
+	</select>
+	
+	<select id="selectStatusTitleSearch" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT *
+		FROM
+		(
+			SELECT
+				/*+ INDEX_DESC(tbl_auditor PK_board) */
+				*
+			FROM
+				tbl_auditor
+			<include refid="searchAuditor" />
+		)
+		
+	</select>
+	
+	<select id="selectPosting" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT *
+		FROM tbl_auditor
+		WHERE seq = #{seq}
+	</select>
+	
+	<select id="selectManagePostingSearch">
+		SELECT 
+			*
+		FROM
+		(
+			SELECT 
+				/*+ INDEX_DESC(tbl_auditormanage PK_board) */
+				*
+			FROM
+				tbl_auditormanage
+		)
+	</select>
+	
+	<select id="selectManageDepartmentSearch" resultType="org.zerock.myapp.domain.AuditormanageDTO">
+			SELECT 
+				*
+			FROM
+			(
+				SELECT 
+					/*+ INDEX_DESC(tbl_auditormanage PK_board) */
+					*
+				FROM
+					tbl_auditormanage
+				WHERE
+					department = #{department}
+			)
+	</select>
+	
+	<select id="selectManagePosting" resultType="org.zerock.myapp.domain.AuditormanageDTO">
+		SELECT
+			*
+		FROM
+			tbl_auditormanage
+		WHERE
+			seq = #{seq}
+	</select>
+	
+	<update id="updateManagePosting">
+		UPDATE
+			tbl_auditormanage
+		SET
+			thepersonincharge = #{auditormanageVO.thePersonInCharge}
+		WHERE
+			email = #{email}
+			AND
+			status = #{status}
+			AND
+			title = #{title}
+		
+	</update>
+	
+</mapper>

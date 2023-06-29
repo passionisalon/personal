@@ -1,0 +1,67 @@
+@charset "utf-8";
+@import url('reset.css');
+.container{
+    padding-top: 100px;
+    width:700px;
+    height: 700px;
+    margin:150px auto;
+}
+h1{
+    text-align: center;
+}
+.jump{
+    height:100px;
+    
+}
+.wrap_login , .wrap_password , .warp_button{
+    display:flex;
+    width:100%;
+    height: 70px;
+    /* margin-top:20px; */
+    text-align:center;
+    font-size:16px;
+}
+.wrap_login, .wrap_password{
+    width: 80%;;
+}
+.warp_login input{
+    width:95%;
+    /* padding:10px;     */
+    /* border:1px solid red; */
+}
+.warp_button{
+    display: flex;
+    justify-content: center;
+}
+.wrap_button>div{
+    width:100%;
+    height:100%;
+}
+#pp{
+    width:100%;
+    height:100%;
+    /* padding-left: 50px; */
+    /* padding-right: 50px; */
+}
+#pp>input{
+    font-size:16px;
+    font-weight: bolder;
+    width:50%;
+    height: 50%;
+    /* color: aqua;;; */
+}
+.block_email{
+    width: 70px;
+}
+.block_password{
+    width:50px;
+}
+.emails, .passwords{
+    width: 100%;
+    
+}
+.emails > input , .passwords > input{
+    width: 100%;
+    height: 50%;
+    border: 1px solid black;
+}

@@ -1,0 +1,255 @@
+<!-- <%@ page contentType="text/html;charset=UTF-8" language="java" %> -->
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>stockManagement</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<link rel="stylesheet" href="../cs/main.css" type="text/css">
+<link rel="stylesheet" href="../cs/stockManagement.css" type="text/css">
+<script>
+    $(document).ready(function () {
+        $('#header').load("../layout/header.html");
+        $('#footer').load("../layout/footer.html");
+    }); // end jq
+</script>
+<div id="header"></div>
+<style>
+
+
+</style>
+
+<body>
+    <div class="container">
+        <div class="container_wrap">
+            <h2>전체리스트</h2>
+            &nbsp;
+            <br>
+
+            <form action=""> <!-- start form -->
+
+                <div class="Line1"> <!-- start Line1 -->
+                    <div class="wrap_Line1">카테고리</div>
+                    <div class="wrap_Line1_Sub">
+                        <select style="width:200px; height:50px;" name="cloth" id="cloth" class="wrap_cloth">
+                            <option value="">전체</option>
+                            <option value="">의류</option>
+                            <option value="">침구</option>
+                            <option value="">가구</option>
+
+                        </select>
+                    </div>
+
+                    <div class="wrap_Line1">1차</div>
+                    <div class="wrap_Line1_Sub">
+                        <select style="width:200px; height:50px;" name="cloth" id="btn" class="wrap_cloth">
+                            <option value="">전체</option>
+                            <option value="">남성</option>
+                            <option value="">여성</option>
+                            <option value="">티셔츠</option>
+                            <option value="">바지</option>
+                        </select>
+                    </div>
+
+                    <div class="wrap_Line1">2차</div>
+                    <div class="wrap_Line1_Sub">
+                        <select style="width:200px; height:50px;" name="cloth" id="btn" class="wrap_cloth">
+                            <option value="">전체</option>
+                            <option value="">티셔츠</option>
+                            <option value="">바지</option>
+                            <option value="">슈트</option>
+                        </select>
+                    </div>
+
+                    <div class="wrap_Line1">
+                        <input class="Search" style="width:100px; height:50px;" type="submit" value="조회" id="btn">
+
+                    </div>
+                </div> <!-- end Line1 -->
+            </form> <!-- end form -->
+
+            &nbsp;
+            <br>
+
+            <div class="Line2"> <!-- start Line2 -->
+                <table class="uptable">
+                    <thead>
+                        <tr align="center">
+                            <th scope="col">상품코드</th>
+                            <th scope="col">상품명</th>
+                            <th scope="col">제조사명</th>
+                            <th scope="col">단위명</th>
+                            <th scope="col">재고수량</th>
+                            <th scope="col">재고여부</th>
+                            <th scope="col">사용여부</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- <c:forEach items="${cpList}" var="vo" varStatus="status"> -->
+                        <tr>
+                            <!-- <th scope="row">${status.count+pageVO.perPageNum *(pageVO.page -1)}</th> -->
+                            <th>L0001</th>
+                            <!-- <td>${vo.name }</td> -->
+                            <td>남성 티셔츠</td>
+                            <!-- <td>${vo.pname }</td> -->
+                            <td>TATE</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>ea</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>10</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <th><a id="scopeView" href="cpView?cpindex=${vo.no }" style="color: white;">자세히보기</a></th>
+							<th><a style="text-decoration:none; color: white;">[수정]/[삭제]</a></th> -->
+                        </tr>
+                        <tr>
+                            <!-- <th scope="row">${status.count+pageVO.perPageNum *(pageVO.page -1)}</th> -->
+                            <th>L0001</th>
+                            <!-- <td>${vo.name }</td> -->
+                            <td>남성 티셔츠</td>
+                            <!-- <td>${vo.pname }</td> -->
+                            <td>TATE</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>ea</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>10</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <th><a id="scopeView" href="cpView?cpindex=${vo.no }" style="color: white;">자세히보기</a></th>
+							<th><a style="text-decoration:none; color: white;">[수정]/[삭제]</a></th> -->
+                        </tr>
+                        <tr>
+                            <!-- <th scope="row">${status.count+pageVO.perPageNum *(pageVO.page -1)}</th> -->
+                            <th>L0001</th>
+                            <!-- <td>${vo.name }</td> -->
+                            <td>남성 티셔츠</td>
+                            <!-- <td>${vo.pname }</td> -->
+                            <td>TATE</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>ea</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>10</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <th><a id="scopeView" href="cpView?cpindex=${vo.no }" style="color: white;">자세히보기</a></th>
+							<th><a style="text-decoration:none; color: white;">[수정]/[삭제]</a></th> -->
+                        </tr>
+                        <tr>
+                            <!-- <th scope="row">${status.count+pageVO.perPageNum *(pageVO.page -1)}</th> -->
+                            <th>L0001</th>
+                            <!-- <td>${vo.name }</td> -->
+                            <td>남성 티셔츠</td>
+                            <!-- <td>${vo.pname }</td> -->
+                            <td>TATE</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>ea</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>10</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <th><a id="scopeView" href="cpView?cpindex=${vo.no }" style="color: white;">자세히보기</a></th>
+							<th><a style="text-decoration:none; color: white;">[수정]/[삭제]</a></th> -->
+                        </tr>
+                        <tr>
+                            <!-- <th scope="row">${status.count+pageVO.perPageNum *(pageVO.page -1)}</th> -->
+                            <th>L0001</th>
+                            <!-- <td>${vo.name }</td> -->
+                            <td>남성 티셔츠</td>
+                            <!-- <td>${vo.pname }</td> -->
+                            <td>TATE</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>ea</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>10</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <th><a id="scopeView" href="cpView?cpindex=${vo.no }" style="color: white;">자세히보기</a></th>
+							<th><a style="text-decoration:none; color: white;">[수정]/[삭제]</a></th> -->
+                        </tr>
+                        <tr>
+                            <!-- <th scope="row">${status.count+pageVO.perPageNum *(pageVO.page -1)}</th> -->
+                            <th>L0001</th>
+                            <!-- <td>${vo.name }</td> -->
+                            <td>남성 티셔츠</td>
+                            <!-- <td>${vo.pname }</td> -->
+                            <td>TATE</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>ea</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td>10</td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <td>${vo.mark }</td> -->
+                            <td><input type="checkbox" name="" value="" disabled></td>
+                            <!-- <th><a id="scopeView" href="cpView?cpindex=${vo.no }" style="color: white;">자세히보기</a></th>
+							<th><a style="text-decoration:none; color: white;">[수정]/[삭제]</a></th> -->
+                        </tr>
+                        <!-- </c:forEach> -->
+                    </tbody>
+                </table>
+            </div> <!-- end Line2 -->
+
+            &nbsp;
+            <br>
+
+            <div class="Line3"> <!-- start Line3 -->
+                <div class="wrap_Line3">
+                    <div class="wrap_Line3_sub1">상품코드</div>
+                    <div class="wrap_Line3_sub2">L0001</div>
+                </div>
+                <div class="wrap_Line3">
+                    <div class="wrap_Line3_sub1">상품명</div>
+                    <div class="wrap_Line3_sub2">남성 티셔츠</div>
+                </div>
+                <div class="wrap_Line3">
+                    <div class="wrap_Line3_sub1">제조사명</div>
+                    <div class="wrap_Line3_sub2">TATE</div>
+                </div>
+                <div class="wrap_Line3">
+                    <div class="wrap_Line3_sub1">단위명</div>
+                    <div class="wrap_Line3_sub2">ea</div>
+                </div>
+                <div class="wrap_Line3">
+                    <div class="wrap_Line3_sub1">입고수량</div>
+                    <div class="wrap_Line3_sub2">30</div>
+                </div>
+            </div> <!-- end Line3 -->
+
+            &nbsp;
+            <br>
+
+            <div class="Line4"> <!-- start Line4 -->
+                <form action="" method="get">
+                    <div class="wrap_Line4">
+                        <div class="wrap_Line4_sub3"></div>
+                        <div class="wrap_Line4_sub1"><input type="button" value="수정"></div>
+                        <div class="wrap_Line4_sub3"></div>
+                        <div class="wrap_Line4_sub2"><input type="button" value="저장"></div>
+                        <div class="wrap_Line4_sub3"></div>
+                    </div>
+                </form>
+            </div> <!-- end Line4 -->
+        </div>
+    </div> <!-- end container -->
+
+
+
+</body>
+<div id="footer"></div>
+
+</html>
