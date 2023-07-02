@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.myapp.mapper.BoardMapper">
+
+<!-- 	<sql id="searchAuditor"> -->
+<!-- 		<trim prefix="( AND" suffix=") " prefixOverrides="AND"> -->
+<!-- 			<trim prefix="OR"> -->
+<!-- 				<if test='title !=""'> -->
+<!-- 					title like '%' || #{keyword} || '%' -->
+<!-- 					<trim prefix="AND"> -->
+<!-- 						<if test='status != ""'> -->
+<!-- 							status = #{status} -->
+<!-- 						</if> -->
+<!-- 					</trim> -->
+<!-- 				</if> -->
+<!-- 			</trim> -->
+<!-- 		</trim> -->
+<!-- 	</sql> -->
+<!-- 	<sql id="SearchStatus"> -->
+<!-- 		<trim prefix="(" suffix=") " prefixOverrides="AND"> -->
+<!-- 			<trim prefix="OR"> -->
+<!-- 				<if test='status != ""'> -->
+<!-- 					status = #{status} -->
+<!-- 				</if> -->
+<!-- 			</trim> -->
+<!-- 		</trim> -->
+<!-- 	</sql> -->
+	
+		<sql id="SearchStatus">
+		<trim prefix="(" suffix=") " prefixOverrides="OR">
+<!-- 			<foreach item='type' collection="typeStr"> -->
+				<trim prefix="OR">
+					<choose>
+						<when  test='status !=""'>
+							status = #{status} 
+						</when>
+					</choose>
+				</trim>
+<!-- 			</foreach> -->
+		</trim>
+	</sql>
+	
+	<sql id="searchAuditor">
+	  <trim prefix="(" suffix=") " prefixOverrides="AND">
+	      <trim prefix="AND">
+	        <choose>
+	          <when test='keyword != ""'>
+	          	title like '%' || #{keyword} || '%'
+	            
+	          </when>
+	        </choose>
+	      </trim>
+	  </trim>
+	</sql>
+	
+	
+<!-- 국정감사게시판 게시물출력 -->
+	<select id="selectPostingSearch" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT * 
+		FROM 
+		(
+			SELECT 
+				/*+ INDEX_DESC(tbl_auditor PK_board) */
+				*
+			FROM 
+				tbl_auditor
+
+		)
+	</select>
+	
+	<select id="selectStatusTitleSearch" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT *
+		FROM
+		(
+			SELECT
+				/*+ INDEX_DESC(tbl_auditor PK_board) */
+				*
+			FROM
+				tbl_auditor
+			WHERE
+			<if test="status != null and !status.isEmpty()">
+				(status = #{status}) AND
+			</if>
+			<if test="keyword != null and keyword =''">
+				title LIKE '%' || #{keyword} || '%' AND
+			</if>
+			1=1
+<!-- 			<include refid="searchAuditor" /> -->
+<!-- 			<include refid="SearchStatus" /> -->
+		)
+		
+	</select>
+	
+	<select id="selectPosting" resultType="org.zerock.myapp.domain.AuditorDTO">
+
+    		SELECT 
+        		a.seq,
+        		u.depart,
+        		u.email,
+        		u.name,
+        		a.title,
+        		a.content,
+        		a.status,
+        		u.userAuth
+        		
+    		FROM 
+        		tbl_auditor a ,tbl_user u
+    		WHERE 
+    			a.email = u.email 
+    		and
+        		a.seq = #{seq}
+        	ORDER BY
+        		a.seq desc
+			
+	</select>
+	
+	<select id="selectManagePostingSearch" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT 
+				*
+			FROM
+			(
+				SELECT 
+					/*+ INDEX_DESC(tbl_auditor PK_board) */
+					a.seq,
+	        		u.depart,
+	        		u.email,
+	        		u.name,
+	        		a.title,
+	        		a.content,
+	        		a.status,
+	        		u.userAuth
+				FROM
+					tbl_auditor a inner join tbl_user u on a.email = u.email
+				
+			)
+	</select>
+	
+	<select id="selectManageDepartmentSearch" resultType="org.zerock.myapp.domain.AuditorDTO">
+			SELECT 
+				*
+			FROM
+			(
+				SELECT 
+					/*+ INDEX_DESC(tbl_auditor PK_board) */
+					a.seq,
+	        		u.depart,
+	        		u.email,
+	        		u.name,
+	        		a.title,
+	        		a.content,
+	        		a.status,
+	        		u.userAuth
+				FROM
+					tbl_auditor a inner join tbl_user u on a.email = u.email
+				WHERE
+					depart = #{department}
+			)
+			
+			
+			
+	</select>
+	
+	<select id="selectManagePosting" resultType="org.zerock.myapp.domain.AuditorDTO">
+		SELECT 
+				*
+			FROM
+			(
+				SELECT 
+					/*+ INDEX_DESC(tbl_auditor PK_board) */
+					a.seq,
+	        		u.depart,
+	        		u.email,
+	        		u.name,
+	        		a.title,
+	        		a.content,
+	        		a.status,
+	        		u.userAuth
+				FROM
+					tbl_auditor a inner join tbl_user u on a.email = u.email
+				WHERE
+					a.seq = #{seq}
+			)
+	</select>
+	
+	<update id="updateManagePosting">
+		UPDATE
+			tbl_user
+		SET
+			UserAuth = #{UserAuth}
+		WHERE
+			email = #{email}
+
+		
+	</update>
+	
+</mapper>
