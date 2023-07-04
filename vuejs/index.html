@@ -10,6 +10,14 @@
 <body>
     <div id="app">
         {{ person.name }} {{person.age}}
+        <br>
+        {{ nextYear("안녕하세요!") }}
+        <br>
+        <input v-bind:type="type" v-bind:value="inputData">
+        <br>
+        <input :type="type2" :value="inputData2">
+        <br>
+        <a :href="getKossieCoderLink('weather')">코지 코더 채널</a>
     </div>
 
 
@@ -24,10 +32,26 @@
                         name: '코지 코더',
                         age : 34
 
-                    }   // end persion
+                    },   // end persion
+                    inputData : 'gjlksdfgjklsdfjgklasdfj',
+                    type: 'String',
+
+                    inputData2 : "asdfasdfasd",
+                    type2: 'number',
+
+                    link:'https://www.naver.com'
+
                 },  // end data
                 methods:{
-                
+                    getKossieCoderLink: function(channel){
+                      return this.link+channel;
+                    },  // end getKossieCoderLink
+                    nextYear : function(greeting){
+                        return greeting + '! '+ this.person.name + ' 는 내년에 '+ (this.person.age +1) + '살 입니다.';
+                    },   // end nextYear
+                    otherMethod : function(){
+                        this.nextYear();
+                    }   // end otherMethod
                 }   // end methods
             })
         </script>

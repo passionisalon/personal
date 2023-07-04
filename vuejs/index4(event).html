@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue기초익히기</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        {{year}}
+        <br>
+        <button v-on:click="plus">더하기</button>
+        <button v-on:click="minus">빼기</button>
+    </div>
+
+
+    
+    
+    </script>
+        <script>
+            new Vue({
+                el:'#app',
+                data:{
+                 year:2018
+                },  // end data
+                methods:{
+                    plus(){
+                        this.year++;
+                    },
+                    minus(){
+                        this.year--;
+                    }
+
+                }   // end methods
+            }); // end new Vue
+        </script>
+</body>
+
+</html>
