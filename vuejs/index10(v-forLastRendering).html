@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <div>
+            {{people}}
+            <br>
+            name : {{ people[0].name }} age : {{people[0].age}}
+            <br>
+            name : {{ people[1].name }} age : {{people[1].age}}
+            <br>
+            name : {{ people[2].name }} age : {{people[2].age}}
+            <br>
+            name : {{ people[3].name }} age : {{people[3].age}}
+            <br>
+            <hr>
+            <!-- <div v-for="person in people"> 위와 아래는 동일하다 -->
+            <!-- <div v-for="person of people">                 -->
+            <div v-for="(person, index) in people" :key="person.name">
+                <!-- key값은 유니크값이여야한다. 만약 중복된 값이 있다면 다른 도메인 값을 복합키처럼 만들어서 사용해야한다. 아래의 예시-->
+            <!-- <div v-for="(person,index) in people" :key="person.name + '-' + person.age"> -->
+            
+                name : {{ person.name }} age : {{person.age}} index : {{index}}
+            </div>
+            <br>
+            <hr>
+            <div v-for="(per,index) in otherPeople" :key="per.id">
+                name : {{per.name}} age : {{per.age}} index : {{index}}
+            </div>
+
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                people:[
+                    {name:'a',age:20},
+                    {name:'b',age:21},
+                    {name:'c',age:30},
+                    {name:'d',age:40},
+                    {name:'e',age:50}
+                ],
+                otherPeople:[
+                    {id:1,name:'a',age:20},                  
+                    {id:2,name:'b',age:21},                   
+                    {id:3,name:'c',age:22},
+                    {id:4,name:'d',age:23},
+                    {id:5,name:'e',age:24},
+                    {id:6,name:'f',age:25}
+                ]
+            },
+            methods:{
+            
+            },
+            computed:{
+                
+            }
+        })  // end Vue
+    </script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .red{
+            color:red;
+        }
+        .font-bold{
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <template v-if="number ===1">
+            <div  :style="{color:pp , fontSize:size}">1</div>
+            <div>2</div>
+            <div>3</div>    
+        </template>
+        <div v-else-if="number===2">Hi</div>
+        <div v-else>No</div>
+        <br>
+        <button @click="increaseNumber">Increase</button> {{number}}
+    </div>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                number: 1,
+                pp:'red',
+                size:'50px'
+            },
+            methods:{
+                increaseNumber(){
+                   this.number++;
+                }
+            },
+            computed:{
+            
+            },
+            switch:{
+            
+            }
+        }); // end Vue
+    </script>
+
+</body>
+</html>

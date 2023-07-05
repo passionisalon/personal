@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .red{
+            color:red;
+        }
+        .font-bold{
+            font-weight:bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div v-show="show">Yes</div>
+        <br>
+        <button @click="toggle">Toggle</button> {{number}}
+    </div>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                number:1,
+                show:false
+            },
+            methods:{
+                increaseNumber(){
+                   this.number++;
+                },
+                toggle(){
+                    this.show = !this.show
+                }
+            },
+            computed:{
+            
+            },
+            switch:{
+            
+            }
+        }); // end Vue
+    </script>
+
+</body>
+</html>
