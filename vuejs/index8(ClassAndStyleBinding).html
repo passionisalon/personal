@@ -5,35 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .red{
+            color:red;
+            }
+        .font-bold{
+            font-weight:bold;
+        }
+    </style>
 </head>
 <body>
-    <div ip="app">
-
+    <div id="app">
+        <!-- <div :class="{ red: idRed ,'font-bold' : isBold}">Hello</div> -->
+        <div :style="{ color:red , fontSize : size }">Hello</div>
+        <button @click="update">Click</button>
     </div>
     <script>
         new Vue({
             el: '#app',
             data:{
-                message:"헬로우",
-                updated:'아니오'
-            },
+                // idRed : false,
+                // isBold : false
+                red:'red',
+                size:'50px'
+            },// end data
             methods:{
-                changeMessage(){
-                    this.message='코지코더';
+                update(){
+                    this.idRed = !this.idRed;
+                    this.isBold = !this.isBold;
                 }
-            },
-            computed:{
-                reverseMessage(){
-                    return this.message.split('').reverse().join('')
-                }
-            },
-            watch:{
-                message(newVal,oldVal){
-                    console.log(newVal,oldVal);
-                    this.updated='네';
-                }
-            }
-        })
+            }   // end method
+        }); // end vue
     </script>
 </body>
 </html>
