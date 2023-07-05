@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="changeMessage">Click</button>
+        <br>
+        <button @click="changeMessage">Click</button>
+        {{number+1}}
+        {{ message.split('').reverse().join('')}}
+        {{ reversedMessage }}
+        {{ reversedMessage }}
+        {{ reversedMessage }}
+        <br>
+        {{ revpd() }}
+        <!-- {{ reversedMessage }} -->
+    </div>
+    <script>
+        new Vue({
+            el:'#app',
+            data:{
+                number: 1,
+                message : "안녕하세요"
+            },
+            methods:{
+                changeMessage(){
+                this.message="코지코더";
+                },
+                revpd(){
+                    return this.message.split('').reverse().join('');
+                }
+            },
+            computed:{
+                reversedMessage(){
+                    return this.message.split('').reverse().join('');
+                }
+            }
+        });
+
+    </script>
+</body>
+</html>

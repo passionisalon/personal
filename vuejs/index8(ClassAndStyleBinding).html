@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div ip="app">
+
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                message:"헬로우",
+                updated:'아니오'
+            },
+            methods:{
+                changeMessage(){
+                    this.message='코지코더';
+                }
+            },
+            computed:{
+                reverseMessage(){
+                    return this.message.split('').reverse().join('')
+                }
+            },
+            watch:{
+                message(newVal,oldVal){
+                    console.log(newVal,oldVal);
+                    this.updated='네';
+                }
+            }
+        })
+    </script>
+</body>
+</html>
