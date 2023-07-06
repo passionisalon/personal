@@ -5,9 +5,23 @@
     <a v-for="(prosss) in menus" :key="prosss">{{prosss}} </a>
   </div>
 
-  <div v-for='item in products' :key='item.id'>
-    <h4 class="" :style='스타일'>{{item.name}}</h4>
-    <p>{{ item.price }}</p>
+  <div>
+    <h4>{{ products[0].name }}</h4>
+    <p>{{products[0].price}}</p>
+    <!-- <button v-on:click="singo">허위매물신고</button><span>신고수 : 0</span> -->
+    <button @click="increase">허위매물신고</button><span>신고수 : {{ singoCount }}</span>
+    <!-- <button @mouseover="singoCount += 1">허위매물신고</button><span>신고수 : {{ singoCount }}</span> -->
+  </div>
+  <div>
+    <h4>{{ products[1].name }}</h4>
+    <p>{{products[1].price}}</p>
+    <input type="button" @click="inc" value="허위매물신고"><span>신고수 : {{ singo }}</span>
+    <!-- <button :click="inc">허위매물신고</button><span>신고수 : {{ singo }}</span> -->
+  </div>
+  <div>
+    <h4>{{ products[2].name }}</h4>
+    <p>{{products[2].price}}</p>
+    <button @click="incres">허위매물신고</button><span>신고수 : {{ sin }}</span>
   </div>
 </template>
 
@@ -17,6 +31,9 @@ export default {
   data(){
     return {
       // 데이터 보관함
+      singoCount : 0,
+      singo : 0,
+      sin : 0,
       menus :['Home','Shop','About'],
       products : [
                   {id : 'i1',name : '역삼동원룸',price:'60만원'},
@@ -25,6 +42,17 @@ export default {
                   ],
 
       스타일 : 'font-style : bold'
+    }
+  },
+  methods:{
+    increase(){
+      this.singoCount++;
+    },
+    inc(){
+      this.singo++;
+    },
+    incres(){
+      this.sin++;
     }
   },
   components: {
