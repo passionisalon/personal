@@ -13,30 +13,23 @@
     <a v-for="(prosss) in menus" :key="prosss">{{prosss}} </a>
   </div>
 
-  <div>
-    <img src="../src/assets/room0.jpg" class="room-img" alt="룸1">
-    <h4 @click="모달창열렸니 = true">{{ products[0].name }}</h4>
-    <p>{{products[0].price}}</p>
-    <!-- <button v-on:click="singo">허위매물신고</button><span>신고수 : 0</span> -->
-    <button @click="increase">허위매물신고</button><span>신고수 : {{ singoCount }}</span>
-    <!-- <button @mouseover="singoCount += 1">허위매물신고</button><span>신고수 : {{ singoCount }}</span> -->
+  <div v-for="(pros) in 원룸들" :key="pros.id">
+    <img :src="pros.image" class="room-img" alt="룸1">
+    <h4>{{pros.title}}</h4>
+    <p>{{pros.price}}원</p>
   </div>
-  <div>
-    <img src="../src/assets/room1.jpg" class="room-img"  alt="">
-    <h4>{{ products[1].name }}</h4>
-    <p>{{products[1].price}}</p>
-    <input type="button" @click="inc" value="허위매물신고"><span>신고수 : {{ singo }}</span>
-    <!-- <button :click="inc">허위매물신고</button><span>신고수 : {{ singo }}</span> -->
-  </div>
-  <div>
-    <img src="../src/assets/room2.jpg"  class="room-img"  alt="">
-    <h4>{{ products[2].name }}</h4>
-    <p>{{products[2].price}}</p>
-    <button @click="incres">허위매물신고</button><span>신고수 : {{ sin }}</span>
-  </div>
+  
 </template>
 
 <script>
+
+import 작명 from './assets/oneroom.js';
+
+import {apple,apple2} from './assets/oneroom.js';
+apple,apple2;
+작명;
+
+import data from './assets/oneroom.js';
 export default {
   name: 'App',
   data(){
@@ -52,7 +45,7 @@ export default {
                   {id : 'i2',name : '천호동원룸',price:'70만원'},
                   {id : 'i3',name : '마포구원룸',price:'80만원'}
                   ],
-
+      원룸들 : data,
       스타일 : 'font-style : bold'
     }
   },
@@ -124,3 +117,4 @@ padding:20px;
   padding: 10px;
 }
 </style>
+./assets/oneroom.js
