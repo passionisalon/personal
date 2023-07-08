@@ -2,8 +2,8 @@
 
   <div class="black-bg" v-if="모달창열렸니 == true">
     <div class="white-bg">
-      <h4>상세페이지임</h4>
-      <p>상세페이지 내용임</p>
+      <h4>{{원룸들[누른거].title}}</h4>
+      <p>{{ 원룸들[누른거].price }}원</p>
       <button @click="modals">닫기</button>
     </div>
   </div>
@@ -13,10 +13,14 @@
     <a v-for="(prosss) in menus" :key="prosss">{{prosss}} </a>
   </div>
 
-  <div v-for="(pros) in 원룸들" :key="pros.id">
-    <img :src="pros.image" class="room-img" alt="룸1">
-    <h4>{{pros.title}}</h4>
-    <p>{{pros.price}}원</p>
+  <div>
+    안녕하세요
+  </div>
+
+  <div v-for="(pros,index) in 원룸들" :key="pros.id">
+    <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸1">
+    <h4 @click="모달창열렸니=true; 누른거 = index">{{pros.title}}</h4>
+    <p @click="모달창열렸니=true; 누른거 = index">{{pros.price}}원</p>
   </div>
   
 </template>
@@ -35,6 +39,7 @@ export default {
   data(){
     return {
       // 데이터 보관함
+      누른거 : 0,
       모달창열렸니 : false,
       singoCount : 0,
       singo : 0,
@@ -50,15 +55,7 @@ export default {
     }
   },
   methods:{
-    increase(){
-      this.singoCount++;
-    },
-    inc(){
-      this.singo++;
-    },
-    incres(){
-      this.sin++;
-    },
+
     modals(){
       if(this.모달창열렸니==true){
         this.모달창열렸니 =false;
@@ -117,4 +114,4 @@ padding:20px;
   padding: 10px;
 }
 </style>
-./assets/oneroom.js
+
