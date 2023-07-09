@@ -1,25 +1,33 @@
-<!-- 컴포넌트는 긴 HTML을 한 단어로 줄일 수 있는 문법이다 -->
-<!-- Vue파일 import해오기 -->
-<!-- components:{}에등록하기 -->
-<!-- 사용하기 -->
+<!-- props -->
+<!-- 데이터는 한 곳에 보관함 그리고 필요하면 가져다 씀 -->
+<!-- 자식컴포넌트가 부모가 가진 테이터를 쓰려면 -->
+<!-- props로 데이터를 전송해야한다. -->
+<!-- 방법 -->
+<!-- 데이터를 보낸다 -->
+<!-- 등록한다 -->
+<!-- 사용한다. -->
 <template>
 
-  <ModalConponent/>
+  <!-- 자식컴포넌트 -->
+  <!-- <ModalConponent v-bind:데이터이름="데이터이름"/> -->
+  <!-- step1 밑에 데이터를 골라서 보내준다. -->
+  <ModalConponent :원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
+  
 
   <div class="menu">
-    <!-- <a v-for="(prosss,index) in products" :key="prosss.id">{{prosss.name}} {{ index }}</a> -->
     <a v-for="(prosss) in menus" :key="prosss">{{prosss}} </a>
   </div>
 
 
  <DiscountComponent/>
 
- <div v-for="(pros,index) in 원룸들" :key="pros.id">
+ <!-- <div v-for="(pros,index) in 원룸들" :key="pros.id">
   <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸1">
   <h4 @click="모달창열렸니=true; 누른거 = index">{{pros.title}}</h4>
   <p @click="모달창열렸니=true; 누른거 = index">{{pros.price}}원</p>
-</div>
+</div> -->
 
+<ProcutComponent v-bind:원룸들="원룸들" :누룬거="누른거"/>
 
   
 </template>
@@ -35,6 +43,7 @@ apple,apple2;
 import data from './assets/oneroom.js';
 import DiscountC from './ComponentDiscount.vue';
 import ModalC from './ComponentModal.vue';
+import ProductC from './ComponentProduct.vue';
 export default {
   name: 'App',
   data(){
@@ -66,6 +75,7 @@ export default {
   components: {
     DiscountComponent : DiscountC,
     ModalConponent : ModalC,
+    ProcutComponent : ProductC,
   }
 }
 </script>
