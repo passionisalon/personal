@@ -1,27 +1,26 @@
+<!-- 컴포넌트는 긴 HTML을 한 단어로 줄일 수 있는 문법이다 -->
+<!-- Vue파일 import해오기 -->
+<!-- components:{}에등록하기 -->
+<!-- 사용하기 -->
 <template>
 
-  <div class="black-bg" v-if="모달창열렸니 == true">
-    <div class="white-bg">
-      <h4>{{원룸들[누른거].title}}</h4>
-      <p>{{ 원룸들[누른거].price }}원</p>
-      <button @click="modals">닫기</button>
-    </div>
-  </div>
+  <ModalConponent/>
 
   <div class="menu">
     <!-- <a v-for="(prosss,index) in products" :key="prosss.id">{{prosss.name}} {{ index }}</a> -->
     <a v-for="(prosss) in menus" :key="prosss">{{prosss}} </a>
   </div>
 
-  <div>
-    안녕하세요
-  </div>
 
-  <div v-for="(pros,index) in 원룸들" :key="pros.id">
-    <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸1">
-    <h4 @click="모달창열렸니=true; 누른거 = index">{{pros.title}}</h4>
-    <p @click="모달창열렸니=true; 누른거 = index">{{pros.price}}원</p>
-  </div>
+ <DiscountComponent/>
+
+ <div v-for="(pros,index) in 원룸들" :key="pros.id">
+  <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸1">
+  <h4 @click="모달창열렸니=true; 누른거 = index">{{pros.title}}</h4>
+  <p @click="모달창열렸니=true; 누른거 = index">{{pros.price}}원</p>
+</div>
+
+
   
 </template>
 
@@ -34,6 +33,8 @@ apple,apple2;
 작명;
 
 import data from './assets/oneroom.js';
+import DiscountC from './ComponentDiscount.vue';
+import ModalC from './ComponentModal.vue';
 export default {
   name: 'App',
   data(){
@@ -63,7 +64,8 @@ export default {
     }
   },
   components: {
-
+    DiscountComponent : DiscountC,
+    ModalConponent : ModalC,
   }
 }
 </script>
@@ -113,5 +115,6 @@ padding:20px;
   color:white;
   padding: 10px;
 }
+
 </style>
 
