@@ -1,8 +1,12 @@
 <template>
- <div v-for="(pros,index) in 원룸들" :key="pros.id">
-  <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸">
+ <!-- <div v-for="(pros,index) in 원룸들" :key="pros.id"> -->
+<div v-for="pros in 원룸들" :key="pros.id">
+    <img :src="pros.image" class="room-img">
+    <h4>{{ pros.title }}</h4>
+    <p>{{ pros.price }}</p>
+  <!-- <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸">
   <h4 @click="모달창열렸니=true; 누른거 = index">{{pros.title}}</h4>
-  <p @click="모달창열렸니=true; 누른거 = index">{{pros.price}}원</p>
+  <p @click="모달창열렸니=true; 누른거 = index">{{pros.price}}원</p> -->
 </div>
 </template>
 <script>
