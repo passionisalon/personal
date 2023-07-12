@@ -1,13 +1,15 @@
 package spring.di;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import spring.di.entity.Exam;
 import spring.di.entity.NewlecExam;
 import spring.di.ui.ExamConsole;
-import spring.di.ui.GridExamConsole;
 
 
 
@@ -35,11 +37,15 @@ public class Program {
 		
 //		Ioc방식으로 객체생성 후 객체 꺼내 쓰기
 		ExamConsole consoles = (ExamConsole) context.getBean("consoles");
-//		ExamConsole console = context.getBean(ExamConsole.class);
+//		ExamConsXole console = context.getBean(ExamConsole.class);
 		
 		consoles.print();
 
-		
+//		List<Exam> exams = new ArrayList<>();
+		List<Exam> exams = (List<Exam>) context.getBean("exams");
+//		exams.add(new NewlecExam(1,1,1,1));
+		for(Exam e : exams)
+			System.out.println(e); 
 
 	}	// end main
 

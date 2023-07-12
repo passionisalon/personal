@@ -2,7 +2,9 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:p="http://www.springframework.org/schema/p"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
 		
 	<!-- Exam exam = new NewlecExam(); -->
 	<!-- 다른 의미의 bean이 있을 수 있다. -->
@@ -47,6 +49,22 @@
 	<bean id="consoles" class="spring.di.ui.InlineExamConsole">
 		<property name="exam" ref="exam"/>
 	</bean>
+	
+	<util:list id="exams" list-class="java.util.ArrayList">
+		<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/>
+		<ref bean="exam"></ref>
+	</util:list>
+	
+	
+<!-- 	<bean id="exams" class="java.util.ArrayList"> -->
+<!-- 		<constructor-arg> -->
+<!-- 			<list> -->
+<!-- 				<bean class="spring.di.entity.NewlecExam" p:kor="1" p:eng="1" p:math="1" p:com="1"/> -->
+<!-- 				<ref bean="exam"></ref> -->
+<!-- 			</list> -->
+<!-- 		</constructor-arg> -->
+		
+<!-- 	</bean> -->
 	
 	
 </beans>
