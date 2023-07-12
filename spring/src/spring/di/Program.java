@@ -22,19 +22,23 @@ public class Program {
 		ApplicationContext context = 
 				new ClassPathXmlApplicationContext("spring/di/setting.xml");
 		
+		Exam exam = context.getBean(Exam.class);
+		System.err.println(exam);
+		
 //		Ioc방식으로 객체생성 후 객체 꺼내 쓰기
 		ExamConsole console = (ExamConsole) context.getBean("console");
 //		ExamConsole console = context.getBean(ExamConsole.class);
 		
 		console.print();
 		
+
 		
 //		Ioc방식으로 객체생성 후 객체 꺼내 쓰기
 		ExamConsole consoles = (ExamConsole) context.getBean("consoles");
 //		ExamConsole console = context.getBean(ExamConsole.class);
 		
 		consoles.print();
-		
+
 		
 
 	}	// end main
