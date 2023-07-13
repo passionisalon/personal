@@ -4,7 +4,14 @@
           <img :src="원룸들[누른거].image" class="room-img">
           <h4>{{원룸들[누른거].title}}</h4>
           <p>{{ 원룸들[누른거].content }}</p>
-          <p>{{ 원룸들[누른거].price }}원</p>
+          <!-- <input @input="month=$event.target.value"> -->
+          <!-- v-model은 위에것과 같다. 데이터값을 받는다. -->
+          <input v-model="month">
+          <!-- 이 친구는 조금더 큰 인풋이다. textarea -->
+          <!-- <textarea v-model="month"></textarea> -->
+          <!-- <select v-model="month"></select> -->
+          <p>{{ month }}개월 선택함 : {{ 원룸들[누른거].price *month}}원</p>
+        
           <button @click="closeModal">닫기</button>
           
         </div>
@@ -27,7 +34,7 @@
         // 데이터를 만들 때엔 데이터사용하는 곳들 중 최상위 컴포넌트에 만들어라.
         data(){
             return{
-                
+                month:1,
             }
         },
         methods:{

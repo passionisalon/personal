@@ -1,8 +1,8 @@
 <template>
    <div>
-        <img :src="oneRoom.image" class="room-img">
+        <img @click="openModal" :src="oneRoom.image" class="room-img">
         <h4 @click="openModal">{{ oneRoom.title }}</h4>
-        <p>{{ oneRoom.price }}원</p>
+        <p @click="openModal">{{ oneRoom.price }}원</p>
     </div>
   </template>
   
