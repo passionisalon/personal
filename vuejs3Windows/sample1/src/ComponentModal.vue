@@ -1,3 +1,8 @@
+<!-- watcher -->
+<!-- 
+    input에 문자를 입력하면 경고문을 띄우고 싶다.-> watcher를 쓰라. data를 감시하는 함수
+ -->
+
 <template>
     <div class="black-bg" v-if="모달창열렸니 == true">
         <div class="white-bg">
@@ -35,7 +40,19 @@
         data(){
             return{
                 month:1,
+
             }
+        },
+        watch:{
+            // watch는 안에 있는 데이터가 변할 때 마다 여기 있는 코드가 실행된다.
+            // month 데이터가 변할 때마다 watcher도 실행된다.
+            month(a){
+                if(a>13){
+                    alert("13이상 입력하지 마셈");
+                }
+            },
+
+
         },
         methods:{
           closeModal(){
