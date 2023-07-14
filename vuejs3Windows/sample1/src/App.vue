@@ -17,8 +17,13 @@
   <!-- 자식컴포넌트 -->
   <!-- <ModalConponent v-bind:데이터이름="데이터이름"/> -->
   <!-- step1 밑에 데이터를 골라서 보내준다. -->
-  <ModalConponent  @closeModal="모달창열렸니 = false" v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
-  
+  <!-- <div class="start" :class="{end : 모달창열렸니}">
+    <ModalConponent  @closeModal="모달창열렸니 = false" v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
+  </div> -->
+
+  <transition name="fade">
+    <ModalConponent  @closeModal="모달창열렸니 = false" v-bind:원룸들="원룸들" :누른거="누른거" :모달창열렸니="모달창열렸니"/>
+  </transition>
 
   <div class="menu">
     <a v-for="(prosss) in menus" :key="prosss">{{prosss}} </a>
@@ -151,6 +156,33 @@ padding:20px;
   color:white;
   padding: 10px;
 }
+.start{
+  opacity:0;
+  transition: all 1s;
+}
+.end{
+  opacity:1;
+}
+.fade-enter-from{
+  /* opacity:0; */
+  transform:translateY(-1000px);
+}
+.fade-enter-active{
+  transition: all 1s;
+}
+.fade-enter-to{
+  /* opacity:1; */
+  transform:translateY(0px);
+}
 
+.fade-leave-from{
+  opacity:1;
+}
+.fade-leave-active{
+  transition: all 1s;
+}
+.fade-leave-to{
+  opacity:0;
+}
 </style>
 
