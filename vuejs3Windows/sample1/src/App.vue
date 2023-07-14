@@ -32,6 +32,10 @@
 
  <DiscountComponent/>
 
+ <button @click="priceSort">가격순정렬</button>
+ <button @click="returnSort">되돌리기</button>
+ <button @click="charSort">문자오름차순</button>
+ <button @click="charReSort">문자내림차순</button>
  <!-- <div v-for="(pros,index) in 원룸들" :key="pros.id">
   <img @click="모달창열렸니=true; 누른거 = index"  :src="pros.image" class="room-img" alt="룸1">
   <h4 @click="모달창열렸니=true; 누른거 = index">{{pros.title}}</h4>
@@ -93,6 +97,8 @@ export default {
                   {id : 'i2',name : '천호동원룸',price:'70만원'},
                   {id : 'i3',name : '마포구원룸',price:'80만원'}
                   ],
+      원룸들오리지널 : [...data],
+      // array/object 데이터의 각각 별개의 사본을 만들려면 [...array자료]
       원룸들 : data,
       스타일 : 'font-style : bold'
     }
@@ -101,7 +107,35 @@ export default {
 
     increase(){
       this.신고수 +=1;
-    }
+    },
+    priceSort(){
+        this.원룸들.sort(function(a,b){
+          return a.price-b.price
+        })
+        // console.log(this.원룸들.toString);
+
+        // var array = [3,5,2];
+        // array.sort(function(a,b){
+        //   return a-b
+        // });
+        // console.log(array);
+      },
+      returnSort(){
+        this.원룸들 = [...this.원룸들오리지널];
+      },
+      charSort(){
+        this.원룸들.sort(function(a,b){
+          console.log('');
+          console.log('a : ',a.title);
+          console.log('b : ',b.title);
+          return a<b;
+        })
+        
+      },
+      charReSort(){
+        this.원룸들.reverse;
+      }
+      
   },
   components: {
     DiscountComponent : DiscountC,
