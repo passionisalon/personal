@@ -30,7 +30,7 @@
   </div>
 
 
- <DiscountComponent/>
+ <DiscountComponent  v-bind:discountNumber="discountNumber" v-if="showDiscount == true"/>
 
  <button @click="priceSort">가격순정렬</button>
  <button @click="returnSort">되돌리기</button>
@@ -82,12 +82,17 @@ import data from './assets/oneroom.js';
 import DiscountC from './ComponentDiscount.vue';
 import ModalC from './ComponentModal.vue';
 import ProductC from './ComponentProduct.vue';
+
+
+
 export default {
   name: 'App',
   data(){
     return {
+      showDiscount : true,
       오브젝트 : {name:'kim',age:20},
       // 데이터 보관함
+      discountNumber: 30,
       누른거 : 0,
       모달창열렸니 : false,
       신고수 : [0,0,0],
@@ -128,7 +133,7 @@ export default {
           console.log('');
           console.log('a : ',a.title);
           console.log('b : ',b.title);
-          return a<b;
+          return a.title-b.title;
         })
         
       },
@@ -137,18 +142,54 @@ export default {
       }
       
   },
+  created(){
+    // 서버에서 데이터가져오는 코드 ex) Ajax
+  },
+  // lifeCycle hook
+  // beforedCreate(),created(), beforeMount(), mounted(),
+  // beforeUpdate(),updated(), beforeUnmount(), unmounted() 등
+  
+  // 숙제1 메인페이지 로드 후부터 30%할인문구가 1초마다 1%씩 감소
+  // 숙제2 모달창의 input안에 2를 기입했을 때 알림창을 띄우려면
+  // mounted(){
+  //   setTimeout(()=>{
+  // // 자바스크립트 문법 X초 후에 뭔가 실행하려면 setTimeout()
+  // // 실행할 코드~~~
+  //   this.showDiscount = false;    
+  // },2000);
+  // },
+    mounted(){
+      setInterval(()=>{
+        if(this.discountNumber >=0){
+          this.discountNumber--;
+        }
+        if(this.discountNumber==0){
+          this.showDiscount=false;
+        }
+      },500);
+    },
+
+
   components: {
     DiscountComponent : DiscountC,
     ModalConponent : ModalC,
     ProcutComponent : ProductC,
   }
 }
+
+  // 예시로 setInterval()이라는 함수가 있다.
+  // 1초마다 내부 코드가 실행된다.
+  setInterval(()=>{
+    
+  },1000);
 </script>
 <!-- 동적 UI 만드는 법:
 0.HTML CSS로 디자인해두셈(기본)
 1.UI의 현재 상태를 데이터로 저장해둠
 2.데이터에 따라 UI가 어떻게 보일지 작성
 -->
+
+
 <style>
 body{
   margin:0;
