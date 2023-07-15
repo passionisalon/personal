@@ -1,26 +1,14 @@
 <template>
     <div>
+
         <div v-for='(pros,index) in blogData' :key="index">
-            <h4>{{pros.title}}</h4>
-            <p>{{ pros.content }}</p>
-            <p>{{pros.date}}</p>
+            <h4 :pros="pros"><router-link to="/detail" >{{pros.title}}</router-link></h4>
+            <p :pros="pros"><router-link to="/detail" >{{ pros.content }}</router-link></p>
+            <p :pros="pros"><router-link to="/detail" >{{pros.date}}</router-link></p>
+            <hr>
         </div>
         <hr>
-        <div>
-            <h4>{{blogData[0].title}}</h4>
-            <p>{{ blogData[0].content }}</p>
-            <p>{{blogData[0].date}}</p>
-        </div>
-        <div>
-            <h4>{{blogData[1].title}}</h4>
-            <p>{{ blogData[1].content }}</p>
-            <p>{{blogData[1].date}}</p>
-        </div>
-        <div>
-            <h4>{{blogData[2].title}}</h4>
-            <p>{{ blogData[2].content }}</p>
-            <p>{{blogData[2].date}}</p>
-        </div>
+        리스트페이지
     </div>
 
 </template>
@@ -34,5 +22,8 @@ export default{
 </script>
 
 <style>
-
+a,p,h4{
+    text-decoration-line: none;
+    font-display:black;
+}
 </style>

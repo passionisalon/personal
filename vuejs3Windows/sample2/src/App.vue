@@ -14,26 +14,33 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
+            <a class="nav-link active" aria-current="page" href="#"><router-link to="/">홈페이지</router-link></a>
+            <a class="nav-link" href="#"><router-link to="/list">리스트페이지</router-link></a>
             <a class="nav-link" href="#">Pricing</a>
             <a class="nav-link disabled">Disabled</a>
           </div>
         </div>
       </div>
     </nav>
-    <div>
+
+    <!-- <div>
       <h4>개발자의 블로그입니다.</h4>
       <p>Vue로 만들었음</p>
-    </div>
+    </div> -->
+    <router-link to="/">홈페이지</router-link>
+    <br>
+    <router-link to="/list">리스트페이지</router-link>
 
-    <ListComponent v-bind:blogData="blogData"/>
+    <router-view :blogData="blogData"></router-view>
+
+    <!-- <ListComponent v-bind:blogData="blogData"/> -->
 
   </div>
 </template>
 
 <script>
 import ListComponent from './components/ListComponent.vue'
+import Home from './components/HomeComponent.vue'
 import blog from './assets/blog.js'
 export default {
   name: 'App',
@@ -43,7 +50,7 @@ export default {
     }
   },
   components: {
-    ListComponent:ListComponent,
+    // ListComponent:ListComponent,
   }
 }
 </script>
