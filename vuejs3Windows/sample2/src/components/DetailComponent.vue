@@ -7,9 +7,12 @@
             <h4>{{blogData[$route.params.id].title}}</h4>
             <p>{{ blogData[$route.params.id].content }}</p>
             <p>{{blogData[$route.params.id].date}}</p>
+
             <h4>상세페이지</h4>
             <p>글제목</p>
             <p>글설명~</p>
+
+            <router-view></router-view>
         </div>
 
     </div>

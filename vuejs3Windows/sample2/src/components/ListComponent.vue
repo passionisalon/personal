@@ -2,9 +2,12 @@
     <div>
 
         <div v-for='(pros,index) in blogData' :key="index">
-            <h4 ><router-link to="/detail" >{{pros.title}}</router-link></h4>
-            <p ><router-link to="/detail" >{{ pros.content }}</router-link></p>
-            <p ><router-link to="/detail" >{{pros.date}}</router-link></p>
+            <!-- {{ index }} -->
+            <h4 @click="$router.push('/detail/'+index)">{{pros.title}}</h4>
+            <p @click="$router.push('/detail/'+index)">{{pros.content}}</p>
+            <p @click="$router.push('/detail/'+index)">{{pros.date}}</p>
+            <!-- <p ><router-link to='/detail/'+index>{{ pros.content }}</router-link></p>
+            <p ><router-link to="/detail/" >{{pros.date}}</router-link></p> -->
             <hr>
         </div>
         <hr>
@@ -16,7 +19,7 @@
 <script>
 export default{
     props:{
-        blogData : Object,
+        blogData : Array,
     }
 }
 </script>
