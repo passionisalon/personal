@@ -30,7 +30,10 @@
     <router-link to="/">홈페이지</router-link>
     <br>
     <router-link to="/list">리스트페이지</router-link>
-
+    <br>
+    <div class="mt-4">
+      <router-link to="/detail" v-bind:blogData="blogData">블로그글</router-link>
+    </div>
     <router-view :blogData="blogData"></router-view>
 
     <!-- <ListComponent v-bind:blogData="blogData"/> -->

@@ -2,9 +2,9 @@
     <div>
 
         <div v-for='(pros,index) in blogData' :key="index">
-            <h4 :pros="pros"><router-link to="/detail" >{{pros.title}}</router-link></h4>
-            <p :pros="pros"><router-link to="/detail" >{{ pros.content }}</router-link></p>
-            <p :pros="pros"><router-link to="/detail" >{{pros.date}}</router-link></p>
+            <h4 ><router-link to="/detail" >{{pros.title}}</router-link></h4>
+            <p ><router-link to="/detail" >{{ pros.content }}</router-link></p>
+            <p ><router-link to="/detail" >{{pros.date}}</router-link></p>
             <hr>
         </div>
         <hr>
