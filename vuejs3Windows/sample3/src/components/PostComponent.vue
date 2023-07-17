@@ -1,13 +1,13 @@
 <template>
     <div class="post">
         <div class="post-header">
-            <div class="profile"></div>
+            <div class="profile" :style="{backgroundImage : `url(${pros.userImage})`}"></div>
             <span class="profile-name">{{ pros.name }}</span>
         </div>
-        <div class="post-body"></div>
+        <div class="post-body" :style="{backgroundImage : `url(${pros.postImage})`}"></div>
         <div class="post-content">
             <p>{{pros.likes}}</p>
-            <p><strong>{{pros.filter}}</strong> {{ pros.content }}</p>
+            <p><strong>{{ pros.name }}</strong> {{ pros.content }}</p>
             <p class="date">{{ pros.date }}</p>
         </div>
     </div>
