@@ -19,8 +19,8 @@
   </div>
 
   <ContainerComponent v-bind:infodata="infodata"/>
-
-  <!--  -->
+  <button @click="moreHomework">더보기</button>
+  <!-- 서버에서 추가 게시물을 가져옴 그걸 <post>로 보여줄것 -->
 
   <!-- <div class="sample-box">임시 박스</div> -->
   <div class="footer">
@@ -36,6 +36,14 @@ import datas from './assets/Data.js';
 
 import ContainerComponent from './components/ContainerComponent';
 
+import axios from 'axios';
+// axios.get();
+// axios.post();
+
+// ajax요청하려면
+// 1. axios라이브러리쓰던가 (대부분 이거 사용함)
+// 2. 기본 fetch함수를 쓰던가 (최신브라우저에서만 사용할 수 있다.)
+// npm install axios
 
 
 
@@ -44,10 +52,64 @@ export default {
   data(){
     return{
       infodata : datas,
+      moreCount:0,
     }
   },
   components: {
     ContainerComponent : ContainerComponent,
+
+  },
+  methods:{
+    more(){
+      // axios.get('URL!!');
+      // ajax 요청 공식
+      // axios.get('https://codingapple1.github.io/vue/more0.json').then(function(result){
+      //   // 요청성공시 실행 할 코드~
+      //   console.log(result.data);
+      // });
+      axios.get('https://codingapple1.github.io/vue/more0.json').then((result)=>{
+        console.log(result.data);
+        // 람다식은 밖의 this를 그대로 사용할 수 있지만,
+        // function으로 정의된 함수는 함수내로 this를 재정의하게 된다.
+        this.infodata.push(result.data);
+        // push함수는 해당 데이터의 끝에 데이터를 추가해주는 기능을 가지고 있다.
+      })  //  end axios.get~
+    }, // end more
+
+    // axios.post('URL',{name:'kim'}).then().catch()
+    // 성공했을 시 then으로 실패시 catch로
+
+    // axios.post('URL',{name:'kim'}).then().catch((err)=>{
+      // console.log(err);
+    // })
+
+
+      // 과제
+    moreHomework(){
+      if(this.moreCount==0){
+        axios.get('https://codingapple1.github.io/vue/more0.json')
+        .then((result)=>{
+          this.moreCount++;
+          console.log('11111 : ',this.moreCount);
+          console.log(result.data);
+          this.infodata.push(result.data);
+        })
+        .catch((err)=>{
+          console.log(err);
+        });
+      }else{
+        axios.get('https://codingapple1.github.io/vue/more1.json').then((result)=>{
+          this.moreCount++;
+          console.log('22222++ : ',this.moreCount);
+          console.log(result.data);
+          this.infodata.push(result.data);
+        }).catch((err)=>{
+          console.log(err);
+        });
+      }
+    },  // end moreHomework
+      
+
 
   }
 }
