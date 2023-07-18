@@ -13,12 +13,13 @@
       <li>Cancel</li>
     </ul>
     <ul class="header-button-right">
-      <li>Next</li>
+      <li v-if="steps==1" @click="steps++">Next</li>
+      <li v-if="steps==2" @click="PostPublish">Publish</li>
     </ul>
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <ContainerComponent v-bind:UploadImage="UploadImage" v-bind:steps="steps" v-bind:infodata="infodata"/>
+  <ContainerComponent @write="writePha = $event" v-bind:UploadImage="UploadImage" v-bind:steps="steps" v-bind:infodata="infodata"/>
   <button @click="moreHomework">더보기</button>
   <!-- 서버에서 추가 게시물을 가져옴 그걸 <post>로 보여줄것 -->
 
@@ -78,6 +79,7 @@ export default {
       infodata : datas,
       moreCount:0,
       UploadImage:'',
+      writePha:"",
     }
   },
   components: {
@@ -146,7 +148,21 @@ export default {
       this.UploadImage = url;
       this.steps++;
     },  // end upload()  
-
+    PostPublish(){
+      var myPost = {
+        name: "Kim Hyun",
+        userImage: "https://placeimg.com/100/100/arch",
+        postImage:  this.UploadImage,
+        likes:  36,
+        date: "May 15",
+        liked:  false,
+        content: this.writePha,
+        filter: "perpetua"
+      };
+      this.infodata.unshift(myPost);
+      // 왼쪽의 Array에 자료를 넣어주는 기능 unshift
+      this.steps = 0;
+    },  // end PostPublish
 
   },
 }
