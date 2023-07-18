@@ -18,14 +18,20 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <ContainerComponent v-bind:steps="steps" v-bind:infodata="infodata"/>
+  <ContainerComponent v-bind:UploadImage="UploadImage" v-bind:steps="steps" v-bind:infodata="infodata"/>
   <button @click="moreHomework">더보기</button>
   <!-- 서버에서 추가 게시물을 가져옴 그걸 <post>로 보여줄것 -->
 
   <!-- <div class="sample-box">임시 박스</div> -->
+
+  <!-- 이미지 업로드한 걸 HTML에 보여주려면? -->
+  <!-- FileReader() 쓰거나 -->
+  <!-- URL.createObjectURL() -->
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <!-- multiple = 복수의 파일들 선택 -->
+      <!-- accept="image/*" 이미지 파일만 보겠다-->
+      <input @change="upload" accept="image/*" type="file" id="file" class="inputfile" />
       <label for="file" class="input-plus">+</label>
     </ul>
   </div>
@@ -71,6 +77,7 @@ export default {
       steps : 1,
       infodata : datas,
       moreCount:0,
+      UploadImage:'',
     }
   },
   components: {
@@ -126,10 +133,22 @@ export default {
         });
       }
     },  // end moreHomework
-      
+    // (방법1)FileReader()
+    // 파일을 글자로 변환해줌
+    // (방법2) URL.createObjectURL()
+    // 이미지의 가상 URL을 생성해줌
+    upload(e){
+      let getFile = e.target.files;
+      console.log("type : ",getFile[0].type);
+      console.log(getFile[0]);
+      let url = URL.createObjectURL(getFile[0]);
+      console.log(url);
+      this.UploadImage = url;
+      this.steps++;
+    },  // end upload()  
 
 
-  }
+  },
 }
 </script>
 
