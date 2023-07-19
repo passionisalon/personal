@@ -59,6 +59,8 @@ import datas from './assets/Data.js';
 
 import ContainerComponent from './components/ContainerComponent';
 
+
+
 import axios from 'axios';
 // axios.get();
 // axios.post();
@@ -75,7 +77,7 @@ export default {
   data(){
     return{
       step:0,
-      steps : 1,
+      steps : 0,
       infodata : datas,
       moreCount:0,
       UploadImage:'',

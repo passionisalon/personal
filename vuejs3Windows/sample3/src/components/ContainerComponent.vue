@@ -7,11 +7,8 @@
         <div v-if="steps == 1">
             <div class="upload-image" :style="`background-image:url(${UploadImage})`"></div>
             <div class="filters">
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
-                <div class="filter-1"></div>
+                <FilterBoxComponent v-bind:필터="필터" v-bind:UploadImage="UploadImage" v-for="(필터) in filter" :key="필터"></FilterBoxComponent>
+                
             </div>
         </div>
 
@@ -22,8 +19,9 @@
                 <textarea @input="$emit('write',$event.target.value)" class="write-box">write!</textarea>
             </div>
         </div>
+        <hr>
     </div>
-    <hr>
+
     <!-- <div>
         <PostComponent v-bind:pros="infodata[0]"/>
         <PostComponent v-bind:pros="infodata[1]"/>
@@ -33,7 +31,18 @@
 
 <script>
 import PostComponent from './PostComponent.vue';
+import FilterBoxComponent from './FilterBoxComponent.vue';
 export default {
+    data(){
+        return{
+            filter:
+            [ 
+                "aden", "_1977", "brannan", "brooklyn", "clarendon", "earlybird", "gingham", "hudson", 
+                "inkwell", "kelvin", "lark", "lofi", "maven", "mayfair", "moon", "nashville", "perpetua", 
+                "reyes", "rise", "slumber", "stinson", "toaster", "valencia", "walden", "willow", "xpro2"
+            ],
+        }
+    },
     props: {
         infodata: Object,
         steps: Number,
@@ -41,6 +50,7 @@ export default {
     },
     components: {
         PostComponent: PostComponent,
+        FilterBoxComponent : FilterBoxComponent,
     }
 }
 </script>
