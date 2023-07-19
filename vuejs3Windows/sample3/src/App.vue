@@ -70,19 +70,28 @@ import axios from 'axios';
 // 2. 기본 fetch함수를 쓰던가 (최신브라우저에서만 사용할 수 있다.)
 // npm install axios
 
+// App.vue <- Conainer.Vue <- FilterBox.vue 로 이동을 custom event를 연단으로 사용해서 상위 컴포넌트로 옮길 수 있다.
+// 하지만 mitt라는 라이브러리를 쓰면 단번에 가능해진다.
 
-
+// 필터박스를 클릭 시 App.vue에 클릭한 필터명을 전달해보자
 export default {
   name: 'App',
   data(){
     return{
-      step:0,
+
       steps : 0,
       infodata : datas,
       moreCount:0,
       UploadImage:'',
       writePha:"",
     }
+  },
+  // this.emitter을 수신하는 장소는 관례적으로 mounted이다.
+  // 많이 사용하면 힘들다. 관리가 힘들어진다. 대체품으로 Vuex라는 것이 있다.
+  mounted(){
+    this.emitter.on('작명',(a)=>{
+      console.log(a);
+    }); // end emitter
   },
   components: {
     ContainerComponent : ContainerComponent,

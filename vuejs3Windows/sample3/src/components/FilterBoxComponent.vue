@@ -7,6 +7,7 @@
         <!-- <slot name="a"></slot> -->
         <!-- <slot name="b"></slot> -->
         <!-- <slot :msg="msg"></slot> -->
+        <button @click="fire">버튼</button>
     </div>
 </template>
 
@@ -24,7 +25,11 @@ export default{
         필터:String,
     },
     methods:{
-      
+        fire(){
+            // this.emitter.emit('작명','데이터');
+            // 다른 컴포넌트로 쏴줄 수 있다.
+            this.emitter.emit('작명','데이터');
+        },
     },
 }
 </script>
