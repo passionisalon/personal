@@ -2,7 +2,8 @@
     <div class="post">
         <div class="post-header">
             <div class="profile" :style="{backgroundImage : `url(${pros.userImage})`}"></div>
-            <span class="profile-name">{{ pros.name }}</span>
+            <!-- <span class="profile-name">{{ pros.name }}</span> -->
+            <span class="profile-name"><slot></slot></span>
         </div>
         <div class="post-body" :style="{backgroundImage : `url(${pros.postImage})`}"></div>
         <div class="post-content">
