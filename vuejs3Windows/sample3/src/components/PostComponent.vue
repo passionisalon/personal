@@ -1,13 +1,14 @@
 <template>
     <div class="post">
         <div class="post-header">
+            
             <div class="profile" :style="{backgroundImage : `url(${pros.userImage})`}"></div>
             <!-- <span class="profile-name">{{ pros.name }}</span> -->
             <span class="profile-name"><slot></slot></span>
         </div>
-        <div class="post-body" :style="{backgroundImage : `url(${pros.postImage})`}"></div>
+        <div  @click="$store.commit('inputLikes')" class="post-body" :style="{backgroundImage : `url(${pros.postImage})`}"></div>
         <div class="post-content">
-            <p>{{pros.likes}}</p>
+            <p>{{$store.state.likes}}</p>
             <p><strong>{{ pros.name }}</strong> {{ pros.content }}</p>
             <p class="date">{{ pros.date }}</p>
         </div>
@@ -19,6 +20,12 @@ export default {
     props:{
         pros:Object,
     },
+    data(){
+        return{
+           
+        }
+    },
+    
 
 }
 </script>
