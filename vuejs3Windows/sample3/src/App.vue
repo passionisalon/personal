@@ -84,13 +84,14 @@ export default {
       moreCount:0,
       UploadImage:'',
       writePha:"",
+      선택한필터 : '',
     }
   },
   // this.emitter을 수신하는 장소는 관례적으로 mounted이다.
   // 많이 사용하면 힘들다. 관리가 힘들어진다. 대체품으로 Vuex라는 것이 있다.
   mounted(){
-    this.emitter.on('작명',(a)=>{
-      console.log(a);
+    this.emitter.on('박스클릭함',(a)=>{
+      this.선택한필터 = a;
     }); // end emitter
   },
   components: {
@@ -168,7 +169,7 @@ export default {
         date: "May 15",
         liked:  false,
         content: this.writePha,
-        filter: "perpetua"
+        filter: this.선택한필터,
       };
       this.infodata.unshift(myPost);
       // 왼쪽의 Array에 자료를 넣어주는 기능 unshift

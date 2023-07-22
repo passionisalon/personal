@@ -2,12 +2,12 @@
 
 <template>
     <!-- <div @click="meth" :class="필터 + ' filter-item'" :style="`background-image:url(${UploadImage})`"></div>  -->
-    <div :class="필터" class="filter-item" :style="`background-image:url(${UploadImage})`">
+    <div @click="fire" :class="필터" class="filter-item" :style="`background-image:url(${UploadImage})`">
         <slot></slot>
         <!-- <slot name="a"></slot> -->
         <!-- <slot name="b"></slot> -->
         <!-- <slot :msg="msg"></slot> -->
-        <button @click="fire">버튼</button>
+
     </div>
 </template>
 
@@ -17,7 +17,7 @@ export default{
     date(){
         return{
             // 임시데이터
-            msg:'hello',
+
         }   // end return
     },
     props:{
@@ -28,7 +28,8 @@ export default{
         fire(){
             // this.emitter.emit('작명','데이터');
             // 다른 컴포넌트로 쏴줄 수 있다.
-            this.emitter.emit('작명','데이터');
+
+            this.emitter.emit('박스클릭함',this.필터);
         },
     },
 }
