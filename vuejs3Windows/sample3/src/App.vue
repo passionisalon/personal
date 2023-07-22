@@ -19,6 +19,16 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
+<h4>안녕 {{ $store.state.name }}</h4>
+<button @click="$store.state.name = '박'">버튼</button>
+<!-- 
+  store.js에 있는 state변경은 이렇게 하면 안된다
+  (Vuex국룰)state수정하고 싶으면
+  1. 미리 store.js에 수정방법을 정의해두고
+  2. 그 방법을 컴포넌트에서 소환해서 수정해야 함
+ -->
+
+
   <ContainerComponent @write="writePha = $event" v-bind:UploadImage="UploadImage" v-bind:steps="steps" v-bind:infodata="infodata"/>
   <button @click="moreHomework">더보기</button>
   <!-- 서버에서 추가 게시물을 가져옴 그걸 <post>로 보여줄것 -->
