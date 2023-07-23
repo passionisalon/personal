@@ -31,6 +31,9 @@
   2. 그 방법을 컴포넌트에서 소환해서 수정해야 함
  -->
 
+ <p>{{ $store.state.more }}</p>
+<button @click="$store.dispatch('getData')">더보기버튼</button>
+
 
   <ContainerComponent  @write="writePha = $event" v-bind:UploadImage="UploadImage" v-bind:steps="steps" v-bind:infodata="infodata"/>
   <button @click="moreHomework">더보기</button>
