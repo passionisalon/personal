@@ -9,8 +9,11 @@ let app = createApp(App)
 // 그러면 이제 vue파일에서 import axios 해 올 필요없이 this.axios로 사용가능
 
 app.config.globalProperties.emitter = emitter; // 보관함에 {emitter : emitter} 추가한 것
+
 // 글로벌한 변수보관함임
 
 import store from './store.js'
+
+import './registerServiceWorker'
 
 app.use(store).mount('#app')
