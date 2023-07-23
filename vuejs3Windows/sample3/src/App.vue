@@ -41,6 +41,13 @@
 
   <!-- <div class="sample-box">임시 박스</div> -->
 
+<p>{{ name }} {{ age }} {{ likes }} {{ 내이름 }}</p>
+
+<p>{{ now2 }}</p>
+<br>
+<p>{{ now() }} {{ 카운터 }}</p>
+<button @click="카운터++">버튼</button>
+
   <!-- 이미지 업로드한 걸 HTML에 보여주려면? -->
   <!-- FileReader() 쓰거나 -->
   <!-- URL.createObjectURL() -->
@@ -78,6 +85,7 @@ import ContainerComponent from './components/ContainerComponent';
 
 
 import axios from 'axios';
+import { mapState,mapMutations } from 'vuex';
 // axios.get();
 // axios.post();
 
@@ -101,6 +109,7 @@ export default {
       UploadImage:'',
       writePha:"",
       선택한필터 : '',
+      카운터:0,
     }
   },
   // this.emitter을 수신하는 장소는 관례적으로 mounted이다.
@@ -114,7 +123,26 @@ export default {
     ContainerComponent : ContainerComponent,
 
   },
+  computed:{
+    name(){
+      return this.$store.state.name;
+    },
+    age(){
+      return this.$store.state.age;
+    },
+    ...mapState(['name','age','likes']),
+    ...mapState({ 내이름 : 'name',}),
+    now2(){
+      // computed함수는 호출을 해도 안에 있는 함수들이 실행되지 않습니다.
+      return new Date()
+    },
+  },
   methods:{
+    ...mapMutations(['setMore','좋아요']),
+    now(){
+      // methods 함수는 사용할 때마다 함수들이 실행됨
+      return new Date();
+    },
     more(){
       // axios.get('URL!!');
       // ajax 요청 공식
