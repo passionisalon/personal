@@ -103,7 +103,7 @@ export default {
   data(){
     return{
 
-      steps : 0,
+      steps : 3,
       infodata : datas,
       moreCount:0,
       UploadImage:'',
