@@ -31,7 +31,7 @@
         </div>
 
         <div v-if="steps == 3">
-            <MyPageComponent/>
+            <MyPageComponent :one="1"/>
         </div>
 
 

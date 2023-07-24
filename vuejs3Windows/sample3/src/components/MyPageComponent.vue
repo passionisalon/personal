@@ -16,24 +16,63 @@
 
 import axios from 'axios';
 import {onMounted,ref} from 'vue';
+// import {watch} from 'vue';
+// import {computed} from 'vue';
+// import {toRefs} from 'vue';
+// import {useStore} from 'vuex';
+// import { reactive } from 'vue';
 export default{
     name : 'MyPageComponent',
-    setup(){
+    props : {
+        one : Number,
+    },
+    setup(props){
         // Composition API써서 개발하려면 setup()안에 코드짜셈
         // setup()안에서 데이터도 생성, 조작할 수 있고, methods 만들 수 있고, hook도 걸 수 있음
         // 모든 데이터를 reference data type으로 감싸야 실시간 반영가능
+        props;
         let follower = ref([]);
         onMounted(()=>{
                 axios.get('/follower.json').then((a)=>{
                 follower.value = a.data;
             });
-        })
+        }),
+
+        function search(){
+
+        }
+
+
+        // let test = reactive({name:'kim'});
+        // test;
+        // let {one} =  toRefs(props);
+        // console.log(one.value);
+        
+        // let store = useStore();
+        // console.log("store");
+        // console.log(store.state.name);
+
+        // watch(one,()=>{
+            
+        //     console.log(one.value);
+        // });
+
+        // let 결과 = computed(()=>{
+        //     return follower.value.length;
+        //     // Composition API에서 computed 사용법
+        //     // computed(()=>{return 연산결과})
+        // });
+        // console.log("computed");
+        // console.log(결과.value);
+
 
         
 
         
 
-        return {follower}
+        
+
+        return {follower,search}
     },
     data(){
         return {
@@ -42,6 +81,7 @@ export default{
     },
 }
 </script>
-<style>
+<!-- style scoped라고 되어져있으면 해당 vue에만 적용할 수 있다. -->
+<style scoped>
 
 </style>
