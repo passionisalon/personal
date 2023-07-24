@@ -4,7 +4,7 @@
 <template>
     <div style="padding : 10px">
         <h4>팔로워</h4>
-        <input placeholder="?" />
+        <input placeholder="?" @input="search($event.target.value)" />
         <div class="post-header" v-for="(a,i) in follower" :key="i">
             <div class="profile" :style="`background-image:url(${a.image})`"></div>
             <div class="profile-name">{{ a.name }}</div>
@@ -16,6 +16,7 @@
 
 import axios from 'axios';
 import {onMounted,ref} from 'vue';
+
 // import {watch} from 'vue';
 // import {computed} from 'vue';
 // import {toRefs} from 'vue';
@@ -32,15 +33,21 @@ export default{
         // 모든 데이터를 reference data type으로 감싸야 실시간 반영가능
         props;
         let follower = ref([]);
+        let followerOriginal = ref([]);
         onMounted(()=>{
                 axios.get('/follower.json').then((a)=>{
                 follower.value = a.data;
+                followerOriginal.value = a.data;
+            })
+        });
+
+        function search(검색어){
+            let newFollower = followerOriginal.value.filter((a)=>{
+                return a.name.indexOf(검색어) != -1
             });
-        }),
-
-        function search(){
-
+            follower.value = [...newFollower]
         }
+        return {follower, search}
 
 
         // let test = reactive({name:'kim'});
@@ -64,15 +71,9 @@ export default{
         // });
         // console.log("computed");
         // console.log(결과.value);
+      
 
 
-        
-
-        
-
-        
-
-        return {follower,search}
     },
     data(){
         return {
