@@ -36,7 +36,7 @@ public class MemoRepositoryTests {
     @Test
     public void testSelect(){
         // 데이터베이스에 존재하는 mno
-        Long mno = 100L;
+        Long mno = 99L;
         Optional<Memo> result = memoRepository.findById(mno);
 
         System.out.println("===========================");
@@ -46,13 +46,16 @@ public class MemoRepositoryTests {
             System.out.println(memo);
         }
 
+        System.out.println("123904812039812039");
+        System.out.printf("\n\t %s",result);
+
     }
 
     @Transactional
     @Test
     public void testSelect2(){
         // 데이터베이스에 존재하는 mno
-        Long mno = 100L;
+        Long mno = 99L;
 
         Memo memo = memoRepository.getOne(mno);
 

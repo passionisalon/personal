@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+    <hr>
+
+  <h3>
+    <h1 th:text="${result}"></h1>
+    <h1 th:text="${dto}"></h1>
+
+    <script th:inline="javascript">
+      var msg = [[${result}]];
+      var dto = [[${dto}]];
+    </script>
+  </h3>
+</body>
+</html>
