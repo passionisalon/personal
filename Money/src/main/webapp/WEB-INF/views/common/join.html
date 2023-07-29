@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
+    <title>SeouLivejoin</title>
+</head>
+<style>
+    .join_wrap{
+        margin: 0 auto;
+        width:1200px;
+        height:1200px;
+        /* border: 1px solid red; */
+    }
+    .join_container{
+        margin: 0 auto;
+        margin-left: 100px;
+        width:1000px;
+        height:1200px;
+        /* border: 1px solid blue; */
+        display:inline-block;
+    }
+    .join_body{
+        margin: 0 auto;
+        width:1000px;
+        height:1000px;
+        text-align: center;
+        /* border: 1px solid green; */
+    }
+    .individual_wrap , select{
+        display:flex;
+        text-align: center;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        margin: 0 auto;
+        width:600px;
+        height:50px;
+        /* border:1px solid yellowgreen; */
+
+    }
+    .individual_wrap >input ,select{
+        width:100%;
+        height:50px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 16px;
+
+    }
+    #email_wrap, #password_wrap{
+        display:flex;
+    }
+    .Btn{
+        width:20%;
+        height:50px;
+        border-radius: 10px;
+        color:aliceblue;
+        background-color: #49539E;
+        text-align: center;
+        justify-content: center;
+        justify-items: center;
+        align-items: center;
+        font-size: 16px;
+    }
+    #join_btn{
+        border-radius: 10px;
+        color:aliceblue;
+        background-color: #49539E;
+    }
+
+</style>
+<body>
+    <div class="join_wrap">
+        <div class="join_container">
+            <div class="join_header"></div>
+            <div class="join_body">
+                <div class="individual_wrap" id="email_wrap">
+                    <input type="email" id="UserEmail" name="UserEmail" placeholder="example@gmail.com">
+                    <button id="checkDistinctEamil" class="Btn">중복확인</button>
+                </div>
+                
+                <div class="individual_wrap">
+                    <p>중복된아이디입니다.</p>
+                </div>
+                <div class="individual_wrap" id="email_wrap">
+                    <input type="Number" id="UserEmail" name="UserEmail" placeholder="이메일로 전송된 코드를 입력해주세요">
+                    <button id="checkNumber" class="Btn">인증</button>
+                </div>
+                <div class="individual_wrap">
+                    <p>이메일인증 실패.</p>
+                </div>
+                <div class="individual_wrap" id="password_wrap">
+                    <input type="password" id="password1" name="UserPw" placeholder="example123!@">
+                    <button id="checkPassword" class="Btn">확인</button>
+                </div>
+                <div class="individual_wrap" id="password_wrap">
+                    <p>유효하지 않는 비밀번호입니다.</p>
+                </div>
+                <div class="individual_wrap" id="password_wrap">
+                    <input type="password" id="password2" name="UserPw" placeholder="example123!@">
+                    <button id="checkPassword" class="Btn">확인</button>
+                </div>
+                <div class="individual_wrap">
+                    <p>비밀번호가 일치하지 않습니다.</p>
+                </div>
+                <div class="individual_wrap">
+                    <input type="datetime" id="birthday" name="userBirthday" placeholder="1990-01-24">
+                </div>
+                <br>
+                <div class="individual_wrap">
+                    <input type="tel" id="tel" name="userPH" placeholder="01000000000">
+                </div>
+                <br>
+                <div class="individual_wrap">
+                    <select name="Gender" id="gender">
+                        <option value="man">남</option>
+                        <option value="women">여</option>
+                    </select>
+                </div>
+                <br>
+                <div class="individual_wrap">
+                    <input type="text" id="userNickName" name="userNickName" placeholder="닉네임을 지어주세요!">
+                    <button id="checkNickName" class="Btn">확인</button>
+                </div>
+                <br>
+                <div class="individual_wrap">
+                    <input type="text" id="comment" name="comment" placeholder="코멘트를 적어주세요">
+                    <button id="commentCheck" class="Btn">확인</button>
+                </div>
+                <br>
+                <div class="individual_wrap">
+                    <div>이미지</div>
+                    <button class="Btn">파일추가</button>
+                    <button for="profileImg" class="Btn">사진 업로드</button>
+                </div>
+                <br>
+                <div class="individual_wrap">
+                    <p>
+                        <input type="checkbox" id="terms">
+                        <label for="terms">이용약관과 개인정보 취급방침을 확인하고 이에 동의합니다.</label>
+                        <a href="#">(전체 약관보기)</a>
+                    </p>
+                    <span id="termsError"></span>
+                </div>
+                <div class="individual_wrap">
+                    <input type="submit" id="join_btn" value="가입하기" formenctype="multipart/form-data">
+                </div>
+            </div>
+            <div class="join_footer">
+
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $(".join_header").load("/WEB-INF/views/common/header.html");
+            $(".join_footer").load("/WEB-INF/views/common/footer.html");
+        });
+    </script>
+</body>
+</html>

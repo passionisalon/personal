@@ -1,0 +1,48 @@
+@charset "utf8";
+
+.domain_wrap{
+    width:1200px;
+    height:900;
+    /* border:1px solid red; */
+    margin:0 auto;
+    
+    
+}
+.domain_container{
+    width:1200px;
+    height:900px;
+}
+#domain_header{
+    width:1200px;
+}
+#domain_body{
+    width:1200px;
+    /* height:100vh; */
+    /* border: 1px solid red; */
+}
+.domain_gesipan{
+    /* border:1px solid blue; */
+    height:250px;
+}
+.domain_title{
+    /* border:1px solid violet; */
+    height:30px;
+    padding-top: 15px;
+}
+.domain_list{
+    /* border:1px solid green; */
+    width:1200px;
+    height:150px;
+}
+#photo{
+    margin: 10px;
+}
+#photo>img{
+    width:240px;
+    height:120px;
+}
+#writer_title{
+    width:240px;
+    height:120px;
+    text-align: center;
+}
