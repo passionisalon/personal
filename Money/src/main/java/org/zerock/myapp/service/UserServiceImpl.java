@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 					session.setAttribute("USER_BIRTHDATE",getDBUserDto.getBIRTH_DATE());
 					session.setAttribute("USER_JOINDATE",getDBUserDto.getJOIN_DATE());
 					session.setAttribute("USER_GENDER",getDBUserDto.getGENDER());
-					session.setAttribute("USER_INTRODUCTION",getDBUserDto.getINTRODUCTION());
+					session.setAttribute("USER_INTRODUCTION",getDBUserDto.getIntroduction());
 					
 					log.info("\n\t Session_USER_EMAIL : {}",session.getAttribute("USER_EMAIL"));
 					log.info("\n\t Session_USER_NICKNAME : {}",session.getAttribute("USER_NICKNAME"));

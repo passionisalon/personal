@@ -124,7 +124,7 @@
                     <button id="checkPassword2" class="Btn">확인</button>
                 </div>
                 <div class="individual_wrap">
-                    <p id=checkPassword2Result">비밀번호가 일치하지 않습니다.</p>
+                    <p id="checkPassword2Result">비밀번호가 일치하지 않습니다.</p>
                 </div>
                 <div class="individual_wrap">
                     <input type="datetime" id="BIRTH_DATE" name="userBirthday" placeholder="19900124">
@@ -318,6 +318,7 @@
         			$('#BIRTH_DATE').focus();
         			return false;
         		}
+        		passCondition1[5]=true;
         		
         	});	// end BIRTH_DATE
         	
@@ -338,7 +339,7 @@
         			passCondition1[7]=true;
         			
         			$.ajax({
-        				typr:'get',
+        				type:'get',
         				url:"/user/checkNickName",
         				data : { NickName : userNickname},
         				dataType : 'json',
@@ -486,6 +487,7 @@
         			$('#BIRTH_DATE').focus();
         			return false;
         		}	//	end if - else
+				passCondition2[5]=true;
         		// 성별 검사 6
         		
         		userGender = $('#GENDER').val();
@@ -560,6 +562,40 @@
         				return false;
         			}	// end if -else
         		}	// end for
+        		
+        		$.ajax({
+        			type:'post',
+        			url:"/user/join",
+        			data : {
+        				Email : $('#UserEmail').val(),
+        				Pw : $('#password1').val(),
+        				NickName : $('#userNickName').val(),
+        				BIRTH_DATE : $('#BIRTH_DATE').val(),
+        				GENDER : $('#GENDER').val(),
+        				INTRODUCTION : $('#comment').val(),
+        				ProfileImg : 'aaa',
+        			},
+        			dataType:'json',
+        			success : function(data){
+        				console.log("ajax!성공!!!");
+        				console.log(data);
+        				if(data ==1){
+        					alert("가입성공!!!");	
+        					self.location.href="/user/login";
+        				}else{
+        					alert("회원가입실패!!!");
+        					self.location.href="/domain";
+        				}
+						
+        			},error:function(xhr,status,error){
+        				console.log(xhr);
+        				console.log(status);
+        				console.log(error);
+        			}
+        		});	// end ajax
+        		
+        		
+        		
         	}	//	end abc
         	
         });	// end jq

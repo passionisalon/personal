@@ -43,11 +43,8 @@
   	</select>
   	
   	<!-- 회원가입 -->
-  	<insert id="insertJoin">
-  		INSERT INTO 
-  			tbl_member(Email,Password,Nickname,Birth_Date,Join_date,Gender,Introduction,Profile_img)
-		VALUES(
-			#{Email},#{Pw},#{NickName},#{BIRTH_DATE},current_date,#{GENDER},#{INTRODUCTION},#{ProfileImg}
-		)  	
-  	</insert>
+	<insert id="insertJoin">
+	    INSERT INTO tbl_member (Email, Password, Nickname, Birth_Date, Join_date, Gender, Introduction)
+	    VALUES (#{Email}, #{Pw}, #{NickName}, TO_DATE(#{BIRTH_DATE}, 'yyyymmdd'), current_date, #{GENDER}, #{Introduction})
+	</insert>
   </mapper>

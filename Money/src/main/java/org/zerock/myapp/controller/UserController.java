@@ -1,6 +1,6 @@
 package org.zerock.myapp.controller;
 
-import java.util.Objects;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -88,7 +88,8 @@ public class UserController {
 		
 
 	}	// end Post login
-		
+	
+	
 	@GetMapping("/join")
 	public void join() throws ControllerException{
 		this.getThisClassInfo();
@@ -100,22 +101,45 @@ public class UserController {
 		}
 	}	// end join
 	
+	@ResponseBody
 	@PostMapping("/join")
-	public String join(
-			UserDTO userDTO, 
+	public Integer join(
+			String Email,
+			String Pw,
+			String NickName,
+			String BIRTH_DATE,
+			String GENDER,
+			String INTRODUCTION,
+			String ProfileImg,
 			HttpServletRequest hsr, 
 			RedirectAttributes rttrs
 			) throws ControllerException{
 		this.getThisClassInfo();
-		log.info("\n\t join(UserDTO : {}, HttpServletRequest : {}, RedirectAttributes : {}) invoked.",userDTO,hsr,rttrs);
+		log.info("\n\t Email : {}",Email);
+		log.info("\n\t Pw : {}",Pw);
+		log.info("\n\t NickName : {}",NickName);
+		log.info("\n\t BIRTH_DATE : {}",BIRTH_DATE);
+		log.info("\n\t GENDER : {}",GENDER);
+		log.info("\n\t INTRODUCTION : {}",INTRODUCTION);
+		log.info("\n\t ProfileImg : {}",ProfileImg);
+		log.info("\n\t HttpServletRequest : {}",hsr);
+		log.info("\n\t RedirectAttributes : {}",rttrs);
 		try {
-			Objects.requireNonNull(userDTO);
-			String UserPw = userDTO.getPw();
-			log.info("User's password : {}",UserPw);
-			if(UserPw == null | UserPw.isEmpty()) {
+			
+			UserDTO userDTO = new UserDTO();
+			userDTO.setEmail(Email);
+			userDTO.setPw(Pw);
+			userDTO.setNickName(NickName);
+			userDTO.setBIRTH_DATE(BIRTH_DATE);
+			userDTO.setGENDER(GENDER);
+			userDTO.setIntroduction(INTRODUCTION);
+//			userDTO.setProfileImg(ProfileImg); //미구현
+			log.info("\n\t UserDTO : {}",userDTO);
+			log.info("User's password : {}",Pw);
+			if(Pw == null | Pw.isEmpty()) {
 				rttrs.addAttribute("__RESULT__","비밀번호를 입력해주세요");
 				log.info("\n\t 비밀번호가 입력되지 않았습니다.");
-				return "/user/login";
+				return 0;
 			}else {
 				Boolean resultInsertJoin = this.userSerivce.insertJoin(userDTO);
 				this.getThisClassInfo();
@@ -124,11 +148,11 @@ public class UserController {
 				if(resultInsertJoin) {
 					this.getThisClassInfo();
 					log.info("\n\t 회원가입성공!");
-					return "/user/login";
+					return 1;
 				}else {
 					this.getThisClassInfo();
 					log.info("\n\t 회원가입실패!");
-					return "/user/login";
+					return 0;
 				}	// end if - else
 			}	// end if - else
 			
