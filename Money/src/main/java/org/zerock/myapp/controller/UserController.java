@@ -1,5 +1,7 @@
 package org.zerock.myapp.controller;
 
+import java.util.Objects;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.myapp.domain.UserDTO;
 import org.zerock.myapp.exception.ControllerException;
+import org.zerock.myapp.service.MailSendService;
 import org.zerock.myapp.service.UserService;
 
 import lombok.NoArgsConstructor;
@@ -26,6 +30,9 @@ public class UserController {
 	
 	@Setter(onMethod_= {@Autowired})
 	private UserService userSerivce;
+	
+	@Setter(onMethod_= {@Autowired})
+	private MailSendService mailService;
 	
 	public void getThisClassInfo() {
 		System.out.printf("\n\t");
@@ -63,13 +70,13 @@ public class UserController {
 		
 		try {
 			log.info("\n\t UserSerivce : {}",userSerivce);
-			Boolean loginResult = this.userSerivce.UserLogin(Email, Pw, hrs);
+			Boolean loginResult = this.userSerivce.UserLogin(Email, Pw, hrs,model);
 			this.getThisClassInfo();
 			log.info("\n\t loginResult : {}",loginResult);
 			
 			if(loginResult==false) {
 				log.info("\n\t 로그인 실패 도메인 페이지로 이동");
-				return "/user/domain";
+				return "/domain";
 			}else {
 				log.info("\n\t 로그인 성공!!! 마이페이지로 이동");
 				return "/user/mypage";
@@ -81,36 +88,128 @@ public class UserController {
 		
 
 	}	// end Post login
-	
-	@GetMapping("/domain")
-	public void domain() throws ControllerException{
-		this.getThisClassInfo();
-		log.info("\n\t GetMapping domain() invoked.");
-	}	// end GetMapping domain
-	
-	@GetMapping("/mypage")
-	public void mypage() throws ControllerException{
-		log.info("mypage() invoked.");
-	}	//	end mypage
-	
-	
+		
 	@GetMapping("/join")
 	public void join() throws ControllerException{
+		this.getThisClassInfo();
 		log.info("\n\t join() invoked.");
 		try {
-			
+			;;
 		}catch(Exception e) {
 			throw new ControllerException(e);
 		}
 	}	// end join
 	
 	@PostMapping("/join")
-	public String join(String userEmail, String userPw, HttpServletRequest hsr, RedirectAttributes rttrs) throws ControllerException{
-		log.info("\n\t join() invoked.");
-		return null;
-	}
+	public String join(
+			UserDTO userDTO, 
+			HttpServletRequest hsr, 
+			RedirectAttributes rttrs
+			) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t join(UserDTO : {}, HttpServletRequest : {}, RedirectAttributes : {}) invoked.",userDTO,hsr,rttrs);
+		try {
+			Objects.requireNonNull(userDTO);
+			String UserPw = userDTO.getPw();
+			log.info("User's password : {}",UserPw);
+			if(UserPw == null | UserPw.isEmpty()) {
+				rttrs.addAttribute("__RESULT__","비밀번호를 입력해주세요");
+				log.info("\n\t 비밀번호가 입력되지 않았습니다.");
+				return "/user/login";
+			}else {
+				Boolean resultInsertJoin = this.userSerivce.insertJoin(userDTO);
+				this.getThisClassInfo();
+				log.info("\n\t resultInsertJoin : {}",resultInsertJoin);
+				
+				if(resultInsertJoin) {
+					this.getThisClassInfo();
+					log.info("\n\t 회원가입성공!");
+					return "/user/login";
+				}else {
+					this.getThisClassInfo();
+					log.info("\n\t 회원가입실패!");
+					return "/user/login";
+				}	// end if - else
+			}	// end if - else
+			
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// end try-catch
+	}	// 	end PostMapping join
+	
+	// 이메일 중복검사 
+	
+	@ResponseBody
+	@PostMapping("/distinckedEmail")
+	public Integer distinckedEmail(String Email) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t distinckedEmail(userEmail : {}) invoked.",Email);
+		try {
+			
+			Integer resultDistinckedEmail =this.userSerivce.distinckedEmail(Email);
+			this.getThisClassInfo();
+			log.info("\n\t 이메일 중복확인을 UserController에서 받은 서비스의 결과 : {}",resultDistinckedEmail);
+			
+			if(resultDistinckedEmail==0) {
+				log.info("\n\t 이메일 사용가능 : {}",resultDistinckedEmail);
+				return 0;
+			}else {
+				log.info("\n\t 이메일 불가능 : {}",resultDistinckedEmail);
+				return 1;
+			}	//	end try-catch
+
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// end try-catch
+		
+	}	//	end distinckedEmail
+	
+	@ResponseBody
+	@GetMapping("sendMailCheck")
+	public String sendMailCheck(String Email) throws ControllerException {
+		this.getThisClassInfo();
+		log.info("\n\t sendMailCheck(Email : {}) invoked.",Email);
+		
+		try {
+			String resultSendEmail = this.mailService.joinEmail(Email);
+			this.getThisClassInfo();
+			log.info("\n\t resultSendEmail : {}",resultSendEmail);
+			return resultSendEmail;
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	//	try-catch
+		
+	}	//	end sendMailCheck
 	
 	
+	// 닉네임 중복검사 
+	@ResponseBody
+	@GetMapping("/checkNickName")
+	public Boolean checkNickName(String NickName) throws ControllerException {
+		this.getThisClassInfo();
+		log.info("\n\t checkNickName(NickName : {}) invoked.",NickName);
+		try {
+			Integer resultDistinckedNickName = this.userSerivce.distinckedNickName(NickName);
+			this.getThisClassInfo();
+			log.info("\n\t 닉네임 중복확인을 UserController에서 받은 서비스의 결과 : {}",resultDistinckedNickName);
+			
+			if(resultDistinckedNickName==0) {
+				log.info("\n\t 사용가능한 닉네임입니다.");
+				return true;
+			}else {
+				log.info("\n\t 사용가능한 닉네임입니다.");
+				return false;
+			}	// end if-else
+		
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// end try-catch
+	}	// end checkNickName
+	
+	@GetMapping("/mypage")
+	public void mypage() throws ControllerException{
+		log.info("mypage() invoked.");
+	}	//	end mypage	
 	
 	
 }	//	end class

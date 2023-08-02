@@ -102,7 +102,7 @@
     <div class="login_wrap">
         <div class="container">
             <div class="login_header">
-            <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/>
+            	<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/>
             </div>
 
             <div class="login_body">
@@ -135,7 +135,7 @@
                             <a href="/member/find_password">비밀번호 찾기</a>
                           </span>
                           <span>
-                            <a href="/member/join/email">회원가입</a>
+                            <a href="/user/join">회원가입</a>
                           </span>
                     </div>
                 </div>

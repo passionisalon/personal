@@ -9,6 +9,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href="/resources/css/layout/layout.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
 </head>
 <body>
     <!-- í¤ë ìì -->
@@ -43,6 +45,32 @@
 
         </div>
 
+		<script>
+
+            $(document).ready(function(){
+            	$('#loginBtn').on('click',function(){
+                    self.location.href="/user/login";
+            	});	// loginBtn
+            	$('#joinBtn').on('click',function(){
+                    self.location.href="/user/join";
+            	});	// joinBtn
+
+                // $('#travelBoard').onlcik(function(){
+                //     self.location.href="/user/login";
+                // });
+                // $('#courseBoard').onlcik(function(){
+                //     self.location.href="/user/join";
+                // });
+                // $('#reviewBoard').onlcik(function(){
+                //     self.location.href="/user/login";
+                // });
+                // $('#freeBoard').onlcik(function(){
+                //     self.location.href="/user/join";
+                // });
+            }); // end jq
+			
+		</script>
+		
     </div>
 </body>
 </html>
