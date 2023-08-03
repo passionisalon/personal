@@ -213,6 +213,52 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 			log.trace("\n\t destroy() invoked.");
 		}	// end destroy
 
+		// 비밀번호 찾기
+		public UserDTO findPassword(String Email, String userEmail) throws ServiceException{
+			this.getThisClassInfo();
+			log.info("\n\t findPassword(Email : {}, userEmail : {})",Email , userEmail);
+			
+			try {
+				UserDTO resultFindPassword = this.userMapper.findPassword(Email, userEmail);
+				this.getThisClassInfo();
+				log.info("\n\t resultFindPassword : {}",resultFindPassword);
+				
+				if(resultFindPassword.getEmail().equals(Email) & resultFindPassword.getUserEmail().equals(userEmail)) {
+					this.getThisClassInfo();
+					log.info("Email : {}",resultFindPassword.getEmail());
+					log.info("userEmail : {}",resultFindPassword.getUserEmail());
+					log.info("이메일을 찾았습니다.");
+					return resultFindPassword;
+				}else {
+					this.getThisClassInfo();
+					log.info("이메일을 찾지 못했습니다.");
+					return null;
+				}	// end if else
+				
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}
+		}	// 	end findPassword;
 
-
+		public Boolean changePassword(String Email, String Pw)throws ServiceException{
+			this.getThisClassInfo();
+			log.info("\n\t changePassword(Email : {}, Pw : {}",Email,Pw);
+			try {
+				String hashedPw = this.bcrypt.encode(Pw);
+				log.info("\n\t hashedPw : {}",hashedPw);
+				Boolean resultChangePassword = this.userMapper.changePassword(Email, hashedPw);
+				this.getThisClassInfo();
+				log.info("resultChangePassword : {}",resultChangePassword);
+				if(resultChangePassword) {
+					log.info("비밀번호 변경 성공!!!");
+					return resultChangePassword;
+				}else {
+					log.info("비밀번호 변경 실패!!!");
+					return resultChangePassword;
+				}
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}
+		}	// end changePassword
+		
 }	// end class

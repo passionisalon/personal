@@ -24,4 +24,9 @@ public interface UserMapper {
 	// 사용자 이메일 찾기
 	public abstract List<String> findEmail(String userEmail);
 	
+	// 사용자 비밀번호 찾기
+	public abstract UserDTO findPassword(String Email,String userEmail);
+	
+	// 사용자 비밀번호 변경
+	public abstract Boolean changePassword(String Email , String Pw);
 }	//	end interface

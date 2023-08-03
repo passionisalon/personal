@@ -270,6 +270,72 @@ public class UserController {
 		}	// 	end try-catch
 	}	// end sendEmailForFindEmail
 	
+	// 이메일 찾기
+	@GetMapping("/findPassword")
+	public void findPassword() throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t findPassword() invoked.");
+	}	// end GetMapping findEmail
+	
+	@ResponseBody
+	@PostMapping("/checkEmailAndUserEmailForFindPassword")
+	public Map<String,Object> checkFindPassword(String Email,String userEmail) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t checkFindPassword(Email : {},user : {}) invoked.",Email,userEmail);
+		
+		try {
+			String resultAuthNumber = this.mailService.findPw(userEmail);
+			this.getThisClassInfo();
+			log.info("\n\t resultAuthNumber : {}",resultAuthNumber);
+			
+			UserDTO resultUserDTO = this.userSerivce.findPassword(Email, userEmail);
+			this.getThisClassInfo();
+			log.info("\n\t resultUserDTO : {}",resultUserDTO);
+			
+			Map<String,Object> UserInfo = new HashMap<>();
+			UserInfo.put("code", resultAuthNumber);
+			UserInfo.put("UserInfo", resultUserDTO);
+			if(resultUserDTO == null) {
+				return null;
+			}else {
+				return UserInfo;
+			}	// end if-else
+			
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// 	end try-cathc
+	}	// end checkFindPassword
+	
+	@GetMapping("/changePassword")
+	public void changePassword(String Email) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t changePassword() invoked.");
+	};
+	
+	@ResponseBody
+	@PostMapping("multiCheckAndChangePassword")
+	public Boolean multiChangePassword(String Email,String Pw) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t multiChangePassword(Email : {}, Pw : {}) invoked.",Email,Pw);
+		
+		try {
+			Boolean result = this.userSerivce.changePassword(Email, Pw);
+			this.getThisClassInfo();
+			log.info("result : {}",result);
+			
+			if(result) {
+				log.info("\n\t 컨트롤러 비밀번호 변경 성공!!!");
+				return result;
+			}else {
+				log.info("\n\t 컨트롤러 비밀번호 변경 실패!!!");
+				return result;
+			}
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// end try-catch
+	}	// end mutiChangePassword
+	
+	
 	@GetMapping("/mypage")
 	public void mypage() throws ControllerException{
 		log.info("mypage() invoked.");
