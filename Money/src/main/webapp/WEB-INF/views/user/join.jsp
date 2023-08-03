@@ -569,6 +569,7 @@
         			data : {
         				Email : $('#UserEmail').val(),
         				Pw : $('#password1').val(),
+        				userEmail : $('#SendEmail').val(),
         				NickName : $('#userNickName').val(),
         				BIRTH_DATE : $('#BIRTH_DATE').val(),
         				GENDER : $('#GENDER').val(),

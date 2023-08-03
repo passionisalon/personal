@@ -1,5 +1,7 @@
 package org.zerock.myapp.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.ui.Model;
@@ -19,4 +21,7 @@ public interface UserService {
 	
 	// 회원가입
 	public abstract Boolean insertJoin(UserDTO userDTO) throws ServiceException;
+	
+	// 이메일 찾기
+	public abstract List<String> findEmail(String userEmail) throws ServiceException;
 }	// end interface

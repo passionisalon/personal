@@ -129,10 +129,10 @@
                     <br>
                     <div class="form_wrap" id="findAndJoin">
                         <span class="forgot">
-                            <a href="/member/find_email">아이디 찾기</a>
+                            <a href="/user/findEmail">아이디 찾기</a>
                           </span>
                           <span class="forgot">
-                            <a href="/member/find_password">비밀번호 찾기</a>
+                            <a href="/user/findPassword">비밀번호 찾기</a>
                           </span>
                           <span>
                             <a href="/user/join">회원가입</a>

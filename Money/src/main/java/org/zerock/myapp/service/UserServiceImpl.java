@@ -1,5 +1,6 @@
 package org.zerock.myapp.service;
 
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -189,7 +190,23 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 			
 		}	// end insertJoin
 		
-		
+		// 이메일 찾기
+		@Override
+		public List<String> findEmail(String userEmail) throws ServiceException{
+			
+			this.getThisClassInfo();
+			log.info("\n\t findEmail(Email : {}) invoked.",userEmail);
+			
+			try {
+				List<String> Email = this.userMapper.findEmail(userEmail);
+				this.getThisClassInfo();
+				log.info("Email : {}",Email);
+				Email.forEach(log::info);
+				return Email;
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}
+		}	// end findEmail
 		@Override
 		public void destroy() throws Exception {
 			this.getThisClassInfo();

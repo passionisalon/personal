@@ -1,6 +1,8 @@
 package org.zerock.myapp.controller;
 
-import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -106,6 +108,7 @@ public class UserController {
 	public Integer join(
 			String Email,
 			String Pw,
+			String userEmail,
 			String NickName,
 			String BIRTH_DATE,
 			String GENDER,
@@ -117,6 +120,7 @@ public class UserController {
 		this.getThisClassInfo();
 		log.info("\n\t Email : {}",Email);
 		log.info("\n\t Pw : {}",Pw);
+		log.info("\n\t userEmail : {}",userEmail);
 		log.info("\n\t NickName : {}",NickName);
 		log.info("\n\t BIRTH_DATE : {}",BIRTH_DATE);
 		log.info("\n\t GENDER : {}",GENDER);
@@ -129,6 +133,7 @@ public class UserController {
 			UserDTO userDTO = new UserDTO();
 			userDTO.setEmail(Email);
 			userDTO.setPw(Pw);
+			userDTO.setUserEmail(userEmail);
 			userDTO.setNickName(NickName);
 			userDTO.setBIRTH_DATE(BIRTH_DATE);
 			userDTO.setGENDER(GENDER);
@@ -229,6 +234,41 @@ public class UserController {
 			throw new ControllerException(e);
 		}	// end try-catch
 	}	// end checkNickName
+	
+	// 이메일 찾기
+	@GetMapping("/findEmail")
+	public void findEmail() throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t findEmail() invoked.");
+	}	// end GetMapping findEmail
+	
+	@ResponseBody
+	@PostMapping("/sendEmailForFindEmail")
+	public Map<String,Object> sendEmailForFindEmail(String userEmail) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("\n\t sendEmailForFindEmail(Email : {}) invoked.");
+		
+		try {
+			String resultAuthNumber = this.mailService.findEmail(userEmail);
+			this.getThisClassInfo();
+			log.info("\n\t resultAuthNumber : {}",resultAuthNumber);
+			List<String> Email = this.userSerivce.findEmail(userEmail);
+			this.getThisClassInfo();
+			log.info("\n\t Email의 값 나열");
+			Email.forEach(log::info);
+			
+			Map<String,Object> UserInfo = new HashMap<>();
+			UserInfo.put("code", resultAuthNumber);
+			UserInfo.put("Email", Email);
+			
+			log.info("\n\t HashMap's UserInfo의 code : {}",UserInfo.get("code"));
+			log.info("\n\t HashMap's UserInfo의 Email : {}",UserInfo.get("Email"));
+			
+			return UserInfo;
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// 	end try-catch
+	}	// end sendEmailForFindEmail
 	
 	@GetMapping("/mypage")
 	public void mypage() throws ControllerException{

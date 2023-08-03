@@ -64,6 +64,8 @@ public class MailSendServiceImpl implements MailSendService {
 		this.getThisClassInfo();
 		log.info("\n\t findEmail(Email : {})",Email);
 		
+		
+		try {
 			this.makeRandomNumber();
 			String setFrom = ".com";
 			String toMail = Email;
@@ -72,8 +74,10 @@ public class MailSendServiceImpl implements MailSendService {
 			
 			this.mailSend(toMail, title, content);
 			return Integer.toString(this.authNumber);
-		
-		
+			
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}	// end try-catch
 		
 	}	// end findEmail
 

@@ -19,6 +19,7 @@ public class UserDTO {
 
 	private String Email;
 	private String Pw;
+	private String userEmail;
 	private String NickName;
 //	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private String BIRTH_DATE;

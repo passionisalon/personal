@@ -1,5 +1,7 @@
 package org.zerock.myapp.mapper;
 
+import java.util.List;
+
 import org.zerock.myapp.domain.UserDTO;
 
 public interface UserMapper {
@@ -18,5 +20,8 @@ public interface UserMapper {
 	
 	// 회원가입
 	public abstract Boolean insertJoin(UserDTO userDTO);
+	
+	// 사용자 이메일 찾기
+	public abstract List<String> findEmail(String userEmail);
 	
 }	//	end interface
