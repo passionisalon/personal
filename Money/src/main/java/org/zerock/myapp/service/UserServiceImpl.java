@@ -50,22 +50,29 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 	}	// end getThisClassInfo
 	
 	@Override
-	public Boolean UserLogin(String Email, String Pw,HttpServletRequest hsr,Model model) throws ServiceException {
+	public Boolean UserLogin(String Email, String UserPw,HttpServletRequest hsr,Model model) throws ServiceException {
 		this.getThisClassInfo();
-		log.info("\n\t UserLogin(UserEmail : {}, UserPW : {})invoked.",Email,Pw);
+		log.info("\n\t UserLogin(UserEmail : {}, UserPW : {})invoked.",Email,UserPw);
 		try {
-			UserDTO getDBUserDto = new UserDTO();
-			getDBUserDto = this.userMapper.UserLogin(Email, Pw);
+			
+//			String Pw = this.bcrypt.encode(UserPw);
+			
+//			log.info("\n\t Pw : {}",Pw);
+			
+//			UserDTO getDBUserDto = this.userMapper.UserLogin(Email, Pw);
+			
+			
+//			this.getThisClassInfo();
+//			log.info("\n\t getDBUserDto : {}",getDBUserDto);
 			UserDTO userInfo = this.userMapper.UserInfo(Email);
 			this.getThisClassInfo();
-			log.info("\n\t getDBUserDto : {}",getDBUserDto);
 			log.info("\n\t userInfo : {}",userInfo);
 			
-			if(getDBUserDto != null) {
+			if(userInfo != null) {
 				HttpSession session = hsr.getSession(false);
 				log.info("\n\t session destroy");
-				
-				Boolean isUserPwMatched = this.bcrypt.matches(getDBUserDto.getPw(),userInfo.getPw());
+				Boolean isUserPwMatched = this.bcrypt.matches(UserPw,userInfo.getPassword());
+//				Boolean isUserPwMatched = this.bcrypt.matches(getDBUserDto.getPw(),userInfo.getPw());
 				this.getThisClassInfo();
 				log.info("\n\t 패스워드 일치 확인 : {}",isUserPwMatched);
 				
@@ -73,24 +80,24 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 					log.info("\n\t 패스워드 불일치!");
 					return false;
 				}	//	end if
-				if(!Email.equals(getDBUserDto.getEmail()) & !userInfo.getPw().equals(getDBUserDto.getPw())) {
-					this.getThisClassInfo();
-					log.info("로그인실패");
-					return false;
-				}	//	end if
+//				if(!Email.equals(getDBUserDto.getEmail()) & !userInfo.getPw().equals(getDBUserDto.getPw())) {
+//					this.getThisClassInfo();
+//					log.info("로그인실패");
+//					return false;
+//				}	//	end if
 				
 				if(session != null) {
 					session.invalidate();
 					log.info("\n\t 세션 invalidate");
 
 					session = hsr.getSession();
-					session.setAttribute("USER_EMAIL", getDBUserDto.getEmail());
-					session.setAttribute("USER_NICKNAME",getDBUserDto.getNickName());
-					session.setAttribute("USER_PROFILEIMG",getDBUserDto.getProfileImg());
-					session.setAttribute("USER_BIRTHDATE",getDBUserDto.getBIRTH_DATE());
-					session.setAttribute("USER_JOINDATE",getDBUserDto.getJOIN_DATE());
-					session.setAttribute("USER_GENDER",getDBUserDto.getGENDER());
-					session.setAttribute("USER_INTRODUCTION",getDBUserDto.getIntroduction());
+					session.setAttribute("USER_EMAIL", userInfo.getEmail());
+					session.setAttribute("USER_NICKNAME",userInfo.getNickName());
+					session.setAttribute("USER_PROFILEIMG",userInfo.getProfileImg());
+					session.setAttribute("USER_BIRTHDATE",userInfo.getBIRTH_DATE());
+					session.setAttribute("USER_JOINDATE",userInfo.getJOIN_DATE());
+					session.setAttribute("USER_GENDER",userInfo.getGENDER());
+					session.setAttribute("USER_INTRODUCTION",userInfo.getIntroduction());
 					
 					log.info("\n\t Session_USER_EMAIL : {}",session.getAttribute("USER_EMAIL"));
 					log.info("\n\t Session_USER_NICKNAME : {}",session.getAttribute("USER_NICKNAME"));
@@ -100,7 +107,7 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 					log.info("\n\t Session_USER_GENDER : {}",session.getAttribute("USER_GENDER"));
 					log.info("\n\t Session_USER_INTRODUCTION : {}",session.getAttribute("USER_INTRODUCTION"));
 					
-					model.addAttribute("__AUTH__",getDBUserDto);
+					model.addAttribute("__AUTH__",userInfo);
 					
 					this.getThisClassInfo();
 					log.info("\n\t end this method : {}","UserLogin");
@@ -111,7 +118,7 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 				
 				
 			}else {
-				log.info("\n\t getDBUserDto : {}",getDBUserDto);
+				log.info("\n\t getDBUserDto : {}",userInfo);
 				return false;
 			}	//	end outer if-else
 			
@@ -174,11 +181,11 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 			log.info("\n\t insertJoin(UserDTO : {}) invoked.",userDTO);
 			
 			try {
-				String userPw = userDTO.getPw();
+				String userPw = userDTO.getPassword();
 				String hashedPw = this.bcrypt.encode(userPw);
 				log.info("\n\t userPw : {}",userPw);
 				log.info("\n\t hashedPw : {}",hashedPw);
-				userDTO.setPw(hashedPw);
+				userDTO.setPassword(hashedPw);
 				Boolean resultInsertJoin = this.userMapper.insertJoin(userDTO);
 				this.getThisClassInfo();
 				log.info("\n\t resultInsertJoin : {}",resultInsertJoin);

@@ -133,6 +133,8 @@
         			code = data.code;
         			console.log(code);
         			userSeouLiveEmail = data.UserInfo.Eamil;;
+        			console.log(data.UserInfo.Email);
+        			console.log(data.UserInfo.Email);
         			console.log("SeouLiveEmail : ",data.UserInfo.Email);
         			console.log("userEmail : ",data.UserInfo.userEmail);
         			userSeouLiveEmail = data.Email;

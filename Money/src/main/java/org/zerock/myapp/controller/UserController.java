@@ -72,6 +72,7 @@ public class UserController {
 		
 		try {
 			log.info("\n\t UserSerivce : {}",userSerivce);
+			log.info("asdfasdfasdfdas");
 			Boolean loginResult = this.userSerivce.UserLogin(Email, Pw, hrs,model);
 			this.getThisClassInfo();
 			log.info("\n\t loginResult : {}",loginResult);
@@ -132,7 +133,7 @@ public class UserController {
 			
 			UserDTO userDTO = new UserDTO();
 			userDTO.setEmail(Email);
-			userDTO.setPw(Pw);
+			userDTO.setPassword(Pw);
 			userDTO.setUserEmail(userEmail);
 			userDTO.setNickName(NickName);
 			userDTO.setBIRTH_DATE(BIRTH_DATE);

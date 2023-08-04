@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 public class UserDTO {
 
 	private String Email;
-	private String Pw;
+	private String Password;
 	private String userEmail;
 	private String NickName;
 //	@DateTimeFormat(pattern="yyyy-MM-dd")
