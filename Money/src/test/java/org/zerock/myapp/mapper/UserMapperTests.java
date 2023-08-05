@@ -55,7 +55,7 @@ public class UserMapperTests {
 		
 		UserDTO userDTO = new UserDTO();
 		userDTO.setEmail(Email);
-		userDTO.setPw(Pw);
+		userDTO.setPassword(Pw);
 		userDTO.setNickName(NickName);
 		userDTO.setBIRTH_DATE(BIRTH_DATE);
 		userDTO.setGENDER(GENDER);

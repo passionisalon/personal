@@ -54,16 +54,7 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 		this.getThisClassInfo();
 		log.info("\n\t UserLogin(UserEmail : {}, UserPW : {})invoked.",Email,UserPw);
 		try {
-			
-//			String Pw = this.bcrypt.encode(UserPw);
-			
-//			log.info("\n\t Pw : {}",Pw);
-			
-//			UserDTO getDBUserDto = this.userMapper.UserLogin(Email, Pw);
-			
-			
-//			this.getThisClassInfo();
-//			log.info("\n\t getDBUserDto : {}",getDBUserDto);
+
 			UserDTO userInfo = this.userMapper.UserInfo(Email);
 			this.getThisClassInfo();
 			log.info("\n\t userInfo : {}",userInfo);
@@ -72,7 +63,6 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 				HttpSession session = hsr.getSession(false);
 				log.info("\n\t session destroy");
 				Boolean isUserPwMatched = this.bcrypt.matches(UserPw,userInfo.getPassword());
-//				Boolean isUserPwMatched = this.bcrypt.matches(getDBUserDto.getPw(),userInfo.getPw());
 				this.getThisClassInfo();
 				log.info("\n\t 패스워드 일치 확인 : {}",isUserPwMatched);
 				
@@ -80,11 +70,6 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 					log.info("\n\t 패스워드 불일치!");
 					return false;
 				}	//	end if
-//				if(!Email.equals(getDBUserDto.getEmail()) & !userInfo.getPw().equals(getDBUserDto.getPw())) {
-//					this.getThisClassInfo();
-//					log.info("로그인실패");
-//					return false;
-//				}	//	end if
 				
 				if(session != null) {
 					session.invalidate();
