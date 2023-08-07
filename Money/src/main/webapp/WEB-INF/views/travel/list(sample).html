@@ -1,0 +1,889 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>여행지 List</title>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/older/layout/layout.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/older/travel/list.css">
+    
+
+    <script src="${pageContext.request.contextPath}/resources/static/js/travel/list.js" defer></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
+
+    <script src="https://kit.fontawesome.com/7ae3a6a91c.js" crossorigin="anonymous"></script>
+
+    <script>
+        // $(function (){
+
+        //     $('.pageNum').on('click', function(e){
+        //         console.log('pageNum Clicked....')
+        //         let selectedPageNum = e.currentTarget.textContent
+        //         // console.log(selectedPageNum);
+
+        //         let searchType = "${pageMaker.cri.searchType}";
+        //         let keyword = "${pageMaker.cri.keyword}";
+
+        //         location.href = "/board/travel/list?currPage=" + selectedPageNum + "&searchType=" + searchType + "&keyword=" + keyword;
+
+        //     }); // onclick
+
+        // }) // .jq
+
+    </script>
+
+</head>
+<style>
+    @charset "utf-8";
+
+a{
+    text-decoration: none;
+    color: #222;
+}
+ul, li, ol{
+    list-style: none;
+}
+#container{
+    width: 1200px;
+    margin: 0 auto;
+}
+/* 검색창 */
+.search_wrap{
+    height: 100px;
+    transform: translate(-50%, -50%);
+}
+.search {
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    width: 100%;
+    display: flex;
+}
+.search select {
+    width: 20%;
+    border: 3px solid #49539E;
+    border-right: none;
+    border-radius: 5px 0 0 5px;
+    padding-left: 10px;
+    font-weight: 600;
+}
+.searchTerm {
+    width: 100%;
+    border: 3px solid #49539E;
+    border-left: none;
+    border-right: none;
+    padding: 5px;
+    height: 40px;
+    outline: none;
+    color: #9DBFAF;
+}
+.searchTerm:focus{
+    color: #222;
+}
+.searchButton {
+    width: 70px;
+    height: 56px;
+    border: 1px solid #49539E;
+    background: #49539E;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* 탭메뉴 */
+.tab {
+    width: 100%;
+    display: flex;
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+}
+.tab li {
+    float: left;
+    width: 20%;
+    background: #f5f5f5;
+}
+.tab li a{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    padding: 10px;
+}
+.tabcont {
+    display: none;
+    margin: 0 auto;
+    margin:10px 0 20px 0;
+    padding: 15px;
+    color: #222;
+    border: 1px solid #ededed;
+}
+.tabcont h3{
+    margin-bottom: 10px;
+}
+ul.tab li.on{
+    background-color: #49539E;
+}
+ul.tab li.on a{
+    color: #ededed;
+}
+.tabcont.on {
+    display: block;
+}
+
+/* 캘린더 */
+.calendarWrap button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: 0;
+    outline: 0;
+    font-size: 20px;
+    background-color: #f3f3f3;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.calendarWrap th{
+    font-size: 17px;
+}
+.calendarWrap td{
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+.calendarWrap .contBox{
+    display: flex;
+    align-items:center;
+    justify-content: center;
+    height: 70vh;
+}
+.calendarWrap .item{
+    text-align: center;
+}
+.calendarWrap .item_cal{
+    background-color: #f3f3f3;
+    padding: 20px;
+}
+#today{
+    width: 160px;
+    margin-right: 60px;
+    margin-bottom: 60px;
+    font-weight: bold;
+}
+#week{
+    font-size: 30px;
+}
+#date{
+    font-size: 70px;
+}
+.top-bar{
+    display: inline;
+    font-weight: bold;
+}
+.today-circle{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-width: 3px;
+    background-color: #49539E;
+    color: #fff;
+}
+.click-circle{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #49539E;
+}
+
+/* menu content */
+.tabcont
+
+.tabcont .list_thumType{
+    width: 100%;
+    overflow: hidden;
+    padding: 0;
+}
+.tabcont .list_thumType li.thum{
+    position: relative;
+    border-top: 1px solid #e6e6e6;
+    padding: 15px 0 9px;
+}
+.tabcont .list_thumType li.thum:last-of-type{
+    border-bottom: 1px solid #e6e6e6;
+}
+.tabcont .list_thumType li.thum .photo{}
+.tabcont .list_thumType li.thum .photo .flag{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 12px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    min-width: 48px;
+    height: 28px;
+    line-height: 28px;
+    color: #fff;
+    text-align: center;
+    line-height: 28px;
+    letter-spacing: -0.35px;
+}
+.tabcont .list_thumType li.thum .photo .type_ing{
+    background-color: #ff3333;
+}
+.tabcont .list_thumType li.thum .photo .type_before{
+    background-color: #13294b;
+}
+.tabcont .list_thumType li.thum .photo a img{
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 140px;
+    height: 94px;
+}
+.tabcont .list_thumType li.thum div.area_txt{
+    min-height: 94px;
+    padding-left: 160px;
+    padding-right: 20px;
+    line-height: 1.8;
+}
+.tabcont .list_thumType li.thum div.area_txt .tit{
+    font-weight: 600;
+}
+.tabcont .list_thumType li.thum div.area_txt .fa-heart{
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+.tabcont .list_thumType li.thum div.area_txt .fa-heart.off{
+    color: #e6e6e6;
+}
+.tabcont .list_thumType li.thum div.area_txt .fa-heart.on{
+    color: #ff3333;
+}
+.tabcont  .list_thumType li.thum div.area_txt .date{}
+.tabcont  .list_thumType li.thum div.area_txt .tag{
+    font-size: 12px;
+    margin-top: 15px;
+    font-style: italic;
+}.tabcont .list_thumType{
+     width: 100%;
+     overflow: hidden;
+     padding: 0;
+ }
+.tabcont .list_thumType li.thum{
+    position: relative;
+    border-top: 1px solid #e6e6e6;
+    padding: 15px 0 9px;
+}
+.tabcont .list_thumType li.thum:last-of-type{
+    border-bottom: 1px solid #e6e6e6;
+}
+.tabcont .list_thumType li.thum .photo{}
+.tabcont .list_thumType li.thum .photo .flag{
+    position: absolute;
+    top: 10px;
+    left: 0;
+    font-size: 12px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    min-width: 48px;
+    height: 28px;
+    line-height: 28px;
+    color: #fff;
+    text-align: center;
+    line-height: 28px;
+    letter-spacing: -0.35px;
+}
+.tabcont .list_thumType li.thum .photo .type_ing{
+    background-color: #ff3333;
+}
+.tabcont .list_thumType li.thum .photo .type_before{
+    background-color: #13294b;
+}
+.tabcont .list_thumType li.thum .photo a img{
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 140px;
+    height: 94px;
+}
+.tabcont .list_thumType li.thum div.area_txt{
+    min-height: 94px;
+    padding-left: 160px;
+    padding-right: 20px;
+    line-height: 1.8;
+}
+.tabcont .list_thumType li.thum div.area_txt .tit{
+    font-weight: 600;
+}
+.tabcont .list_thumType li.thum div.area_txt .fa-heart{
+    float: right;
+    font-size: 20px;
+    cursor: pointer;
+}
+.tabcont .list_thumType li.thum div.area_txt .fa-heart.off{
+    color: #e6e6e6;
+}
+.tabcont .list_thumType li.thum div.area_txt .fa-heart.on{
+    color: #ff3333;
+}
+.tabcont .list_thumType li.thum div.area_txt .date{}
+.tabcont .list_thumType li.thum div.area_txt .tag{
+    font-size: 12px;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+/* list */
+/*.listWrap{*/
+/*    width: 1200px;*/
+/*    margin: 0 auto;*/
+/*    padding: 0 10px;*/
+/*    border: 1px solid #000;*/
+/*    border-left: 0;*/
+/*    border-right: 0;*/
+/*    margin-bottom: 50px;*/
+/*}*/
+/*.listWrap h4{*/
+/*    padding: 20px 10px;*/
+/*}*/
+/*.listWrap .list_thumType{*/
+/*    width: 100%;*/
+/*    overflow: hidden;*/
+/*    padding: 0;*/
+/*}*/
+/*.listWrap .list_thumType li.thum{*/
+/*    position: relative;*/
+/*    border-top: 1px solid #e6e6e6;*/
+/*    padding: 15px 0 9px;*/
+/*}*/
+/*.listWrap .list_thumType li.thum:last-of-type{*/
+/*    border-bottom: 1px solid #e6e6e6;*/
+/*}*/
+/*.listWrap .list_thumType li.thum .photo{}*/
+/*.listWrap .list_thumType li.thum .photo .flag{*/
+/*    position: absolute;*/
+/*    top: 10px;*/
+/*    left: 0;*/
+/*    font-size: 12px;*/
+/*    padding: 0 5px;*/
+/*    box-sizing: border-box;*/
+/*    min-width: 48px;*/
+/*    height: 28px;*/
+/*    line-height: 28px;*/
+/*    color: #fff;*/
+/*    text-align: center;*/
+/*    line-height: 28px;*/
+/*    letter-spacing: -0.35px;*/
+/*}*/
+/*.listWrap .list_thumType li.thum .photo .type_ing{*/
+/*    background-color: #ff3333;*/
+/*}*/
+/*.listWrap .list_thumType li.thum .photo .type_before{*/
+/*    background-color: #13294b;*/
+/*}*/
+/*.listWrap .list_thumType li.thum .photo a img{*/
+/*    position: absolute;*/
+/*    left: 0;*/
+/*    top: 10px;*/
+/*    width: 140px;*/
+/*    height: 94px;*/
+/*}*/
+/*.listWrap  .list_thumType li.thum div.area_txt{*/
+/*    min-height: 94px;*/
+/*    padding-left: 160px;*/
+/*    padding-right: 20px;*/
+/*    line-height: 1.8;*/
+/*}*/
+/*.listWrap  .list_thumType li.thum div.area_txt .tit{*/
+/*    font-weight: 600;*/
+/*}*/
+/*.listWrap  .list_thumType li.thum div.area_txt .fa-heart{*/
+/*    float: right;*/
+/*    font-size: 20px;*/
+/*    cursor: pointer;*/
+/*}*/
+/*.listWrap  .list_thumType li.thum div.area_txt .fa-heart.off{*/
+/*    color: #e6e6e6;*/
+/*}*/
+/*.listWrap  .list_thumType li.thum div.area_txt .fa-heart.on{*/
+/*    color: #ff3333;*/
+/*}*/
+/*.listWrap  .list_thumType li.thum div.area_txt .date{}*/
+/*.listWrap  .list_thumType li.thum div.area_txt .tag{*/
+/*    font-size: 12px;*/
+/*    margin-top: 15px;*/
+/*    font-style: italic;*/
+/*}*/
+
+/* pagination */
+.col:first-of-type {
+    margin-left: 0;
+}
+
+/* CLEARFIX */
+.cf:before,
+.cf:after {
+    content: " ";
+    display: table;
+}
+.cf:after {
+    clear: both;
+}
+.cf {
+    *zoom: 1;
+}
+
+.pagination_wrap{
+    display: flex;
+    /* max-width: 1085px; */
+    margin: 0 auto;
+    position: relative;
+    text-align: center;
+    padding: 10px 0;
+}
+.pagination_wrap ul.pagination{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+.pagination_wrap ul.pagination li{
+    display: inline-block;
+    padding: 0 8px;
+    cursor: pointer;
+}
+.pagination_wrap ul.pagination li.current{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0;
+    text-align: center;
+    background-color: #49539E;
+    /* border-radius: 100%; */
+    color: #fff;
+    font-weight: 600;
+}
+
+/* button */
+.btn_wrap{
+    display: inline-block;
+}
+.write_btn{
+    width: 100px;
+    padding: 10px 20px;
+    background-color:#49539E;
+    border:0;
+}
+.btn_wrap .write_btn a{
+    display: block;
+    color: #fff;
+}
+
+
+</style>
+<body>
+<!-- <%-- header --%> -->
+<!-- <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/> -->
+
+<div id="container" class="list_wrap">
+
+    <form id="moveForm" action="/travel/list" method="get">
+
+        <!-- search bar -->
+        <div class="search_wrap">
+            <div class="search">
+                <select name="searchType" id="category" onchange="changeFn(this.value)">
+                    <option value="" id="all">전체</option>
+                    <option value="공연" id="show">공연</option>
+                    <option value="야외활동" id="active">야외활동</option>
+                    <option value="팝업스토어" id="popup">팝업스토어</option>
+                    <option value="전시회" id="exhibition">전시회</option>
+
+                    
+                </select>
+                <input type="text" class="searchTerm" placeholder="검색내용을 입력하세요." name="keyword" >
+                <button type="submit" class="searchButton">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+
+
+        <input type="hidden" name="currPage" value="${pageMaker.cri.currPage}">
+        <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+        <%--        <input type="hidden" name="keyword" value="${pageMaker.cri.keyword }">--%>
+
+    </form>
+
+
+    <!-- tab menu -->
+    <ul class="tab">
+        <li class="on" data-tab="menu1" value="1"><a href="#">전체</a></li>
+        <li data-tab="menu2" value="2"><a href="#">공연</a></li>
+        <li data-tab="menu3" value="3"><a href="#">야외활동</a></li>
+        <li data-tab="menu4" value="4"><a href="#">팝업스토어</a></li>
+        <li data-tab="menu5" value="5"><a href="#">전시회</a></li>
+    </ul>
+
+    <div id="menu1" class="tabcont on">
+        <!-- calendar -->
+        <div class="calendarWrap">
+            <div class="contBox">
+                <div class="item" id="today">
+                    <div id="week"></div>
+                    <div id="date"></div>
+                </div>
+                <div class="item item_cal">
+                    <button type="button" onclick="prev()"> < </button>
+                    <div id="year" class="top-bar"></div>
+                    <div id="month" class="top-bar"></div>
+                    <button type="button" onclick="next()"> > </button><br>
+                    <table>
+                        <tr>
+                            <th>일</th>
+                            <th>월</th>
+                            <th>화</th>
+                            <th>수</th>
+                            <th>목</th>
+                            <th>금</th>
+                            <th>토</th>
+                        </tr>
+                        <tr>
+                            <td data-date="2023-05-20">20</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- calendar end -->
+
+        <h3>카테고리 > 전체</h3>
+
+        <ul class="list_thumType flnon">
+
+
+
+            <c:forEach var="boardVO" items="${__TravelLIST__}">
+                <li class="thum thum_1">
+                    <div class="photo">
+                        <a href="#"><img src="https://picsum.photos/id/122/200/300" alt="이미지"></a>
+                        <em class="flag type_ing">진행중</em>
+                    </div>
+                    <div class="area_txt">
+                        <i class="fas fa-heart off">
+                            <input type="hidden" name="board_seq" value="${boardVO.seq}" >
+                        </i>
+                          
+                        <div class="tit"><a href="/board/travel/view?seq=${boardVO.seq}">${boardVO.title}</a></div>
+                        <div class="start_date">
+                            기간 : <fmt:formatDate value="${boardVO.start_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.start_time} ~
+                            <fmt:formatDate value="${boardVO.end_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.end_time}
+                        </div>
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <!-- pagination -->
+        <div class="pagination_wrap">
+            <ul class="pagination">
+                <c:if test="${pageMaker.prev}">
+                    <li class="Prev">
+                        <a href="/travel/list?currPage=${pageMaker.startPage - 1}">이전</a>
+                    </li>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                    <li class="pageNum ${ pageMaker.cri.currPage == pageNum? 'current':'' }">${pageNum}</li>
+                </c:forEach>
+
+                <c:if test="${pageMaker.next}">
+                    <li class="Next">
+                        <a href="/board/travel/list?currPage=${pageMaker.endPage + 1}">다음</a>
+                    </li>
+                </c:if>
+            </ul>
+            <div class="btn_wrap">
+                <button class="write_btn"><a href="${pageContext.request.contextPath}/travel/write">글쓰기</a></button>
+            </div>
+        </div>
+
+    </div>
+
+    <%--  공연 카테고리  --%>
+    <div id="menu2" class="tabcont">
+
+        <h3>카테고리 > 공연</h3>
+
+        <ul class="list_thumType flnon">
+
+            <c:forEach var="boardVO" items="${__TravelLIST__}">
+                <li class="thum thum_1">
+                    <div class="photo">
+                        <a href="#"><img src="https://picsum.photos/id/122/200/300" alt="이미지"></a>
+                        <em class="flag type_ing">진행중</em>
+                    </div>
+                    <div class="area_txt">
+                        <i class="fas fa-heart off"></i>
+                            
+                        <div class="tit"><a href="/travel/view?seq=${boardVO.seq}">${boardVO.title}</a></div>
+                        <div class="start_date">
+                            기간 : <fmt:formatDate value="${boardVO.start_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.start_time} ~
+                            <fmt:formatDate value="${boardVO.end_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.end_time}
+                        </div>
+                          
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <!-- pagination -->
+        <div class="pagination_wrap">
+            <ul class="pagination">
+                <c:if test="${pageMaker.prev}">
+                    <li class="Prev">
+                        <a href="/board/travel/list?currPage=${pageMaker.startPage - 1}">이전</a>
+                    </li>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                    <li class="pageNum ${ pageMaker.cri.currPage == pageNum? 'current':'' }">${pageNum}</li>
+                </c:forEach>
+
+                <c:if test="${pageMaker.next}">
+                    <li class="Next">
+                        <a href="/board/travel/list?currPage=${pageMaker.endPage + 1}">다음</a>
+                    </li>
+                </c:if>
+            </ul>
+            <div class="btn_wrap">
+                <button class="write_btn"><a href="${pageContext.request.contextPath}/travel/write">글쓰기</a></button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="menu3" class="tabcont">
+
+        <h3>카테고리 > 야외활동</h3>
+
+        <ul class="list_thumType flnon">
+            <c:forEach var="boardVO" items="${__TravelLIST__}">
+                <li class="thum thum_1">
+                    <div class="photo">
+                        <a href="#"><img src="https://picsum.photos/id/122/200/300" alt="이미지"></a>
+                        <em class="flag type_ing">진행중</em>
+                    </div>
+                    <div class="area_txt">
+                        <i class="fas fa-heart off"></i>
+                           
+                           
+                        <div class="tit"><a href="/travel/view?seq=${boardVO.seq}">${boardVO.title}</a></div>
+                        <div class="start_date">
+                            기간 : <fmt:formatDate value="${boardVO.start_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.start_time} ~
+                            <fmt:formatDate value="${boardVO.end_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.end_time}
+                        </div>
+                          
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <!-- pagination -->
+        <div class="pagination_wrap">
+            <ul class="pagination">
+                <c:if test="${pageMaker.prev}">
+                    <li class="Prev">
+                        <a href="/travel/list?currPage=${pageMaker.startPage - 1}">이전</a>
+                    </li>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                    <li class="pageNum ${ pageMaker.cri.currPage == pageNum? 'current':'' }">${pageNum}</li>
+                </c:forEach>
+
+                <c:if test="${pageMaker.next}">
+                    <li class="Next">
+                        <a href="/travel/list?currPage=${pageMaker.endPage + 1}">다음</a>
+                    </li>
+                </c:if>
+            </ul>
+            <div class="btn_wrap">
+                <button class="write_btn"><a href="${pageContext.request.contextPath}/travel/write">글쓰기</a></button>
+            </div>
+        </div>
+
+    </div>
+
+    
+    <div id="menu4" class="tabcont">
+
+        <h3>카테고리 > 팝업스토어</h3>
+
+        <ul class="list_thumType flnon">
+            <c:forEach var="boardVO" items="${__TravelLIST__}">
+                <li class="thum thum_1">
+                    <div class="photo">
+                        <a href="#"><img src="https://picsum.photos/id/122/200/300" alt="이미지"></a>
+                        <em class="flag type_ing">진행중</em>
+                    </div>
+                    <div class="area_txt">
+                        <i class="fas fa-heart off"></i>
+                            
+                        <div class="tit"><a href="/travel/view?seq=${boardVO.seq}">${boardVO.title}</a></div>
+                        <div class="start_date">
+                            기간 : <fmt:formatDate value="${boardVO.start_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.start_time} ~
+                            <fmt:formatDate value="${boardVO.end_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.end_time}
+                        </div>
+                            
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <!-- pagination -->
+        <div class="pagination_wrap">
+            <ul class="pagination">
+                <c:if test="${pageMaker.prev}">
+                    <li class="Prev">
+                        <a href="/travel/list?currPage=${pageMaker.startPage - 1}">이전</a>
+                    </li>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                    <li class="pageNum ${ pageMaker.cri.currPage == pageNum? 'current':'' }">${pageNum}</li>
+                </c:forEach>
+
+                <c:if test="${pageMaker.next}">
+                    <li class="Next">
+                        <a href="/travel/list?currPage=${pageMaker.endPage + 1}">다음</a>
+                    </li>
+                </c:if>
+            </ul>
+            <div class="btn_wrap">
+                <button class="write_btn"><a href="${pageContext.request.contextPath}/travel/write">글쓰기</a></button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="menu5" class="tabcont">
+
+        <h3>카테고리 > 전시회</h3>
+
+        <ul class="list_thumType flnon">
+            <c:forEach var="boardVO" items="${__TravelLIST__}">
+                <li class="thum thum_1">
+                    <div class="photo">
+                        <a href="#"><img src="https://picsum.photos/id/122/200/300" alt="이미지"></a>
+                        <em class="flag type_ing">진행중</em>
+                    </div>
+                    <div class="area_txt">
+                        <i class="fas fa-heart off"></i>
+                           
+                        <div class="tit"><a href="/travel/view?seq=${boardVO.seq}">${boardVO.title}</a></div>
+                        <div class="start_date">
+                            기간 : <fmt:formatDate value="${boardVO.start_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.start_time} ~
+                            <fmt:formatDate value="${boardVO.end_date}" pattern="yyyy년 MM월 dd일" /> ${boardVO.end_time}
+                        </div>
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+
+        <!-- pagination -->
+        <div class="pagination_wrap">
+            <ul class="pagination">
+                <c:if test="${pageMaker.prev}">
+                    <li class="Prev">
+                        <a href="/travel/list?currPage=${pageMaker.startPage - 1}">이전</a>
+                    </li>
+                </c:if>
+
+                <c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                    <li class="pageNum ${ pageMaker.cri.currPage == pageNum? 'current':'' }">${pageNum}</li>
+                </c:forEach>
+
+                <c:if test="${pageMaker.next}">
+                    <li class="Next">
+                        <a href="/travel/list?currPage=${pageMaker.endPage + 1}">다음</a>
+                    </li>
+                </c:if>
+            </ul>
+            <div class="btn_wrap">
+                <button class="write_btn"><a href="${pageContext.request.contextPath}/travel/write">글쓰기</a></button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+</body>
+
+
+</html>

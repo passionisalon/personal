@@ -55,9 +55,9 @@
                     self.location.href="/user/join";
             	});	// joinBtn
 
-                // $('#travelBoard').onlcik(function(){
-                //     self.location.href="/user/login";
-                // });
+                $('#travelBoard').on("click",function(){
+                    self.location.href="/travel/list";
+                });
                 // $('#courseBoard').onlcik(function(){
                 //     self.location.href="/user/join";
                 // });
