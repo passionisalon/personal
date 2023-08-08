@@ -1,6 +1,9 @@
 package org.zerock.myapp.controller;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +40,7 @@ public class TravelController {
 	
 	// 게시물 리스트 출력 
 	@GetMapping("/list")
-	public List<TravelDTO> getTravelList(Criteria cri, Model model) throws ControllerException{
+	public void getTravelList(Criteria cri, Model model) throws ControllerException{
 		
 		this.getThisClassInfo();
 		log.info("getTravelList(Criteria : {} , Model : {}) invoked.",cri,model);
@@ -53,7 +56,8 @@ public class TravelController {
 			Integer resultGetPageTotal = this.travelService.getPageTotal(cri);
 			this.getThisClassInfo();
 			log.info("resultGetPageTotal : {}",resultGetPageTotal);
-			PageDTO pageDTO = new PageDTO(cri,resultGetPageTotal);
+//			PageDTO pageDTO = new PageDTO(cri,resultGetPageTotal);
+			PageDTO pageDTO = new PageDTO(cri,this.travelService.getPageTotal(cri));
 			log.info("result pageDTO in getTravelList");
 			
 			model.addAttribute("pageMaker",pageDTO);
@@ -68,29 +72,38 @@ public class TravelController {
 			
 		}catch(Exception e) {
 			throw new ControllerException(e);
-		}
-		return null;	
+		}	
 	}	// end getTravelList
 	
 	@PostMapping("SearchList")
 	@ResponseBody
-	public List<TravelDTO> SearchTravelList(Criteria cri, String searchType, String keyword)throws ControllerException{
+	public Map<String,Object> SearchTravelList(Criteria cri, String searchType, String keyword)throws ControllerException{
 		this.getThisClassInfo();
 		log.info("SearchTravelList(Criteria : {}, searchType : {}, keyword : {})",cri,searchType,keyword);
 		
 		try {
+			LinkedList<TravelDTO> list = this.travelService.SearchTravelList(cri, searchType, keyword);
+			this.getThisClassInfo();
+			list.forEach(log::info);
+			log.info("TravelController에서 출력됨");
 			
+			Integer resultPageAmount = this.travelService.SearchTravelPage(searchType, keyword);
+			this.getThisClassInfo();
+			log.info("resultPageAmount : {}",resultPageAmount);
+			
+			Map<String,Object> resultMap = new HashMap<String, Object>();
+			resultMap.put("list", list);
+			resultMap.put("resultPageAmount", resultPageAmount);
+			
+			log.info(resultMap);
+			return resultMap;
 		}catch(Exception e) {
 			throw new ControllerException(e);
 		}	// end try-catch
-		return null;
+		
 	}	// end SearchTravelList
 	
-	@PostMapping("TabList")
-	@ResponseBody
-	public List<TravelDTO> TabTravelList(String tab) throws ControllerException{
-		return null;
-	}	//	 end TabTravelList
+
 	
 	// 게시물 확인 
 	@GetMapping("/view")

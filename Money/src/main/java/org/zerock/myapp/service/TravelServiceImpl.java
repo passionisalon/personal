@@ -1,10 +1,12 @@
 package org.zerock.myapp.service;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.myapp.domain.Criteria;
+import org.zerock.myapp.domain.SearchDTO;
 import org.zerock.myapp.domain.TravelDTO;
 import org.zerock.myapp.exception.ServiceException;
 import org.zerock.myapp.mapper.TravelMapper;
@@ -74,13 +76,50 @@ public class TravelServiceImpl implements TravelService {
 		try {
 			Integer resultPageAmount = this.travelMapper.getPageTotalAmount(cri);
 			this.getThisClassInfo();
-			log.info("resultPAgeAmount : {}",resultPageAmount);
+			log.info("resultPageAmount : {}",resultPageAmount);
 			return resultPageAmount;
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}	// end try-catch
 		
-	}	// end getPageTotal
+	}// end getPageTotal
+
+	@Override
+	public LinkedList<TravelDTO> SearchTravelList(Criteria cri, String searchType, String keyword) throws ServiceException {
+		this.getThisClassInfo();
+		log.info("SearchTravelList(Criteria : {}, searchType : {}, keyword : {}",cri,searchType,keyword);
+		
+		try {
+			
+			SearchDTO searchDTO = new SearchDTO();
+			searchDTO.setSearchType(searchType);
+			searchDTO.setKeyword(keyword);
+			LinkedList<TravelDTO> list = this.travelMapper.SearchTravelList(cri,searchDTO);
+			this.getThisClassInfo();
+			list.forEach(log::info);
+			log.info("출력됨");
+			return list;	
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}	// end try-catch
+		
+	}// end	SearchTravelList
+
+	@Override
+	public Integer SearchTravelPage(String searchType, String keyword) throws ServiceException {
+		this.getThisClassInfo();
+		log.info("SearchTravelPage(searchType : {}, keyword : {})",searchType,keyword);
+		
+		try {
+			Integer resultPageAmount =this.travelMapper.SearchTravelPage(searchType, keyword);
+			this.getThisClassInfo();
+			log.info("resultPageAmount : {}",resultPageAmount);
+			return resultPageAmount;
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}	// end try-catch
+		
+	}	// end SearchTravelPage
 	
 	
 	

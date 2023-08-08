@@ -33,7 +33,7 @@
     .TravelListBody {
     
         width: 1200px;
-        height: 90vh;;
+        min-height: 1000px;
 /*         border: 1px solid red; */
     }
 	/* search */
@@ -183,6 +183,11 @@
         font-weight:bolder;
         font-size: larger;
     }
+    .pageNum{
+    	cursor: pointer;
+        font-weight:bolder;
+        font-size: larger;
+    }
 </style>
 
 <body>
@@ -195,7 +200,7 @@
                 <div class="SearchContainer">
                     <div class="SearchWrap">
                         <select name="Selector" class="SearchSelector" id="SearchSelector">
-                            <option value="all">전체</option>
+                            <option value="">전체</option>
                             <option value="performance">공연</option>
                             <option value="outActivity">야외활동</option>
                             <option value="popupStore">팝업스토어</option>
@@ -212,11 +217,11 @@
                 <div class="tabContainer">
                     <div class="tab">
                         <ul class="tabul">
-                            <li id="all" value="total">전체</li>
-                            <li id="performance" value="performance">공연</li>
-                            <li id="outActivity" value="outActivity">야외활동</li>
-                            <li id="popupStore" value="popupStore">팝업스토어</li>
-                            <li id="exhibition" value="exhibition">전시회</li>
+                            <li id="" value="total">전체</li>
+                            <li id="performance" value="performance" onClick="searchList('performance')">공연</li>
+                            <li id="outActivity" value="outActivity" >야외활동</li>
+                            <li id="popupStore" value="popupStore" >팝업스토어</li>
+                            <li id="exhibition" value="exhibition" >전시회</li>
                         </ul>
                     </div>
                 </div><!-- tabContainer -->
@@ -258,15 +263,19 @@
             <div class="page_wrap">
                 <ul class="pagenation">
                     <li class="Prev">
-                        <a href="">Before</a>
+                    	<c:if test="${pageMaker.prev}">
+                        	<a href="/travel/list?currPage=${pageMaker.startPage - 1}">Before</a>
+                        </c:if>
                     </li>
-                    <li class="PageNum">
-                    	<c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
-                        <a href="">${pageNum}</a>
-                        </c:forEach>
-                    </li>
+                    
+                    <c:forEach var="pageNum" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+                        <li class="pageNum ${ pageMaker.cri.currPage == pageNum ? 'current':'' }">${pageNum}</li>
+                    </c:forEach>
+                    
                     <li class="Next">
-                        <a href="">After</a>
+                    	<c:if test="${pageMaker.next}">
+                        <a href="/travel/list?currPage=${pageMaker.endPage + 1}">After</a>
+                        </c:if>
                     </li>
                 </ul>
                 <div class="writeBtn_wrap">
@@ -280,13 +289,25 @@
         </div>
     </div>
     <script>
+    	function searchList(searchType){
+    		   console.log(searchType);
+    		   $.ajax({
+    			   
+    			   
+    		   });// end ajax
+    	}
         $(document).ready(function () {
-            $(".TravelListHeader").load("/WEB-INF/views/common/header.html");
+           // pagenation
+			$('.pageNum').on("click",function(e){
+				let selectedPageNum = e.currentTarget.textContent;
+				console.log(selectedPageNum);
+				self.location = "/travel/list?currPage="+selectedPageNum;
+			}); // end .pageNum click
+        	
+        	function searchList(searchType){
+        	   console.log(searchType);
+           }
         });
-        $(document).ready(function () {
-            $(".TravelListFooter").load("/WEB-INF/views/common/footer.html");
-        });
-
     </script>
 </body>
 

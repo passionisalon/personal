@@ -5,6 +5,22 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
   <mapper namespace="org.zerock.myapp.mapper.TravelMapper">
+  	
+  	
+  <sql id="searchType">
+  	<trim prefix="(" suffix=")" prefixOverrides="OR">
+  		<trim prefix="AND">
+  			<if test='searchType != ""'>
+  				category = #{searchType}
+  			</if>
+  			<if test='keyword !="" AND !keyword.isEmpty()'>
+  				title LIKE '%' || #{keyword} || '%'
+ 			</if>
+  		</trim>
+  	</trim>
+  </sql>
+  
+  	
   	<select id="getTravelList" resultType="org.zerock.myapp.domain.TravelDTO">
   		SELECT *
   		FROM tbl_travel
@@ -29,10 +45,8 @@
   			count(*)
   		FROM 
   			tbl_travel
-<!--   		WHERE -->
-<!--   			title LIKE '%' || #{keyword} || '%' -->
-<!--   			AND -->
-<!--   			category LIKE '%' #{searchType} || '%' -->
+  		WHERE
+  			1=1
   	</select>
   	
   	<insert id="travelInsert">
@@ -64,7 +78,34 @@
   			
   	</insert>
   	
+  	<select id="SearchTravelList" resultType="org.zerock.myapp.domain.TravelDTO">
+  		
+  		SELECT *
+  		FROM 
+  		(
+  			SELECT 
+  				/*+ INDEX_DESC(tbl_travel PK_board) */
+  				*
+  			FROM
+  				tbl_travel
+  			WHERE
+  				<include refid="searchType"></include>
+  				1=1
+  			ORDER BY
+  			  	OFFSET (#{currPage} - 1) * #{amount} ROWS
+  				FETCH NEXT #{amount} ROWS ONLY 
+  		)
+  			
+  	</select>
   	
-  	
+  	<select id="SearchTravelPage" resultType="java.lang.Integer">
+  		  		SELECT
+  			count(*)
+  		FROM 
+  			tbl_travel
+  		WHERE
+			<include refid="searchType"></include>
+  			1=1
+  	</select>
   	
   </mapper>

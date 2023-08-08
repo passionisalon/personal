@@ -115,7 +115,7 @@
                         </div>
                         <br>
                         <div class="form_wrap">
-                            <input type="password" name="Pw" placeholder="yourPassword">
+                            <input type="password" name="Password" placeholder="yourPassword">
                         </div>
                         <div class="form_wrap" id="rememberMeDiv">
                             <input type="checkbox" name="rememberMe" id="rememberMe">

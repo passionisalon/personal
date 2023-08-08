@@ -56,7 +56,7 @@ public class UserController {
 	@PostMapping("/login")
 	public String login (
 			String Email, 
-			String Pw, 
+			String Password, 
 			Model model, 
 			HttpServletRequest hrs, 
 			RedirectAttributes rttrs
@@ -65,7 +65,7 @@ public class UserController {
 		this.getThisClassInfo();
 		log.info("\n\t PostMapping login() invoked.");
 		log.info("\n\t UserEmail : {}",Email);
-		log.info("\n\t UserPw : {}",Pw);
+		log.info("\n\t UserPw : {}",Password);
 		log.info("\n\t model : {}",model);
 		log.info("\n\t HttpServletRequest : {}",hrs);
 		log.info("\n\t RedirectAttributes : {}",rttrs);
@@ -73,7 +73,7 @@ public class UserController {
 		try {
 			log.info("\n\t UserSerivce : {}",userSerivce);
 			log.info("asdfasdfasdfdas");
-			Boolean loginResult = this.userSerivce.UserLogin(Email, Pw, hrs,model);
+			Boolean loginResult = this.userSerivce.UserLogin(Email, Password, hrs,model);
 			this.getThisClassInfo();
 			log.info("\n\t loginResult : {}",loginResult);
 			
