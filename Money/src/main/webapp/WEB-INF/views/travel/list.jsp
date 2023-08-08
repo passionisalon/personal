@@ -188,13 +188,16 @@
         font-weight:bolder;
         font-size: larger;
     }
+    #forCursor{
+    	cursor: pointer;
+    }
 </style>
 
 <body>
     <div class="TravelListWrap">
         <div class="container">
             <div class="TravelListHeader">
-<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/>
+				<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/>
             </div>
             <div class="TravelListBody">
                 <div class="SearchContainer">
@@ -218,10 +221,10 @@
                     <div class="tab">
                         <ul class="tabul">
                             <li id="" value="total">전체</li>
-                            <li id="performance" value="performance" onClick="searchList('performance')">공연</li>
-                            <li id="outActivity" value="outActivity" >야외활동</li>
-                            <li id="popupStore" value="popupStore" >팝업스토어</li>
-                            <li id="exhibition" value="exhibition" >전시회</li>
+                            <li id="performance" value="performance">공연</li>
+                            <li id="outActivity" value="outActivity">야외활동</li>
+                            <li id="popupStore" value="popupStore">팝업스토어</li>
+                            <li id="exhibition" value="exhibition">전시회</li>
                         </ul>
                     </div>
                 </div><!-- tabContainer -->
@@ -230,18 +233,18 @@
                     <div class="list">
                     <c:forEach var="TravelDTO" items="${__TravelLIST__}">
                         <ul class="listUl">
-                            <li class="listwrap">
+                            <li class="listwrap" id="forCursor" onclick="abc(${TravelDTO.seq})">
                                 <div class="contentSeq">
-                                    <a href="">${TravelDTO.seq}</a>
+                                    <a id="forCursor" onclick="abc(${TravelDTO.seq})" >${TravelDTO.seq}</a>
                                 </div>
                                 <div class="divwrap">
-                                    <img src="https://picsum.photos/id/122/200" alt="샘플이미지">
+                                    <img id="forCursor" onclick="abc(${TravelDTO.seq})" src="https://picsum.photos/id/122/200" alt="샘플이미지">
                                 </div>
                                 <div class="divwrap">
-                                    <a href="">${TravelDTO.title}</a>
+                                    <a id="forCursor" onclick="abc(${TravelDTO.seq})">${TravelDTO.title}</a>
                                 </div>
                                 <div class="divwrap">
-                                    <a href="">
+                                    <a id="forCursor" onclick="abc(${TravelDTO.seq})"">
 										<fmt:formatDate value="${TravelDTO.start_date}" pattern="yyyy년 MM월 dd일"/>
 										~
 										<fmt:formatDate value="${TravelDTO.end_date}" pattern="yyyy년 MM월 dd일"/>
@@ -289,25 +292,28 @@
         </div>
     </div>
     <script>
-    	function searchList(searchType){
-    		   console.log(searchType);
-    		   $.ajax({
-    			   
-    			   
-    		   });// end ajax
-    	}
-        $(document).ready(function () {
-           // pagenation
-			$('.pageNum').on("click",function(e){
-				let selectedPageNum = e.currentTarget.textContent;
-				console.log(selectedPageNum);
-				self.location = "/travel/list?currPage="+selectedPageNum;
-			}); // end .pageNum click
-        	
-        	function searchList(searchType){
-        	   console.log(searchType);
-           }
-        });
+	    $(document).ready(function () {
+	        // pagenation
+				$('.pageNum').on("click",function(e){
+					let selectedPageNum = e.currentTarget.textContent;
+					console.log(selectedPageNum);
+					self.location = "/travel/list?currPage="+selectedPageNum;
+				}); // end .pageNum click
+	     	
+	     	function jqsearchList(searchType){
+					console.log("jq");
+					console.log(searchType);
+	        };
+	     });	// end jq
+    	
+    	function abc(seq){
+    		console.log(seq);
+    		self.location = "/travel/view?seq="+seq;
+    	};
+    	
+    	
+    	
+        
     </script>
 </body>
 

@@ -75,14 +75,15 @@ public class TravelController {
 		}	
 	}	// end getTravelList
 	
+	// 검색 기능 탭과 검색, 
 	@PostMapping("SearchList")
 	@ResponseBody
-	public Map<String,Object> SearchTravelList(Criteria cri, String searchType, String keyword)throws ControllerException{
+	public Map<String,Object> SearchTravelList(Integer currPage, String searchType, String keyword)throws ControllerException{
 		this.getThisClassInfo();
-		log.info("SearchTravelList(Criteria : {}, searchType : {}, keyword : {})",cri,searchType,keyword);
+		log.info("SearchTravelList(Criteria : {}, searchType : {}, keyword : {})",currPage,searchType,keyword);
 		
 		try {
-			LinkedList<TravelDTO> list = this.travelService.SearchTravelList(cri, searchType, keyword);
+			LinkedList<TravelDTO> list = this.travelService.SearchTravelList(currPage, searchType, keyword);
 			this.getThisClassInfo();
 			list.forEach(log::info);
 			log.info("TravelController에서 출력됨");

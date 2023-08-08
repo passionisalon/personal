@@ -1,6 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -40,7 +37,7 @@
     }
     .etcInfo{
         width:1200px;
-        height:80px;
+        height:100px;
         border:1px solid green;
     }
     .spanBold{
@@ -69,83 +66,13 @@
         border:1px solid green;
         height:300px;
     }
-    .mapAPI{
-    	width:1000px;
-    	height:700px;
-    }
-
-    .btn {
-    	display: flex;
-    	width: 100%;
-    	justify-content: right;
-    	align-items: center;
-    	margin-top: 20px;
-    	margin-bottom: 20px;
-	}
-	.btn_modify {
-    	margin: 0 5px 0 5px;
-	}
-	.btn_delete {
-    	margin: 0 5px 0 5px;
-	}
-	.btn_list {
-    	margin: 0 5px 0 5px;
-	}
-	.btn_modify button {
-    	background: #000000;
-    	border-color: #000000;
-	    color: #ffffff;
-	    font-size: 14px;
-	    width: 100px;
-	    height: 40px;
-	    padding: 2px 8px 0 8px;
-	    border: none;
-	}
-	.btn_modify button:hover {
-	    background: #49539E;
-	    border-color: #49539E;
-	    padding: 2px 8px 0 8px;
-	}
-	.btn_delete button {
-	    background: #000000;
-	    border-color: #000000;
-	    color: #ffffff;
-	    font-size: 14px;
-	    width: 100px;
-	    height: 40px;
-	    padding: 2px 8px 0 8px;
-	    border: none;
-	}
-	.btn_delete button:hover {
-	    background: #49539E;
-	    border-color: #49539E;
-	    padding: 2px 8px 0 8px;
-	}
-	.btn_list button {
-	    background: #f1f1f1;
-	    border-color: #f1f1f1;
-	    color: #000000;
-	    font-size: 14px;
-	    width: 100px;
-	    height: 40px;
-	    padding: 2px 8px 0 8px;
-	    border: none;
-	}
-	.btn_list button:hover {
-	    background: #d8d8d8;
-	    border-color: #d8d8d8;
-	    padding: 2px 8px 0 8px;
-	}
-    .forCursor{
-    	cursor: pointer;
-    }
 </style>
 <body>
     
     <div class="view_Wrap">
         <div class="view_Container">
             <div class="TravelView_Header">
-                <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/>
+
             </div>
             <div class="TravelView_Body">
                 <div class="categoryTitleAddress">
@@ -213,24 +140,14 @@
                     </div>
                 </div>
 
-                <div class="btn">
-					<div class="btn_modify">
-						<a href="#" onclick=""><button id="modBtn">수정</button></a>
-					</div>
-					<div class="btn_delete">
-						<a href="#" onclick=""><button id="delBtn">삭제</button></a>
-					</div>
-					<div class="btn_list">
-						<a href="#" onclick=""><button id="listBtn">목록</button></a>
-					</div>
-					<br>
-				</div>
+                
+                
             
                 
 
             </div>
             <div class="TravelView_Footer">
-                <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"/>
+
             </div>
         </div>
     </div>

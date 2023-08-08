@@ -85,16 +85,18 @@ public class TravelServiceImpl implements TravelService {
 	}// end getPageTotal
 
 	@Override
-	public LinkedList<TravelDTO> SearchTravelList(Criteria cri, String searchType, String keyword) throws ServiceException {
+	public LinkedList<TravelDTO> SearchTravelList(Integer currPage, String searchType, String keyword) throws ServiceException {
 		this.getThisClassInfo();
-		log.info("SearchTravelList(Criteria : {}, searchType : {}, keyword : {}",cri,searchType,keyword);
+		log.info("SearchTravelList(currPage : {}, searchType : {}, keyword : {}",currPage,searchType,keyword);
 		
 		try {
-			
+			Criteria criteria = new Criteria();
+			criteria.setCurrPage(currPage);
+			log.info("criteria : {}",criteria);
 			SearchDTO searchDTO = new SearchDTO();
 			searchDTO.setSearchType(searchType);
 			searchDTO.setKeyword(keyword);
-			LinkedList<TravelDTO> list = this.travelMapper.SearchTravelList(cri,searchDTO);
+			LinkedList<TravelDTO> list = this.travelMapper.SearchTravelList(criteria,searchDTO);
 			this.getThisClassInfo();
 			list.forEach(log::info);
 			log.info("출력됨");
