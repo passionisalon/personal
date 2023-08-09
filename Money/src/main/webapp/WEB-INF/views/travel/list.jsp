@@ -220,7 +220,7 @@
                 <div class="tabContainer">
                     <div class="tab">
                         <ul class="tabul">
-                            <li id="" value="total">전체</li>
+                            <li id="all" value="">전체</li>
                             <li id="performance" value="performance">공연</li>
                             <li id="outActivity" value="outActivity">야외활동</li>
                             <li id="popupStore" value="popupStore">팝업스토어</li>
@@ -235,16 +235,16 @@
                         <ul class="listUl">
                             <li class="listwrap" id="forCursor" onclick="abc(${TravelDTO.seq})">
                                 <div class="contentSeq">
-                                    <a id="forCursor" onclick="abc(${TravelDTO.seq})" >${TravelDTO.seq}</a>
+                                    <a id="forCursor"  >${TravelDTO.seq}</a>
                                 </div>
                                 <div class="divwrap">
-                                    <img id="forCursor" onclick="abc(${TravelDTO.seq})" src="https://picsum.photos/id/122/200" alt="샘플이미지">
+                                    <img id="forCursor"  src="https://picsum.photos/id/122/200" alt="샘플이미지">
                                 </div>
                                 <div class="divwrap">
-                                    <a id="forCursor" onclick="abc(${TravelDTO.seq})">${TravelDTO.title}</a>
+                                    <a id="forCursor" >${TravelDTO.title}</a>
                                 </div>
                                 <div class="divwrap">
-                                    <a id="forCursor" onclick="abc(${TravelDTO.seq})"">
+                                    <a id="forCursor" >
 										<fmt:formatDate value="${TravelDTO.start_date}" pattern="yyyy년 MM월 dd일"/>
 										~
 										<fmt:formatDate value="${TravelDTO.end_date}" pattern="yyyy년 MM월 dd일"/>
@@ -294,16 +294,88 @@
     <script>
 	    $(document).ready(function () {
 	        // pagenation
-				$('.pageNum').on("click",function(e){
-					let selectedPageNum = e.currentTarget.textContent;
-					console.log(selectedPageNum);
-					self.location = "/travel/list?currPage="+selectedPageNum;
-				}); // end .pageNum click
+			$('.pageNum').on("click",function(e){
+				let selectedPageNum = e.currentTarget.textContent;
+				console.log(selectedPageNum);
+				self.location = "/travel/list?currPage="+selectedPageNum;
+			}); // end .pageNum click
 	     	
-	     	function jqsearchList(searchType){
-					console.log("jq");
-					console.log(searchType);
-	        };
+			// tap 영역
+	     	$('#all').on('click',function(){
+	     		console.log($('#all').attr("value"));
+	     		var searchType = '';
+	     		var temp = "";
+	     		ajaxFunc(searchType, temp);
+	     	});
+			
+	     	$('#performance').on('click',function(){
+	     		console.log($('#performance').attr("value"));
+	     		var searchType = 'performance';
+	     		var temp = "";
+	     		ajaxFunc(searchType, temp);
+	     	});
+	     	
+	     	$('#outActivity').on('click',function(){
+	     		console.log($('#outActivity').attr("value"));
+	     		var searchType = 'outActivity';
+	     		var temp = "";
+	     		ajaxFunc(searchType, temp);
+	     	});
+	     	
+	     	$('#popupStore').on('click',function(){
+	     		console.log($('#popupStore').attr("value"));
+	     		var searchType = 'popupStore';
+	     		var temp = "";
+	     		ajaxFunc(searchType, temp);
+	     	});
+	     	
+	     	$('#exhibition').on('click',function(){
+	     		console.log($('#exhibition').attr("value"));
+	     		var searchType = 'exhibition';
+	     		var temp = "";
+	     		ajaxFunc(searchType, temp);
+	     	});
+			
+	     	// searchType과 keyword영역
+	     	$(".searchButton").on("click",function(){
+	     		var searchType = $('#SearchSelector').val();
+	     		console.log("searchType : ",searchType);
+	     		var keyword =  $(".searchPlace").val();
+	     		console.log("keyword : ",keyword);
+	     		console.log("잘 작동됨");
+	     		ajaxFunc(searchType,keyword);
+	     	})
+	     	
+	     	function ajaxFunc(searchType , keyword){
+	     		console.log(searchType+" , "+keyword);
+
+	     		
+	     		$.ajax({
+	     			url:'/travel/SearchList',
+	     			type:'post',
+	     			data:{
+	     				
+	     				searchType : searchType,
+	     				keyword : keyword
+	     			},
+	     			dataType:'json',
+	     			success : function(data){
+	     				console.log("ajax성공!!!");
+	     				console.log("list : ",data.list);
+	     				console.log("resultPageAmount : ",data.resultPageAmount);
+	     				data.list.forEach(function(result){
+	     					console.log(result);
+	     				})
+	     			},// end success
+	     			error:function(xhr,status,error){
+	     				console.log(xhr);
+	     				console.log(status);
+	     				console.log(error);
+	     				
+	     			}	//end error
+	     		});	// end ajax
+	     	}
+			
 	     });	// end jq
     	
     	function abc(seq){

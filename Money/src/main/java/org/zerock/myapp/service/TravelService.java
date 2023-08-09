@@ -13,7 +13,7 @@ public interface TravelService {
 	public abstract List<TravelDTO> getTravelList(Criteria cri) throws ServiceException;
 	
 	// travel 게시판의 검색어 및 searchType 그리고 tab
-	public abstract LinkedList<TravelDTO> SearchTravelList(Integer currPage, String searchType, String keyword) throws ServiceException;
+	public abstract LinkedList<TravelDTO> SearchTravelList(String searchType, String keyword) throws ServiceException;
 	
 	// travel 게시판의 검색어 및 searchType 그리고 tab에 따른 pagenation
 	public abstract Integer SearchTravelPage(String searchType,String keyword) throws ServiceException;

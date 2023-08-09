@@ -14,7 +14,7 @@ public interface TravelMapper {
 	public abstract List<TravelDTO> getTravelList(Criteria cri);
 
 	// travel게시판의 검색어 및 searchType 그리고 tab
-	public abstract LinkedList<TravelDTO> SearchTravelList(Criteria cri,SearchDTO searchDTO);
+	public abstract LinkedList<TravelDTO> SearchTravelList(Integer currPage,Integer amount,String searchType, String keyword);
 	
 	// travel게시판의 검색어 및 searchType 그리고 tab에 따른 pagenataion
 	public abstract Integer SearchTravelPage(String searchType, String keyword);

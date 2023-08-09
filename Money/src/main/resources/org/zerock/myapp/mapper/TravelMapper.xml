@@ -7,15 +7,25 @@
   <mapper namespace="org.zerock.myapp.mapper.TravelMapper">
   	
   	
-  <sql id="searchType">
+  <sql id="searchInclude">
   	<trim prefix="(" suffix=")" prefixOverrides="OR">
-  		<trim prefix="AND">
-  			<if test='searchType != ""'>
-  				category = #{searchType}
-  			</if>
-  			<if test='keyword !="" AND !keyword.isEmpty()'>
-  				title LIKE '%' || #{keyword} || '%'
- 			</if>
+  		<trim prefix="OR">
+  			<choose>
+  				<when test='searchType != ""'>
+  					category = #{searchType}
+  				</when> 
+  			</choose>
+  			<choose>
+  				<when test='keyword !=""'>
+  					title LIKE '%' || #{keyword} || '%'
+  				</when>
+  			</choose>
+<!--   			<if test='searchType != ""'> -->
+<!--   				category = #{searchType} -->
+<!--   			</if> -->
+<!--   			<if test='keyword !=""'> -->
+<!--   				title LIKE '%' || #{keyword} || '%' -->
+<!--  			</if> -->
   		</trim>
   	</trim>
   </sql>
@@ -24,10 +34,10 @@
   	<select id="getTravelList" resultType="org.zerock.myapp.domain.TravelDTO">
   		SELECT *
   		FROM tbl_travel
-  		WHERE 
-  			title LIKE '%' || #{keyword} || '%'
-  			AND
-  			category LIKE '%' || #{searchType} || '%'
+<!--   		WHERE  -->
+<!--   			title LIKE '%' || #{keyword} || '%' -->
+<!--   			AND -->
+<!--   			category LIKE '%' || #{searchType} || '%' -->
   		ORDER BY
   			seq DESC
   		OFFSET (#{currPage} - 1) * #{amount} ROWS
@@ -80,31 +90,31 @@
   	
   	<select id="SearchTravelList" resultType="org.zerock.myapp.domain.TravelDTO">
   		
-  		SELECT *
-  		FROM 
-  		(
-  			SELECT 
-  				/*+ INDEX_DESC(tbl_travel PK_board) */
-  				*
-  			FROM
-  				tbl_travel
-  			WHERE
-  				<include refid="searchType"></include>
-  				1=1
-  			ORDER BY
-  			  	OFFSET (#{currPage} - 1) * #{amount} ROWS
-  				FETCH NEXT #{amount} ROWS ONLY 
-  		)
+
+  		SELECT
+  			*
+  		FROM
+  			tbl_travel
+  		WHERE
+  			<include refid="searchInclude"/>
+ 			AND
+ 			1=1
+  		ORDER BY
+  			seq DESC
+  			OFFSET (#{currPage} - 1) * #{amount} ROWS
+  			FETCH NEXT #{amount} ROWS ONLY 
+  		
   			
   	</select>
   	
   	<select id="SearchTravelPage" resultType="java.lang.Integer">
-  		  		SELECT
+  		SELECT
   			count(*)
   		FROM 
   			tbl_travel
   		WHERE
-			<include refid="searchType"></include>
+			<include refid="searchInclude"/>
+			AND
   			1=1
   	</select>
   	

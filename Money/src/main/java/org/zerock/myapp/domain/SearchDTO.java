@@ -13,14 +13,14 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class SearchDTO {
 
-	// 스킵 할 게시물의 수
-	private Integer skip;
+//	// 스킵 할 게시물의 수
+//	private Integer skip;
 
 	// 검색에 필요한 것 들 
 	private String searchType;
 	private String keyword;
-	private Date startDate;
-	private Date endDate;
-	private String endTime;
-	private String selectDate;
+//	private Date startDate;
+//	private Date endDate;
+//	private String endTime;
+//	private String selectDate;
 }	// end class
