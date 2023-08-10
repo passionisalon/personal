@@ -8,16 +8,17 @@
   	
   	
   <sql id="searchInclude">
-  	<trim prefix="(" suffix=")" prefixOverrides="OR">
-  		<trim prefix="OR">
+<!--   	<trim prefix="(" suffix=")" prefixOverrides="OR"> -->
+ 	<trim prefix="AND" prefixOverrides="AND">
+<!--   		<trim prefix="AND"> -->
   			<choose>
   				<when test='searchType != ""'>
-  					category = #{searchType}
+  					AND category = #{searchType}
   				</when> 
   			</choose>
   			<choose>
   				<when test='keyword !=""'>
-  					title LIKE '%' || #{keyword} || '%'
+  					AND title LIKE '%' || #{keyword} || '%'
   				</when>
   			</choose>
 <!--   			<if test='searchType != ""'> -->
@@ -26,7 +27,7 @@
 <!--   			<if test='keyword !=""'> -->
 <!--   				title LIKE '%' || #{keyword} || '%' -->
 <!--  			</if> -->
-  		</trim>
+<!--   		</trim> -->
   	</trim>
   </sql>
   
@@ -96,9 +97,8 @@
   		FROM
   			tbl_travel
   		WHERE
+  			1=1
   			<include refid="searchInclude"/>
- 			AND
- 			1=1
   		ORDER BY
   			seq DESC
   			OFFSET (#{currPage} - 1) * #{amount} ROWS
@@ -113,9 +113,10 @@
   		FROM 
   			tbl_travel
   		WHERE
-			<include refid="searchInclude"/>
-			AND
   			1=1
+			<include refid="searchInclude"/>
+			
+  			
   	</select>
   	
   </mapper>

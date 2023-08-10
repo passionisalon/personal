@@ -303,10 +303,6 @@
 	     	
 			// tap 영역
 	     	$('#all').on('click',function(){
-	     		
-	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-	     		$('#all').css("color","white").css("backgroundColor","#49539E");
-	     		
 	     		console.log($('#all').attr("value"));
 	     		var searchType = '';
 	     		var temp = "";
@@ -314,10 +310,6 @@
 	     	});
 			
 	     	$('#performance').on('click',function(){
-	     		
-	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-	     		$('#performance').css("color","white").css("backgroundColor","#49539E");
-	     		
 	     		console.log($('#performance').attr("value"));
 	     		var searchType = 'performance';
 	     		var temp = "";
@@ -325,10 +317,6 @@
 	     	});
 	     	
 	     	$('#outActivity').on('click',function(){
-	     		
-	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-	     		$('#outActivity').css("color","white").css("backgroundColor","#49539E");
-	     		
 	     		console.log($('#outActivity').attr("value"));
 	     		var searchType = 'outActivity';
 	     		var temp = "";
@@ -336,10 +324,6 @@
 	     	});
 	     	
 	     	$('#popupStore').on('click',function(){
-	     		
-	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-	     		$('#popupStore').css("color","white").css("backgroundColor","#49539E");
-	     		
 	     		console.log($('#popupStore').attr("value"));
 	     		var searchType = 'popupStore';
 	     		var temp = "";
@@ -347,10 +331,6 @@
 	     	});
 	     	
 	     	$('#exhibition').on('click',function(){
-	     		
-	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-	     		$('#exhibition').css("color","white").css("backgroundColor","#49539E");
-	     		
 	     		console.log($('#exhibition').attr("value"));
 	     		var searchType = 'exhibition';
 	     		var temp = "";
@@ -364,16 +344,6 @@
 	     		var keyword =  $(".searchPlace").val();
 	     		console.log("keyword : ",keyword);
 	     		console.log("잘 작동됨");
-	     		
-	     		if(searchType == ''){
-	     			$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-		     		$('#all').css("color","white").css("backgroundColor","#49539E");
-	     		
-	     		}else{
-		     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-		     		$('#'+searchType).css("color","white").css("backgroundColor","#49539E");
-	     		}
-
 	     		ajaxFunc(searchType,keyword);
 	     	})
 	     	
@@ -401,145 +371,29 @@
 	     				
 	     				var row;
 	     				data.list.forEach(function(result){
-	     					const startDateFormatted = new Date(result.start_date);
-	     				    const endDateFormatted = new Date(result.end_date);
-	     				    const startyearmonthday = startDateFormatted.getFullYear() + "년 "+ (("00"+endDateFormatted.getMonth().toString()).slice(-2))+"월 "+(("00"+endDateFormatted.getDay().toString()).slice(-2))+"일 ";
-	     				    const endyearmonthday   = endDateFormatted.getFullYear() + "년 "+ (("00"+endDateFormatted.getMonth().toString()).slice(-2)) +"월 "+(("00"+endDateFormatted.getDay().toString()).slice(-2))+"일 "
-	     				    row = 
-	     						'<ul class="listUl">' +
-							        '<li class="listwrap" onclick="abc(' + result.seq + ')">' +
-							        	'<div class="contentSeq">' +
-							        		'<a>' + result.seq + '</a>' +
-							        	'</div>' +
-							        	'<div class="divwrap">' +
-							        		'<img src="https://picsum.photos/id/122/200" alt="샘플이미지">' +
-							        	'</div>' +
-							        	'<div class="divwrap">' +
-							        		'<a>' + result.title + '</a>' +
-							        	'</div>' +
-							        	'<div class="divwrap">' +
-							        		'<a>' + startyearmonthday + ' ~ ' + endyearmonthday + '</a>' +
-							        	'</div>' +
-							        	'<div class="heart contentSeq">' +
-							        		'<i class="fas fa-heart off"></i>' +
-							        	'</div>' +
-							        '</li>' +
-								'</ul>';
+// 	     					const startDateFormatted = formatDate(result.start_date);
+// 	     				    const endDateFormatted = formatDate(result.end_date);
+	     					row = '<ul class="listUl" id="listUl">'+
+	     							'<li class="listwrap" id="listwrap" onclick="abc('+result.seq+')"'+
+		     							'<div class="contentSeq" id="contentSeq">'+
+		     								'<a>'+result.seq+'</a>'+
+		     							'<div>'+
+		     							'<div class="divwrap" id="divwrap">'+
+		     								'<img src="https://picsum.photos/id/122/200" alt="샘플이미지">'+
+		     							'</div>'+
+		     							'<div class="divwrap" id="divwrap">'+
+	     									'<a >'+result.title+'</a>'+
+	     								'</div>'+
+	     								'<div class="divwrap" id="divwrap">'+
+	     									'<a >' + result.start_date + ' ~ ' + result.end_date + '</a>' +
+	     								'</div>'+
+	     								'<div class="heart contentSeq" id="heart contentSeq">'+
+	     									'<i class="fas fa-heart off" id="fas fa-heart off"></i>'+
+	     								'</div>'+
+     								'</li>'+
+	     						  '</ul>'
      						$('.list').append(row);
 	     				});//반복문
-	     				
-	     				console.log("데이터의 길이 : ",data.list.length);
-	     				
-// 	     				$('.pagenation').empty();
-	     				
-	     				
-	     				
-// 	     				// criteria
-// 	     				var currPage = 1;
-// 	     				var amount = 10;
-// 	     				var pagesPerPage = 10;
-	     				
-// 	     				// PageDTO따라하기
-// 	     				var totalAmount;
-// 	     				var startPage;
-// 	     				var endPage;
-// 						var realEndPage;
-						
-// 						var offset;
-						
-// 						var prev;
-// 						var next;
-	     				
-// 						console.log("currPage : ",currPage);
-// 						console.log("amount : ",amount);
-// 						console.log("pagesPerPage : ",pagesPerPage);
-// 						console.log("totalAmount : ",totalAmount);
-// 						console.log("startPage : ",startPage);
-// 						console.log("endPage : ",endPage);
-// 						console.log("realEndPage : ",realEndPage);
-// 						console.log("offset : ",offset);
-// 						console.log("prev : ",prev);
-// 						console.log("next : ",next);
-						
-						
-						
-// 						// 메소드의 시작
-// 						totalAmount = data.resultPageAmount;
-						
-// 	     				endPage = Math.ceil(currPage * 1.0 / pagesPerPage) * pagesPerPage;
-	     				
-// 	     				startPage = endPage - (pagesPerPage - 1);
-	     				
-// 	     				realEndPage = Math.ceil( (totalAmount * 1.0) / amount );
-	     				
-// 	     				if(realEndPage < endPage){
-// 	     					endPage = realEndPage;
-// 	     				}
-	     				
-// 	     				prev = startPage > 1;
-// 	     				next = endPage < realEndPage;
-	     				
-// 	     				offset = ( currPage - 1) * amount;
-	     				
-// 						console.log("currPage : ",currPage);
-// 						console.log("amount : ",amount);
-// 						console.log("pagesPerPage : ",pagesPerPage);
-// 						console.log("totalAmount : ",totalAmount);
-// 						console.log("startPage : ",startPage);
-// 						console.log("endPage : ",endPage);
-// 						console.log("realEndPage : ",realEndPage);
-// 						console.log("offset : ",offset);
-// 						console.log("prev : ",prev);
-// 						console.log("next : ",next);
-	     				
-// 	     				var usePrev;
-// 	     				var Before = "Before"
-// 	     				var After = "After"
-// 	     				if(!prev){
-// 	     					usePrev = '<a href="/travel/list?currPage="'+startPage - 1+'>'+Before+'</a>';
-// 	     				}
-// 	     				var useNext;
-// 	     				if(!next){
-// 	     					useNext = '<a href="/travel/list?currPage="'+endPage + 1+'>'+After+'</a>'; 
-// 	     				}
-	     				
-// 	     				var numberIndex;
-// 	     				for(let pageNum = startPage; pageNum <= endPage ; pageNum++){
-// 	     					const li = $('<a></a>');
-// 	     					console.log("currPage : ",currPage);
-// 	     					console.log("pageNum : ",pageNum);
-// // 	     					li.addClass('pageNum '+(currPage === pageNum ? 'current':''));
-// 	     					li.addClass('pageNum '+pageNum);
-// 	     					li.text(pageNum);
-// 	     					li.prop('href', "/travel/list?currPage="+pageNum);
-// 	     					console.log("li : ",li);
-// 	     					numberIndex += li;
-// 	     					console.log("numberIndex : ",numberIndex);
-	     					
-// 	     				}
-// 	     				var paging;
-// 	     				if(!next & !prev){
-// 	     					paging = numberIndex
-// 	     				}else{
-// 	     					paging = 
-// 	     						(
-// 	     							'<li class="Prev">'+
-// 	     								usePrev+
-// 	     							'</li>'+
-// 		     							numberIndex+
-// 		     						'<li class="Next">'+
-//      									useNext+
-//      								'</li>'
-//      							);
-// 	     				}
-	     				
-// 	     				$('.pagenation').append(paging);
-	     				
-	     				
-// 						console.log(paging);	     				
-
-	     				
-	     				
 	     				
 	     			},// end success
 	     			error:function(xhr,status,error){
@@ -549,7 +403,7 @@
 	     				
 	     			}	//end error
 	     		});	// end ajax
-	     	}	// ajaxFunc
+	     	}
 			
 	     });	// end jq
     	

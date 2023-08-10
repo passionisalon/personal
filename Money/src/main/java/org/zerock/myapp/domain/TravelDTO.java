@@ -21,11 +21,11 @@ public class TravelDTO {
 	private String Total;
 	private Date Write_date;
 	private Date Modify_date;
-	private String start_time;
-	private String end_time;
-	@DateTimeFormat(pattern = "yymmdd")
+	private Date start_time;
+	private Date end_time;
+	@DateTimeFormat(pattern = "yyyymmdd")
 	private Date start_date;
-	@DateTimeFormat(pattern = "yymmdd")
+	@DateTimeFormat(pattern = "yyyymmdd")
 	private Date end_date;
 	
 }	// end class
