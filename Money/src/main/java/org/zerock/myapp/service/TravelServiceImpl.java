@@ -85,12 +85,16 @@ public class TravelServiceImpl implements TravelService {
 	}// end getPageTotal
 
 	@Override
-	public LinkedList<TravelDTO> SearchTravelList(String searchType, String keyword) throws ServiceException {
+	public LinkedList<TravelDTO> SearchTravelList(Integer currPages,String searchType, String keyword) throws ServiceException {
 		this.getThisClassInfo();
 		log.info("SearchTravelList(searchType : {}, keyword : {}",searchType,keyword);
 		
 		try {
 			Integer currPage = 1;
+			if(currPages > 1) {
+				currPage = currPages;
+			}	// 	end if
+			
 			Integer amount = 10;
 			LinkedList<TravelDTO> list = this.travelMapper.SearchTravelList(currPage,amount,searchType, keyword);
 			this.getThisClassInfo();

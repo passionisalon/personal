@@ -100,7 +100,7 @@
         font-size: 16px;
         font-weight: bold;
     }
-    #all{
+    #ll{
         background: #49539E;
         color: white;
     }
@@ -204,7 +204,7 @@
                 <div class="SearchContainer">
                     <div class="SearchWrap">
                         <select name="Selector" class="SearchSelector" id="SearchSelector">
-                            <option value="">전체</option>
+                            <option value="ll">전체</option>
                             <option value="performance">공연</option>
                             <option value="outActivity">야외활동</option>
                             <option value="popupStore">팝업스토어</option>
@@ -221,7 +221,7 @@
                 <div class="tabContainer">
                     <div class="tab">
                         <ul class="tabul">
-                            <li id="all" value="">전체</li>
+                            <li id="ll" value="ll">전체</li>
                             <li id="performance" value="performance">공연</li>
                             <li id="outActivity" value="outActivity">야외활동</li>
                             <li id="popupStore" value="popupStore">팝업스토어</li>
@@ -293,6 +293,10 @@
         </div>
     </div>
     <script>
+    
+   		var JavascriptSearchListFunction;
+   		var CallDef;
+   		
 	    $(document).ready(function () {
 	        // pagenation
 			$('.pageNum').on("click",function(e){
@@ -302,15 +306,17 @@
 			}); // end .pageNum click
 	     	
 			// tap 영역
-	     	$('#all').on('click',function(){
+	     	$('#ll').on('click',function(){
 	     		
 	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
-	     		$('#all').css("color","white").css("backgroundColor","#49539E");
+	     		$('#ll').css("color","white").css("backgroundColor","#49539E");
 	     		
-	     		console.log($('#all').attr("value"));
-	     		var searchType = '';
-	     		var temp = "";
-	     		ajaxFunc(searchType, temp);
+	     		console.log("asdjfklasjdflkasdjflasdfj");
+	     		console.log($('#ll').attr("value"));
+	     		var searchType = 'll';
+	     		var keyword = "";
+	     		var JspCurrPage = 1;
+	     		ajaxFunc(JspCurrPage , searchType, keyword);
 	     	});
 			
 	     	$('#performance').on('click',function(){
@@ -320,8 +326,9 @@
 	     		
 	     		console.log($('#performance').attr("value"));
 	     		var searchType = 'performance';
-	     		var temp = "";
-	     		ajaxFunc(searchType, temp);
+	     		var keyword = "";
+	     		var JspCurrPage = 1;
+	     		ajaxFunc(JspCurrPage , searchType, keyword);
 	     	});
 	     	
 	     	$('#outActivity').on('click',function(){
@@ -331,8 +338,9 @@
 	     		
 	     		console.log($('#outActivity').attr("value"));
 	     		var searchType = 'outActivity';
-	     		var temp = "";
-	     		ajaxFunc(searchType, temp);
+	     		var keyword = "";
+	     		var JspCurrPage = 1;
+	     		ajaxFunc(JspCurrPage , searchType, keyword);
 	     	});
 	     	
 	     	$('#popupStore').on('click',function(){
@@ -342,8 +350,9 @@
 	     		
 	     		console.log($('#popupStore').attr("value"));
 	     		var searchType = 'popupStore';
-	     		var temp = "";
-	     		ajaxFunc(searchType, temp);
+	     		var keyword = "";
+	     		var JspCurrPage = 1;
+	     		ajaxFunc(JspCurrPage , searchType, keyword);
 	     	});
 	     	
 	     	$('#exhibition').on('click',function(){
@@ -353,12 +362,14 @@
 	     		
 	     		console.log($('#exhibition').attr("value"));
 	     		var searchType = 'exhibition';
-	     		var temp = "";
-	     		ajaxFunc(searchType, temp);
+	     		var keyword = "";
+	     		var JspCurrPage = 1;
+	     		ajaxFunc(JspCurrPage , searchType, keyword);
 	     	});
 			
 	     	// searchType과 keyword영역
 	     	$(".searchButton").on("click",function(){
+	     		var JspCurrPage = 1;
 	     		var searchType = $('#SearchSelector').val();
 	     		console.log("searchType : ",searchType);
 	     		var keyword =  $(".searchPlace").val();
@@ -374,18 +385,24 @@
 		     		$('#'+searchType).css("color","white").css("backgroundColor","#49539E");
 	     		}
 
-	     		ajaxFunc(searchType,keyword);
-	     	})
+	     		ajaxFunc(JspCurrPage , searchType , keyword);
+	     	});	// end searchButton;
 	     	
-	     	function ajaxFunc(searchType , keyword){
-	     		console.log(searchType+" , "+keyword);
-
+	     	
+	     	// keyword, searchType, tap을 눌렀을 경우 사용되는 function
+	     	function ajaxFunc(JspCurrPage, searchType , keyword){
+	     		
+				console.log("JspCurrPage : ",JspCurrPage);
+				console.log("searchType : ",searchType);
+				var JavaScriptSearchType = searchType.id;
+				console.log("JavaScriptSearchType : ",JavaScriptSearchType);
+				console.log("keyword : ",keyword);
 	     		
 	     		$.ajax({
 	     			url:'/travel/SearchList',
 	     			type:'post',
 	     			data:{
-	     				
+	     				currPages : JspCurrPage,
 	     				searchType : searchType,
 	     				keyword : keyword
 	     			},
@@ -430,116 +447,8 @@
 	     				
 	     				console.log("데이터의 길이 : ",data.list.length);
 	     				
-// 	     				$('.pagenation').empty();
-	     				
-	     				
-	     				
-// 	     				// criteria
-// 	     				var currPage = 1;
-// 	     				var amount = 10;
-// 	     				var pagesPerPage = 10;
-	     				
-// 	     				// PageDTO따라하기
-// 	     				var totalAmount;
-// 	     				var startPage;
-// 	     				var endPage;
-// 						var realEndPage;
-						
-// 						var offset;
-						
-// 						var prev;
-// 						var next;
-	     				
-// 						console.log("currPage : ",currPage);
-// 						console.log("amount : ",amount);
-// 						console.log("pagesPerPage : ",pagesPerPage);
-// 						console.log("totalAmount : ",totalAmount);
-// 						console.log("startPage : ",startPage);
-// 						console.log("endPage : ",endPage);
-// 						console.log("realEndPage : ",realEndPage);
-// 						console.log("offset : ",offset);
-// 						console.log("prev : ",prev);
-// 						console.log("next : ",next);
-						
-						
-						
-// 						// 메소드의 시작
-// 						totalAmount = data.resultPageAmount;
-						
-// 	     				endPage = Math.ceil(currPage * 1.0 / pagesPerPage) * pagesPerPage;
-	     				
-// 	     				startPage = endPage - (pagesPerPage - 1);
-	     				
-// 	     				realEndPage = Math.ceil( (totalAmount * 1.0) / amount );
-	     				
-// 	     				if(realEndPage < endPage){
-// 	     					endPage = realEndPage;
-// 	     				}
-	     				
-// 	     				prev = startPage > 1;
-// 	     				next = endPage < realEndPage;
-	     				
-// 	     				offset = ( currPage - 1) * amount;
-	     				
-// 						console.log("currPage : ",currPage);
-// 						console.log("amount : ",amount);
-// 						console.log("pagesPerPage : ",pagesPerPage);
-// 						console.log("totalAmount : ",totalAmount);
-// 						console.log("startPage : ",startPage);
-// 						console.log("endPage : ",endPage);
-// 						console.log("realEndPage : ",realEndPage);
-// 						console.log("offset : ",offset);
-// 						console.log("prev : ",prev);
-// 						console.log("next : ",next);
-	     				
-// 	     				var usePrev;
-// 	     				var Before = "Before"
-// 	     				var After = "After"
-// 	     				if(!prev){
-// 	     					usePrev = '<a href="/travel/list?currPage="'+startPage - 1+'>'+Before+'</a>';
-// 	     				}
-// 	     				var useNext;
-// 	     				if(!next){
-// 	     					useNext = '<a href="/travel/list?currPage="'+endPage + 1+'>'+After+'</a>'; 
-// 	     				}
-	     				
-// 	     				var numberIndex;
-// 	     				for(let pageNum = startPage; pageNum <= endPage ; pageNum++){
-// 	     					const li = $('<a></a>');
-// 	     					console.log("currPage : ",currPage);
-// 	     					console.log("pageNum : ",pageNum);
-// // 	     					li.addClass('pageNum '+(currPage === pageNum ? 'current':''));
-// 	     					li.addClass('pageNum '+pageNum);
-// 	     					li.text(pageNum);
-// 	     					li.prop('href', "/travel/list?currPage="+pageNum);
-// 	     					console.log("li : ",li);
-// 	     					numberIndex += li;
-// 	     					console.log("numberIndex : ",numberIndex);
-	     					
-// 	     				}
-// 	     				var paging;
-// 	     				if(!next & !prev){
-// 	     					paging = numberIndex
-// 	     				}else{
-// 	     					paging = 
-// 	     						(
-// 	     							'<li class="Prev">'+
-// 	     								usePrev+
-// 	     							'</li>'+
-// 		     							numberIndex+
-// 		     						'<li class="Next">'+
-//      									useNext+
-//      								'</li>'
-//      							);
-// 	     				}
-	     				
-// 	     				$('.pagenation').append(paging);
-	     				
-	     				
-// 						console.log(paging);	     				
-
-	     				
-	     				
+	     				// 페이지네이션 function 호출 
+	     				pagenationFunc(JspCurrPage, data.resultPageAmount,searchType , keyword); 
 	     				
 	     			},// end success
 	     			error:function(xhr,status,error){
@@ -550,16 +459,146 @@
 	     			}	//end error
 	     		});	// end ajax
 	     	}	// ajaxFunc
-			
+	     	
+	     	// 페이지네이션 function
+	     	function pagenationFunc(JspCurrPage,PageAmount,searchType , keyword){
+	     		console.log("JspCurrPage : ",JspCurrPage);
+	     		console.log("PageAmount : ",PageAmount);
+	     		console.log("searchType : ",searchType);
+	     		console.log("keyword : ",keyword);
+ 				$('.pagenation').empty();
+ 				
+ 				// criteria
+ 				var currPage = JspCurrPage;
+ 				var amount = 10;
+ 				var pagesPerPage = 10;
+ 				var totalAmount = PageAmount;
+				var realEndPage;
+				var prev;
+				var next;
+ 				
+				console.log("currPage : ",currPage);
+				console.log("amount : ",amount);
+				console.log("pagesPerPage : ",pagesPerPage);
+				console.log("totalAmount : ",totalAmount);
+				console.log("realEndPage : ",realEndPage);
+				console.log("prev : ",prev);
+				console.log("next : ",next);
+				
+				
+				
+				// 메소드의 시작
+ 				endPage = Math.ceil(currPage * 1.0 / pagesPerPage) * pagesPerPage;
+ 				startPage = endPage - (pagesPerPage - 1);
+ 				realEndPage = Math.ceil( (totalAmount * 1.0) / amount );
+ 				if(realEndPage < endPage){
+ 					endPage = realEndPage;
+ 				}
+ 				
+ 				prev = startPage > 1;
+ 				next = endPage < realEndPage;
+ 				
+ 				
+				console.log("currPage : ",currPage);
+				console.log("amount : ",amount);
+				console.log("pagesPerPage : ",pagesPerPage);
+				console.log("totalAmount : ",totalAmount);
+				console.log("realEndPage : ",realEndPage);
+				console.log("prev : ",prev);
+				console.log("next : ",next);
+ 				
+ 				var usePrev;
+ 				var Before = "Before"
+ 				if(prev){
+ 					usePrev = '<a>'+Before+'</a>';
+ 					$('.pagenation').append(usePrev);
+ 				}
+ 				console.log("prev : ",prev);
+ 				
+				for(let i = 1 ; i < realEndPage+1 ; i++ ){
+					console.log(i);
+					let temp = '<li class="pageNum" id="pageNum'+i+'" onclick="def('+ "pageNum"+i+","+searchType+","+keyword+')">'+i+'</li>';
+					$('.pagenation').append(temp);
+				}
+ 				
+ 				var useNext;
+ 				var After = "After"
+ 				if(next){
+ 					useNext = '<a>'+After+'</a>'; 
+ 					$('.pagenation').append(useNext);
+ 				}
+				
+				console.log("next : ",next);
+
+	     	};	// end pagenationFuc
+
+	     	 // 수정된 부분: JavascriptSearchListFunction에 ajaxFunc 함수를 할당
+	        JavascriptSearchListFunction = ajaxFunc;
+	     	
+	        
+	     	
+	        
+	     	
 	     });	// end jq
+    	
     	
     	function abc(seq){
     		console.log(seq);
     		self.location = "/travel/view?seq="+seq;
-    	};
+    	};	//	end abc
     	
-    	
-    	
+    	function def(pageNum,searchType,keyword){
+    		if(keyword == undefined){
+    			keyword = "";
+    		}
+    		console.log("keyword : ",keyword);
+    		
+//     		console.log("pageNum : ",pageNum.innerText);
+
+ 			var pageNumText = $(pageNum).text(); // 수정된 부분
+    		
+    		
+    		console.log("searchType : ",searchType);
+    		
+    		
+    		
+    		console.log("searchType : ",searchType.toString());
+    		
+    		
+    		
+    		const searchTypetoString = searchType.toString();
+    		console.log("searchType비교 : ",searchTypetoString);
+    		
+    		// searchType이 Object Performance로 된다, 때문에,
+    		// 아래의 과정을 반드시 거쳐야 ajax통신으로 정확하게 performance로 데이터가 갈 수 있다. 
+    		var searchTypeString = Object.prototype.toString.call(searchType); // 객체 타입 문자열을 가져옴
+    	    var searchTypeSubstring = searchTypeString.replace(/^\[object\s(.*)\]$/, "$1").toLowerCase(); // [object Performance] 중 Performance 부분을 추출
+    	    console.log("333searchType : ", searchTypeSubstring);
+    		
+    	    if(typeof searchType === "object"){
+    			console.log("OBJECT입니다.!!!");
+    			console.log("OBJECT입니다.!!!");
+    			console.log("OBJECT입니다.!!!");
+    		}else{
+    			console.log("문자열입니다.!!!!!")
+    			console.log("문자열입니다.!!!!!")
+    			console.log("문자열입니다.!!!!!")
+    		}
+    	    let test;
+    	    if(searchTypeSubstring=='performance'){
+    	    	test = 'performance';
+    	    	JavascriptSearchListFunction(pageNumText, test, keyword);
+    	    }else{
+    	    	test = searchType.getAttribute("value");
+    	    	JavascriptSearchListFunction(pageNumText, test, keyword);
+    	    }
+    	    
+    	    
+
+    		
+//  			JavascriptSearchListFunction(pageNumText, 서치타입, keyword);
+//     		console.log(pageNum.value());
+    	}	// end def
         
     </script>
 </body>

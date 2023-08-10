@@ -11,23 +11,20 @@
 <!--   	<trim prefix="(" suffix=")" prefixOverrides="OR"> -->
  	<trim prefix="AND" prefixOverrides="AND">
 <!--   		<trim prefix="AND"> -->
+			
   			<choose>
+  			  	<when test='searchType == "ll"'>
+  				
+  				</when>
   				<when test='searchType != ""'>
   					AND category = #{searchType}
   				</when> 
-  			</choose>
-  			<choose>
-  				<when test='keyword !=""'>
+				<when test='keyword !=""'>
   					AND title LIKE '%' || #{keyword} || '%'
   				</when>
+
   			</choose>
-<!--   			<if test='searchType != ""'> -->
-<!--   				category = #{searchType} -->
-<!--   			</if> -->
-<!--   			<if test='keyword !=""'> -->
-<!--   				title LIKE '%' || #{keyword} || '%' -->
-<!--  			</if> -->
-<!--   		</trim> -->
+
   	</trim>
   </sql>
   
