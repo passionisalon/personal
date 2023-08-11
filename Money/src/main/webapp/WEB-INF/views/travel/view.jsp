@@ -30,18 +30,18 @@
     .TravelView_Body{
         width:1200px;
         min-height: 1900px;
-        border: 1px solid red;
+/*         border: 1px solid red; */
     }
     .categoryTitleAddress{
         width:1200px;
         height:100px;
         text-align: center;
-        border: 1px solid blue;
+/*         border: 1px solid blue; */
     }
     .etcInfo{
         width:1200px;
         height:80px;
-        border:1px solid green;
+/*         border:1px solid green; */
     }
     .spanBold{
         font-size: large;
@@ -66,7 +66,7 @@
     }
     .TravelInformation{
         width:1000px;
-        border:1px solid green;
+/*         border:1px solid green; */
         height:300px;
     }
     .mapAPI{
@@ -149,23 +149,23 @@
             </div>
             <div class="TravelView_Body">
                 <div class="categoryTitleAddress">
-                    <h2>카테고리</h2>
+                    <h2>${__SELECTTRAVEL__.category}</h2>
                     <br>
-                    <h1>타이틀</h1>
+                    <h1>${__SELECTTRAVEL__.title}</h1>
                     <br>
-                    <h3>주소</h3>
+                    <h3>${__SELECTTRAVEL__.address}</h3>
                 </div>
                 <div class="etcInfo">
                     <a href="#"><i class="fa-regular fa-heart" style="color: #E76649"></i></a>
                     <a href="#"><i class="fa-solid fa-share-nodes" style="color: #49539e;"></i></a>
-                    <i class="fas fa-eye"> ${__BOARD__.total}</i>
+                    <i class="fas fa-eye"> ${__SELECTTRAVEL__.total}</i>
                     <br>
                     <br>
                     <div class="infoDate">
-                        <span class="spanBold">등록일 : 1992년1월24일</span>
+                        <span class="spanBold">등록일 : <fmt:formatDate value="${__SELECTTRAVEL__.write_date}" pattern="yyyy. MM. dd. HH:mm:ss"/></span>
                     </div>
                     <div class="infoDate">
-                        <span class="spanBold">수정일 : 1992년 1월 26일</span>
+                        <span class="spanBold">수정일 : <fmt:formatDate value="${__SELECTTRAVEL__.modify_date}" pattern="yyyy. MM. dd. HH:mm:ss"/></span>
                     </div>
                 </div>
                 <hr>
@@ -193,15 +193,18 @@
                     <div class="TravelInformation">
                         <span class="spanBold">설명 : </span>
                         <br>
-                        <span class="spanBold">글 끌고오기</span>
+                        <span class="spanBold">${__SELECTTRAVEL__.content}</span>
                         <br>
                         <hr>
                         <span class="spanBold">기간 : </span>
-                        <span class="spanBold">기간</span>
+                        <span class="spanBold">
+							<fmt:formatDate value="${__SELECTTRAVEL__.start_date}" pattern="yyyy년 MM월 dd일" /> ${__BOARD__.start_time} ~
+                			<fmt:formatDate value="${__SELECTTRAVEL__.end_date}" pattern="yyyy년 MM월 dd일" /> ${__BOARD__.end_time}
+						</span>
                         <br>
                         <hr>
                         <span class="spanBold">위치 : </span>
-                        <span class="spanBold">위치</span>
+                        <span class="spanBold">${__SELECTTRAVEL__.address}</span>
                     </div>
                 </div>
                 
@@ -237,8 +240,7 @@
 
     <script>
         $(document).ready(function () {
-            $(".TravelView_Header").load("/WEB-INF/views/common/header.html");
-            $(".TravelView_Footer").load("/WEB-INF/views/common/footer.html");
+            
         });
 
     </script>

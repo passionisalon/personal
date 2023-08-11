@@ -123,4 +123,15 @@ public class TravelController {
 			throw new ControllerException(e);
 		}
 	}	// end getSelectTravel
+	
+	@GetMapping("/write")
+	public void writeTravel() throws ControllerException {
+		this.getThisClassInfo();
+		log.info("writeTravel() invoked.");
+		try {
+			
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+	}
 }	// end class

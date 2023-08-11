@@ -184,7 +184,7 @@
         font-weight:bolder;
         font-size: larger;
     }
-    .pageNum{
+    .pageNum,writeBtn{
     	cursor: pointer;
         font-weight:bolder;
         font-size: larger;
@@ -283,7 +283,7 @@
                     </li>
                 </ul>
                 <div class="writeBtn_wrap">
-                    <button class="write_btn"><a href="">글쓰기</a></button>
+                    <button class="write_btn"><a class="writeBtn">글쓰기</a></button>
                 </div>
             </div>
 
@@ -298,6 +298,12 @@
    		var CallDef;
    		
 	    $(document).ready(function () {
+	    	
+	    	// 글쓰기 버튼
+	    	$('.writeBtn').on("click",function(){
+	    		self.location = "/travel/write";
+	    	})
+	    	
 	        // pagenation
 			$('.pageNum').on("click",function(e){
 				let selectedPageNum = e.currentTarget.textContent;
@@ -535,10 +541,6 @@
 	     	 // 수정된 부분: JavascriptSearchListFunction에 ajaxFunc 함수를 할당
 	        JavascriptSearchListFunction = ajaxFunc;
 	     	
-	        
-	     	
-	        
-	     	
 	     });	// end jq
     	
     	
@@ -552,20 +554,11 @@
     			keyword = "";
     		}
     		console.log("keyword : ",keyword);
-    		
-//     		console.log("pageNum : ",pageNum.innerText);
 
  			var pageNumText = $(pageNum).text(); // 수정된 부분
     		
-    		
     		console.log("searchType : ",searchType);
-    		
-    		
-    		
     		console.log("searchType : ",searchType.toString());
-    		
-    		
-    		
     		const searchTypetoString = searchType.toString();
     		console.log("searchType비교 : ",searchTypetoString);
     		
@@ -592,12 +585,7 @@
     	    	test = searchType.getAttribute("value");
     	    	JavascriptSearchListFunction(pageNumText, test, keyword);
     	    }
-    	    
-    	    
 
-    		
-//  			JavascriptSearchListFunction(pageNumText, 서치타입, keyword);
-//     		console.log(pageNum.value());
     	}	// end def
         
     </script>
