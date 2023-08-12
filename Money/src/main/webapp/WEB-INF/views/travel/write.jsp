@@ -9,6 +9,10 @@
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Document</title>
+          <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1e94da7a1ab1c55879fcde4cfe8d086d&libraries=services"></script>
+          
+
           <script src="https://kit.fontawesome.com/9776c2cb70.js" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
@@ -139,10 +143,7 @@
             background: white;
           }
 
-          .kakaoMiniMap {
-            width: 1200px;
-            height: 500px;
-          }
+
 
           .btnWrap {
             width: 1200px;
@@ -165,78 +166,96 @@
             background: #49539E;
             color: white;
           }
+
           @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
-                  .CalendarWrap {
-                  	display:none;
-                    background-color: white;
-                    height: auto;
-                    width: 400px;
-                    margin: 0px;
-                    padding: 20px;
-                    margin: 0 auto;
-                    border-radius: 5px;
-                    box-shadow: 0px 40px 30px -20px rgba(0, 0, 0, 0.3);
-                  }
 
-                  td {
-                    width: 50px;
-                    height: 50px;
-                  }
+          .CalendarWrap {
+            display: none;
+            background-color: white;
+            height: auto;
+            width: 400px;
+            margin: 0px;
+            padding: 20px;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0px 40px 30px -20px rgba(0, 0, 0, 0.3);
+          }
 
-                  .Calendar {
-                    text-align: center;
-                  }
+          td {
+            width: 50px;
+            height: 50px;
+          }
 
-                  .Calendar>thead>tr:first-child>td {
-                    font-family: 'Questrial', sans-serif;
-                    font-size: 1.1em;
-                    font-weight: bold;
-                  }
+          .Calendar {
+            text-align: center;
+          }
 
-                  .Calendar>thead>tr:last-child>td {
-                    font-family: 'Questrial', sans-serif;
-                    font-weight: 600;
-                  }
+          .Calendar>thead>tr:first-child>td {
+            font-family: 'Questrial', sans-serif;
+            font-size: 1.1em;
+            font-weight: bold;
+          }
 
-                  .Calendar>tbody>tr>td>p {
-                    font-family: 'Montserrat', sans-serif;
-                    height: 45px;
-                    width: 45px;
-                    border-radius: 45px;
-                    transition-duration: .2s;
-                    line-height: 45px;
-                    margin: 2.5px;
-                    display: block;
-                    text-align: center;
-                  }
+          .Calendar>thead>tr:last-child>td {
+            font-family: 'Questrial', sans-serif;
+            font-weight: 600;
+          }
 
-                  .pastDay {
-                    color: lightgray;
-                  }
+          .Calendar>tbody>tr>td>p {
+            font-family: 'Montserrat', sans-serif;
+            height: 45px;
+            width: 45px;
+            border-radius: 45px;
+            transition-duration: .2s;
+            line-height: 45px;
+            margin: 2.5px;
+            display: block;
+            text-align: center;
+          }
 
-                  .today {
-                    background-color: #F5D042;
-                    color: #fff;
-                    font-weight: 600;
-                    cursor: pointer;
-                  }
+          .pastDay {
+            color: lightgray;
+          }
 
-                  .futureDay {
-                    background-color: #FFFFFF;
-                    cursor: pointer;
-                  }
+          .today {
+            background-color: #F5D042;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+          }
 
-                  .futureDay:hover {
-                    background: #eee;
-                  }
+          .futureDay {
+            background-color: #FFFFFF;
+            cursor: pointer;
+          }
 
-                  .futureDay.choiceDay,
-                  .today.choiceDay {
-                    background: #0A174E;
-                    color: #fff;
-                    font-weight: 600;
-                    cursor: pointer;
-                  }
+          .futureDay:hover {
+            background: #eee;
+          }
+
+          .futureDay.choiceDay,
+          .today.choiceDay {
+            background: #0A174E;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+          }
+
+          .kakaoMiniMap {
+            width: 1200px;
+            height: 500px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          #map {
+            display: flex;
+            width: 1200px;
+            height: 500px;
+
+            text-align: center;
+          }
         </style>
 
         <body>
@@ -323,9 +342,10 @@
                     <tbody>
                     </tbody>
                     <tfoot>
-                    	<tr>
-                    		<td id="OkBtn">확인</td><td id="CancleBtn">취소</td>
-                    	</tr>
+                      <tr>
+                        <td id="OkBtn">확인</td>
+                        <td id="CancleBtn">취소</td>
+                      </tr>
                     </tfoot>
                   </table>
                 </div>
@@ -338,17 +358,98 @@
                   <div class="tab">
                     <ul class="tabulS">
                       <li id="locations" value="">위치</li>
-                      <li id="locationAddress" value=""><input type="text"></li>
-                      <li id="AddressPlace" value=""><button id="AddressBtn">주소검색</button></li>
+                      <li id="loc_num" value=""></li>
+                      <li id="locationAddress" value=""></li>
+                      <li id="AddressPlace" value=""><button id="AddressBtn" onclick="loc_btn()">주소검색</button></li>
                       <li id="fileUpload" value="">첨부파일</li>
                       <li id="fileList" value="">aaa</li>
                       <li id="fileUploadLi" value=""><button id="fileUploadBtn" type="file">파일선택</button></li>
                     </ul>
                   </div>
                 </div><!-- tabContainer -->
-                <div class="kakaoMiniMap">
 
+
+                <!-- 카카오미니맵 -->
+                <div class="kakaoMiniMap">
+                  <div id="map"></div>
                 </div>
+
+                <script type="text/javascript"
+                  src="//dapi.kakao.com/v2/maps/sdk.js?appkey=749bb5e3ab5373f2bac05d295edc0068"></script>
+                  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+                <script>
+                  var container = document.getElementById('map');
+                  var options = {
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), level: 3
+                  };
+
+                  var map = new kakao.maps.Map(container, options);
+
+
+            //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+            function loc_btn() {
+              new daum.Postcode({
+                oncomplete: function (data) {
+                  // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                  // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+                  // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                  var roadAddr = data.roadAddress; // 도로명 주소 변수
+                  var extraRoadAddr = ''; // 참고 항목 변수
+                  console.log("extraRoadAddr : ",extraRoadAddr);
+
+                  // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                  // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                  if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                    extraRoadAddr += data.bname;
+                  }
+                  // 건물명이 있고, 공동주택일 경우 추가한다.
+                  if (data.buildingName !== '' && data.apartment === 'Y') {
+                    extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                  }
+                  // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                  if (extraRoadAddr !== '') {
+                    extraRoadAddr = ' (' + extraRoadAddr + ')';
+                  }
+
+                  // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                  document.getElementById('loc_num').value = data.zonecode;
+                  document.getElementById("locationAddress").value = roadAddr;
+
+                 console.log("data.zonecode : ",data.zonecode);
+                 console.log("roadAddr : ",roadAddr);
+
+                 document.querySelector('#locationAddress').append(roadAddr);
+
+
+
+                  // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+                  // if (roadAddr !== '') {
+                  //   document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+                  // } else {
+                  //   document.getElementById("sample4_extraAddress").value = '';
+                  // }
+
+                  var guideTextBox = document.getElementById("guide");
+                  // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                  if (data.autoRoadAddress) {
+                    var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                    guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+                    guideTextBox.style.display = 'block';
+
+                  } else if (data.autoJibunAddress) {
+                    var expJibunAddr = data.autoJibunAddress;
+                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+                    guideTextBox.style.display = 'block';
+                  } else {
+                    // guideTextBox.innerHTML = '';
+                    // guideTextBox.style.display = 'none';
+                  }
+                }
+              }).open();
+            }
+            </script>
+
                 <!-- 버튼 -->
                 <div class="btnWrap">
                   <div class="btnContainer">
@@ -365,119 +466,119 @@
           </div>
 
           <script>
-          	var calendarOnOff = false;
-          	var startDateClick =false;
-          	var endDateClick =false;
-          	
-          	//script
-          	
-                  window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
-				
-                  
-                  
-                  let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
-                  let today = new Date();     // 페이지를 로드한 날짜를 저장
-                  today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
-				  var selectYear = new Date().getFullYear();
-                  var selectMonth = nowMonth.getMonth()+1;
-                  console.log("selectYear : ", selectYear);
-                  console.log("selectMonth : ",selectMonth);
-                  
-                  var UserChoiceDay;
-                  
-                  // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
-                  function buildCalendar() {
+            var calendarOnOff = false;
+            var startDateClick = false;
+            var endDateClick = false;
 
-                    let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
-                    let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
+            //script
 
-                    let tbody_Calendar = document.querySelector(".Calendar > tbody");
-                    document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
-                    document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
-
-                    while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
-                      tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
-                    }
-
-                    let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
-
-                    for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
-                      let nowColumn = nowRow.insertCell();        // 열 추가
-                    }
-					var j = 1;
-                    for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
-					  j++;
-                      let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
+            window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
 
 
-                      let newDIV = document.createElement("p");
-                      newDIV.setAttribute("id","forClick"+j);
-                      newDIV.innerHTML = leftPad(nowDay.getDate());        // 추가한 열에 날짜 입력
-                      nowColumn.appendChild(newDIV);
 
-                      if (nowDay.getDay() == 6) {                 // 토요일인 경우
-                        nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
-                      }
+            let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
+            let today = new Date();     // 페이지를 로드한 날짜를 저장
+            today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
+            var selectYear = new Date().getFullYear();
+            var selectMonth = nowMonth.getMonth() + 1;
+            console.log("selectYear : ", selectYear);
+            console.log("selectMonth : ", selectMonth);
 
-                      if (nowDay < today) {                       // 지난날인 경우
-                        newDIV.className = "pastDay";
-                      }
-                      else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
-                        newDIV.className = "today";
-                        newDIV.onclick = function () { choiceDate(this); }
-                      }
-                      else {                                      // 미래인 경우
-                        newDIV.className = "futureDay";
-                      	
-                        newDIV.onclick = function () { choiceDate(this); }
-                      }
-                    }
-                  }
+            var UserChoiceDay;
 
-                  // 날짜 선택
-                  function choiceDate(newDIV) {
-                    if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
-                      document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
-                    }
-                    newDIV.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
-                    selectYear = document.getElementById("calYear").innerText;
-                    selectMonth = document.getElementById("calMonth").innerText;
-                    console.log("selectYear : ", selectYear);
-                    console.log(typeof selectYear)
-                    console.log("selectMonth : ",selectMonth);
-                    console.log(typeof selectMonth);
-                    console.log("selectYear : ", selectYear);
-                    console.log("selectMonth : ", selectMonth);
-                    console.log("newDIV : ",newDIV);
-                    
-                    console.log("choiceDay : ", newDIV.innerText);
-                    UserChoiceDay = newDIV.innerText;
-                    console.log("UserChoiceDay : ",UserChoiceDay);
-                    var choiceDay = newDIV.innerText;
-                    console.log(typeof choiceDay);
+            // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
+            function buildCalendar() {
 
-                  }
+              let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
+              let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
 
-                  // 이전달 버튼 클릭
-                  function prevCalendar() {
-                    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
-                    buildCalendar();    // 달력 다시 생성
-                  }
-                  // 다음달 버튼 클릭
-                  function nextCalendar() {
-                    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
-                    buildCalendar();    // 달력 다시 생성
-                  }
+              let tbody_Calendar = document.querySelector(".Calendar > tbody");
+              document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
+              document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
 
-                  // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
-                  function leftPad(value) {
-                    if (value < 10) {
-                      value = "0" + value;
-                      return value;
-                    }
-                    return value;
-                  }
-          	
+              while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
+                tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
+              }
+
+              let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
+
+              for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
+                let nowColumn = nowRow.insertCell();        // 열 추가
+              }
+              var j = 1;
+              for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
+                j++;
+                let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
+
+
+                let newDIV = document.createElement("p");
+                newDIV.setAttribute("id", "forClick" + j);
+                newDIV.innerHTML = leftPad(nowDay.getDate());        // 추가한 열에 날짜 입력
+                nowColumn.appendChild(newDIV);
+
+                if (nowDay.getDay() == 6) {                 // 토요일인 경우
+                  nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
+                }
+
+                if (nowDay < today) {                       // 지난날인 경우
+                  newDIV.className = "pastDay";
+                }
+                else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
+                  newDIV.className = "today";
+                  newDIV.onclick = function () { choiceDate(this); }
+                }
+                else {                                      // 미래인 경우
+                  newDIV.className = "futureDay";
+
+                  newDIV.onclick = function () { choiceDate(this); }
+                }
+              }
+            }
+
+            // 날짜 선택
+            function choiceDate(newDIV) {
+              if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
+                document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
+              }
+              newDIV.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
+              selectYear = document.getElementById("calYear").innerText;
+              selectMonth = document.getElementById("calMonth").innerText;
+              console.log("selectYear : ", selectYear);
+              console.log(typeof selectYear)
+              console.log("selectMonth : ", selectMonth);
+              console.log(typeof selectMonth);
+              console.log("selectYear : ", selectYear);
+              console.log("selectMonth : ", selectMonth);
+              console.log("newDIV : ", newDIV);
+
+              console.log("choiceDay : ", newDIV.innerText);
+              UserChoiceDay = newDIV.innerText;
+              console.log("UserChoiceDay : ", UserChoiceDay);
+              var choiceDay = newDIV.innerText;
+              console.log(typeof choiceDay);
+
+            }
+
+            // 이전달 버튼 클릭
+            function prevCalendar() {
+              nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
+              buildCalendar();    // 달력 다시 생성
+            }
+            // 다음달 버튼 클릭
+            function nextCalendar() {
+              nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
+              buildCalendar();    // 달력 다시 생성
+            }
+
+            // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
+            function leftPad(value) {
+              if (value < 10) {
+                value = "0" + value;
+                return value;
+              }
+              return value;
+            }
+
             // jq
             $(document).ready(function () {
               $(".cancelBtn").on("click", function () {
@@ -529,79 +630,82 @@
 
               $('#startDate').on("click", function () {
                 whoClick = "startDateValue";
-                console.log("whoClick : ",whoClick);
-                if(calendarOnOff == false){
-                	window.onload = function () { buildCalendar(whoClick); };
-                	$(".CalendarWrap").css("display","block");
-                	calendarOnOff =true;
-                	startDateClick=true;
-                	console.log("calendarOnOff : ",calendarOnOff);
-                	console.log("startDateClick : ",startDateClick);
+                console.log("whoClick : ", whoClick);
+                if (calendarOnOff == false) {
+                  window.onload = function () { buildCalendar(whoClick); };
+                  $(".CalendarWrap").css("display", "block");
+                  calendarOnOff = true;
+                  startDateClick = true;
+                  console.log("calendarOnOff : ", calendarOnOff);
+                  console.log("startDateClick : ", startDateClick);
                 }
               })
               $('#endDate').on("click", function () {
-            	  whoClick = "endDateValue";
-                  console.log("whoClick : ",whoClick);
-            	  if(calendarOnOff == false){
-                  	$(".CalendarWrap").css("display","block");
-                  	calendarOnOff =true;
-                  	endDateClick=true;
-                  	console.log("calendarOnOff : ",calendarOnOff);
-                  	console.log("endDateClick : ",endDateClick);
-                  }
+                whoClick = "endDateValue";
+                console.log("whoClick : ", whoClick);
+                if (calendarOnOff == false) {
+                  $(".CalendarWrap").css("display", "block");
+                  calendarOnOff = true;
+                  endDateClick = true;
+                  console.log("calendarOnOff : ", calendarOnOff);
+                  console.log("endDateClick : ", endDateClick);
+                }
               })
-              $('#CancleBtn').on("click",function(){
-            	  console.log("asdfasdfd : CancleBtn");
-            	  
-            	  
-            	  $(".CalendarWrap").css("display","none");
-            	  
-                  selectYear = document.getElementById("calYear").innerText;
-                  selectMonth = document.getElementById("calMonth").innerText;
-                  console.log("selectYear : ", selectYear);
-                  console.log(typeof selectYear)
-                  console.log("selectMonth : ",selectMonth);
-                  console.log(typeof selectMonth);
-                  console.log("selectYear : ", selectYear);
-                  console.log("selectMonth : ", selectMonth);
-                  console.log("choiceDay : ", UserChoiceDay);
-                  
-                  calendarOnOff = false;
-            	  startDateClick=false;
-            	  endDateClick=false;
+              $('#CancleBtn').on("click", function () {
+                console.log("asdfasdfd : CancleBtn");
+
+
+                $(".CalendarWrap").css("display", "none");
+
+                selectYear = document.getElementById("calYear").innerText;
+                selectMonth = document.getElementById("calMonth").innerText;
+                console.log("selectYear : ", selectYear);
+                console.log(typeof selectYear)
+                console.log("selectMonth : ", selectMonth);
+                console.log(typeof selectMonth);
+                console.log("selectYear : ", selectYear);
+                console.log("selectMonth : ", selectMonth);
+                console.log("choiceDay : ", UserChoiceDay);
+
+                calendarOnOff = false;
+                startDateClick = false;
+                endDateClick = false;
               })
-              
-			$('#OkBtn').on("click",function(){
-            	  console.log("asdfasdfd : OkBtn");
-            	  
-            	  
-            	  $(".CalendarWrap").css("display","none");
-            	  
-                  selectYear = document.getElementById("calYear").innerText;
-                  selectMonth = document.getElementById("calMonth").innerText;
-                  console.log("selectYear : ", selectYear);
-                  console.log(typeof selectYear)
-                  console.log("selectMonth : ",selectMonth);
-                  console.log(typeof selectMonth);
-                  console.log("selectYear : ", selectYear);
-                  console.log("selectMonth : ", selectMonth);
-                  console.log("choiceDay : ", UserChoiceDay);
-                  
-                  if(startDateClick == true){
-                	  $('#startDateValue').append(selectYear+"년 "+selectMonth+"월 "+UserChoiceDay+"일");
-                  }else if(endDateClick == true){
-                	  $('#endDateValue').append(selectYear+"년 "+selectMonth+"월 "+UserChoiceDay+"일");
-                  }
-                  
-                  
-                  calendarOnOff = false;
-            	  startDateClick=false;
-            	  endDateClick=false;
+
+              $('#OkBtn').on("click", function () {
+                console.log("asdfasdfd : OkBtn");
+
+
+                $(".CalendarWrap").css("display", "none");
+
+                selectYear = document.getElementById("calYear").innerText;
+                selectMonth = document.getElementById("calMonth").innerText;
+                console.log("selectYear : ", selectYear);
+                console.log(typeof selectYear)
+                console.log("selectMonth : ", selectMonth);
+                console.log(typeof selectMonth);
+                console.log("selectYear : ", selectYear);
+                console.log("selectMonth : ", selectMonth);
+                console.log("choiceDay : ", UserChoiceDay);
+
+                if (startDateClick == true) {
+                  $('#startDateValue').append(selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");
+                } else if (endDateClick == true) {
+                  $('#endDateValue').append(selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");
+                }
+
+
+                calendarOnOff = false;
+                startDateClick = false;
+                endDateClick = false;
               })
 
             }); // end jq
 
-    //script
+            //script 주소검색
+
+
+			
 
           </script>
         </body>
