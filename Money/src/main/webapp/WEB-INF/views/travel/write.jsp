@@ -1,329 +1,609 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: sungjaehyun
-  Date: 2023/05/15
-  Time: 7:07 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@page import="java.util.Date" %>
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>여행지 write</title>
+<%@page contentType="text/html;charset=UTF-8" language="java" %>
+  <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+      <%@page import="java.util.Date" %>
+        <!DOCTYPE html>
+        <html lang="ko">
 
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/css/travel/write.css"/>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/static/css/layout/layout.css"/>
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Document</title>
+          <script src="https://kit.fontawesome.com/9776c2cb70.js" crossorigin="anonymous"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
+        </head>
+        <style>
+          @charset "utf-8";
+          @import url('/resources/css/layout/reset.css');
 
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+          .TravelWrap {
+            width: 1200px;
+            height: 1300px;
+            margin: 0 auto;
+            border: 1px solid blue;
+          }
 
-  <script>
-    $(function() {
-      $('.cancelBtn').click(function () {
+          .TravelContainer {
+            width: 1200px;
+            height: 1300px;
+            margin: 0 auto;
+            border: 1px solid red;
+          }
 
-        <%--location.href = "/board/travel/list?currPage=${param.currPage}";--%>
-        location.href = "/board/travel/list";
+          .TravelBody {
+            width: 1200px;
+            min-height: 1200px;
+            margin: 0 auto;
+            border: 1px solid green;
+          }
 
-      });
-    })
+          .TravelTitle,
+          .TravelSmallWrap {
+            display: flex;
+            justify-content: center;
+          }
 
-  </script>
-<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp"/>
-<%--   <jsp:include page="../../layout/header.jsp"/> --%>
-</head>
-<body>
-<form action="write" method="post">
+          /* tab */
+          .tabContainer .tab {
+            width: 99.7%;
+            height: 50px;
+            border: 1px solid #49539E;
+            background-color: #f5f5f5;
 
-  <!-- 글쓰기 헤더 -->
-  <div class="travel_header">
-    <h2>여행지 글쓰기</h2>
-  </div>
-  <hr>
-  <!-- 제목 -->
-  <div class="travel_title">
-    <input type="text" name="title" placeholder=" 장소명을 입력해 주세요." autofocus required>
-  </div>
+          }
 
-  <!-- 카테고리 -->
-  <div class="travel_category">
-    <h3>카테고리</h3>
-  </div>
-  <hr>
-  <div class="travel_thema">
+          .tab {
+            width: 100%;
 
-    <label for="travelplace"><input type="radio" id="travelplace" value="야외활동" name="category" onclick="category_val()"><span>야외활동</span></label>
-    ｜
-    <label for="show"><input type="radio" id="show" value="공연" name="category" onclick="category_val()"><span>공연</span></label>
-    ｜
-    <label for="exhibition"><input type="radio" id="exhibition" value="전시회" name="category" onclick="category_val()"><span>전시회</span></label>
-    ｜
-    <label for="popup"><input type="radio" id="popup" value="팝업스토어" name="category" onclick="category_val()"><span>팝업스토어</span></label>
-  </div>
+          }
 
-  <!-- 캘린더 내용 -->
-  <div class="cal">
-    <h3>일정</h3>
-  </div>
-  <hr>
-  <div class="cal_input">
-    <div class="cal_date_input">
-      <label for="start_date_input"> 시작일자 </label>
-      <input type=text id="start_date_input" name="start_date" autocomplete="off">
-      <br>
-      <label for="end_date_input"> 종료일자 </label>
-      <input type="text" id="end_date_input" name="end_date" autocomplete="off">
-      <br>
-    </div>
-    <div class="cal_time_input">
-      <label> 시작시간 </label>
-      <input type="time" id="start_time_input" name="start_time">
-      <br>
-      <label> 종료시간 </label>
-      <input type="time" id="end_time_input" name="end_time">
-      <br>
-    </div>
-  </div>
+          .tabul,
+          .tabulS {
+            width: 100%;
+            height: 100%;
 
-  <!-- 본문 -->
-  <div class="content">
-    <textarea name="content" placeholder="내용을 입력해주세요." required></textarea>
-  </div>
+          }
 
-  <!-- 위치 -->
-  <div class="loc">
-    <h3>위치</h3>
-  </div>
-  <hr>
-  <br>
-  <div class="location">
-    <input type="text" id="loc_num" placeholder=" 우편번호">
-    <button type="button" class="loc_btn" onclick="loc_btn()">주소 검색</button>
-    <br>
-    <input type="text" id="loc_road" name="address" placeholder=" 도로명 주소" required>
-    <input type="text" id="loc_detail" placeholder=" 상세 주소">
-  </div>
+          .tabul>li,
+          .tabulS>li {
+            /*         border: 1px solid #49539E; */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 텍스트를 수직으로 정중앙에 위치 */
+            font-size: 16px;
+            font-weight: bold;
+            color: black;
+          }
 
-  <!-- 첨부파일 -->
-  <div class="picture">
-    <h3>사진</h3>
-  </div>
-  <hr>
-  <br>
-  <div class="file_upload">
-    <div>
-      <button class="upload"></button>
-      <input type="file" class="real-upload" accept="image/*" style="display: none;" multiple>
-      <ul class="image-preview">
-      </ul>
-    </div>
-  </div>
+          .tabul>li>input,
+          .tabulS>li>input {
+            width: 100%;
+            height: 95%;
+          }
 
-  <!-- 버튼 -->
-  <div class="btn">
-    <div class="btn_accent">
-      <a href="" onclick=""><button type="submit" onclick="submitBtn">작성하기</button></a>
-    </div>
-    <div class="btn_cancel">
-      <a href="" onclick=""><button class="cancelBtn">취소</button></a>
-    </div>
-  </div>
-</form>
+          #AddressBtn,
+          #fileUploadBtn {
+            width: 100%;
+            height: 100%;
+          }
 
-<%-- 카테고리 스크립트 --%>
-<script>
-  function category_val() {
-      let radioButtons = document.querySelectorAll('input[type="radio"]');
-      let checkedValue;
+          #performance {
+            background: #49539E;
+            color: white;
+          }
 
-          radioButtons.forEach(radioButton => {
-            if(radioButton.checked) {
-              checkedValue = radioButton.value;
-            }
-          });
-          console.log('cheked : ', checkedValue);
+          #startDate,
+          #endDate,
+          #locations,
+          #fileUpload {
+            background: #49539E;
+            color: white;
+          }
 
-  }
-</script>
+          .placeWrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50px;
+          }
 
-<%-- 캘린더 스크립트 --%>
-<script>
-  $( function() {
-    var dateFormat = "yymmdd",
-            from = $("#start_date_input").datepicker({
-                      defaultDate: "+1w",
-                      changeMonth: true,
-                      dayNames: ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
-                      dayNamesMin: ["월", "화", "수", "목","금", "토", "일"],
-                      monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-                      monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-                      dateFormat: "yy/mm/dd",
-                    })
-                    .on( "change", function() {
-                      to.datepicker( "option", "minDate", getDate( this ) );
-                    }),
-            to = $("#end_date_input").datepicker({
-              defaultDate: "+1w",
-              changeMonth: true,
-              dayNames: ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"],
-              dayNamesMin: ["월", "화", "수", "목","금", "토", "일"],
-              monthNames: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-              monthNamesShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-              dateFormat: "yy/mm/dd",
-            })
-                    .on( "change", function() {
-                      from.datepicker( "option", "maxDate", getDate( this ) );
-                    });
-    $('#start_date_input').datepicker();
-    $('#start_date_input').datepicker("option", "maxDate", $("#end_date_input").val());
-    $('#start_date_input').datepicker("option", "onClose", function ( selectedDate ) {
-      $("#end_date_input").datepicker( "option", "minDate", selectedDate );
-    });
+          .placeContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid yellowgreen;
+            width: 1200px;
+            height: 50px;
+          }
 
-    $('#end_date_input').datepicker();
-    $('#end_date_input').datepicker("option", "minDate", $("#start_date_input").val());
-    $('#end_date_input').datepicker("option", "onClose", function ( selectedDate ) {
-      $("#start_date_input").datepicker( "option", "maxDate", selectedDate );
-    });
+          .placeContainer>input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 99.5%;
+            height: 50px;
+          }
 
-    function getDate( element ) {
-      var date;
-      try {
-        date = $.datepicker.parseDate( dateFormat, element.value );
-      } catch( error ) {
-        date = null;
-      }
+          .contentWrap,
+          .contentContainer,
+          .contentContainer>textarea {
+            width: 1198px;
+            height: 250px;
+            resize: none;
+          }
 
-      return date;
-    }
-  } );
-</script>
+          .liInLi {
+            background: white;
+          }
 
-<%--주소 찾기 api 스크립트--%>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script>
-  //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
-  function loc_btn() {
-    new daum.Postcode({
-      oncomplete: function(data) {
-        // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+          .kakaoMiniMap {
+            width: 1200px;
+            height: 500px;
+          }
 
-        // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
-        // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
-        var roadAddr = data.roadAddress; // 도로명 주소 변수
-        var extraRoadAddr = ''; // 참고 항목 변수
+          .btnWrap {
+            width: 1200px;
+            height: 50px;
+            /* display: flex; */
+            /* justify-content: center; */
+            border: 1px solid violet;
+          }
 
-        // 법정동명이 있을 경우 추가한다. (법정리는 제외)
-        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
-        if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
-          extraRoadAddr += data.bname;
-        }
-        // 건물명이 있고, 공동주택일 경우 추가한다.
-        if(data.buildingName !== '' && data.apartment === 'Y'){
-          extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
-        }
-        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
-        if(extraRoadAddr !== ''){
-          extraRoadAddr = ' (' + extraRoadAddr + ')';
-        }
+          .btnContainer {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+          }
 
-        // 우편번호와 주소 정보를 해당 필드에 넣는다.
-        document.getElementById('loc_num').value = data.zonecode;
-        document.getElementById("loc_road").value = roadAddr;
+          .btnContainer>button {
+            width: 49.8%;
+            height: 100%;
+            background: #49539E;
+            color: white;
+          }
+          @import url('https://fonts.googleapis.com/css?family=Questrial&display=swap');
+                  .CalendarWrap {
+                  	display:none;
+                    background-color: white;
+                    height: auto;
+                    width: 400px;
+                    margin: 0px;
+                    padding: 20px;
+                    margin: 0 auto;
+                    border-radius: 5px;
+                    box-shadow: 0px 40px 30px -20px rgba(0, 0, 0, 0.3);
+                  }
 
-        // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
-        if(roadAddr !== ''){
-          document.getElementById("sample4_extraAddress").value = extraRoadAddr;
-        } else {
-          document.getElementById("sample4_extraAddress").value = '';
-        }
+                  td {
+                    width: 50px;
+                    height: 50px;
+                  }
 
-        var guideTextBox = document.getElementById("guide");
-        // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
-        if(data.autoRoadAddress) {
-          var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
-          guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
-          guideTextBox.style.display = 'block';
+                  .Calendar {
+                    text-align: center;
+                  }
 
-        } else if(data.autoJibunAddress) {
-          var expJibunAddr = data.autoJibunAddress;
-          guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-          guideTextBox.style.display = 'block';
-        } else {
-          guideTextBox.innerHTML = '';
-          guideTextBox.style.display = 'none';
-        }
-      }
-    }).open();
-  }
-</script>
+                  .Calendar>thead>tr:first-child>td {
+                    font-family: 'Questrial', sans-serif;
+                    font-size: 1.1em;
+                    font-weight: bold;
+                  }
 
-<%--사진 미리보기 및 업로드 스크립트--%>
-<script>
+                  .Calendar>thead>tr:last-child>td {
+                    font-family: 'Questrial', sans-serif;
+                    font-weight: 600;
+                  }
 
-  function getImageFiles(e) {
-    const uploadFiles = [];
-    const files = e.currentTarget.files;
-    const imagePreview = document.querySelector('.image-preview');
-    const docFrag = new DocumentFragment();
+                  .Calendar>tbody>tr>td>p {
+                    font-family: 'Montserrat', sans-serif;
+                    height: 45px;
+                    width: 45px;
+                    border-radius: 45px;
+                    transition-duration: .2s;
+                    line-height: 45px;
+                    margin: 2.5px;
+                    display: block;
+                    text-align: center;
+                  }
+
+                  .pastDay {
+                    color: lightgray;
+                  }
+
+                  .today {
+                    background-color: #F5D042;
+                    color: #fff;
+                    font-weight: 600;
+                    cursor: pointer;
+                  }
+
+                  .futureDay {
+                    background-color: #FFFFFF;
+                    cursor: pointer;
+                  }
+
+                  .futureDay:hover {
+                    background: #eee;
+                  }
+
+                  .futureDay.choiceDay,
+                  .today.choiceDay {
+                    background: #0A174E;
+                    color: #fff;
+                    font-weight: 600;
+                    cursor: pointer;
+                  }
+        </style>
+
+        <body>
+          <div class="TravelWrap">
+            <div class="TravelContainer">
+              <div class="TravelHeader">
+                <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/header.jsp" />
+              </div>
+              <div class="TravelBody">
+
+                <script>
+
+                </script>
 
 
-    // 업로드 파일 수가 여러장 이상인 경우 경고 메시지 출력
-    if ([...files].length > 1) {
-      alert('이미지는 한개씩 업로드 가능합니다.');
-      return;
-    }
+                <br>
+                <div class="TravelTitle">
+                  <h2>여행지 글쓰기</h2>
+                </div>
+                <br>
+                <hr>
+                <br>
+                <div class="TravelSmallWrap">
+                  <h4>카테고리</h4>
+                </div>
+                <br>
+                <div class="tabContainer">
+                  <div class="tab">
+                    <ul class="tabul">
+                      <li id="performance" value="performance">공연</li>
+                      <li id="outActivity" value="outActivity">야외활동</li>
+                      <li id="popupStore" value="popupStore">팝업스토어</li>
+                      <li id="exhibition" value="exhibition">전시회</li>
+                    </ul>
+                  </div>
+                </div><!-- tabContainer -->
+                <br>
+                <div class="TravelSmallWrap">
+                  <h4>장소명</h4>
+                </div>
+                <br>
+                <div class="placeWrap">
+                  <div class="placeContainer">
+                    <input type="text" placeholder="장소명">
+                  </div>
+                </div>
+                <br>
+                <div class="TravelSmallWrap">
+                  <h4>일정</h4>
+                </div>
+                <br>
+                <div class="tabContainer">
+                  <div class="tab">
+                    <ul class="tabulS">
+                      <li id="startDate" value="">시작일자</li>
+                      <li id="startDateValue" value=""></li>
+                      <li id="endDate" value="">종료일자</li>
+                      <li id="endDateValue" value=""></li>
+                    </ul>
+                  </div>
+                </div><!-- tabContainer -->
+                <div class="CalendarWrap">
+                  <table class="Calendar">
+                    <thead>
+                      <tr>
+                        <td onClick="prevCalendar();" style="cursor:pointer;">&#60;</td>
+                        <td colspan="5">
+                          <span id="calYear"></span>년
+                          <span id="calMonth"></span>월
+                        </td>
+                        <td onClick="nextCalendar();" style="cursor:pointer;">&#62;</td>
+                      </tr>
+                      <tr>
+                        <td>일</td>
+                        <td>월</td>
+                        <td>화</td>
+                        <td>수</td>
+                        <td>목</td>
+                        <td>금</td>
+                        <td>토</td>
+                      </tr>
+                    </thead>
 
-    // 업로드 파일 중 이미지 파일이 아닌 경우 경고 메시지 출력
-    for (let i = 0; i < files.length; i++) {
-      if (!files[i].type.match("image/.*")) {
-        alert('이미지 파일만 업로드 가능합니다.');
-        return;
-      }
-    }
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    	<tr>
+                    		<td id="OkBtn">확인</td><td id="CancleBtn">취소</td>
+                    	</tr>
+                    </tfoot>
+                  </table>
+                </div>
+                <div class="contentWrap">
+                  <div class="contentContainer">
+                    <textarea name="content" id="" placeholder="내용을 입력해주세요"></textarea>
+                  </div>
+                </div>
+                <div class="tabContainer">
+                  <div class="tab">
+                    <ul class="tabulS">
+                      <li id="locations" value="">위치</li>
+                      <li id="locationAddress" value=""><input type="text"></li>
+                      <li id="AddressPlace" value=""><button id="AddressBtn">주소검색</button></li>
+                      <li id="fileUpload" value="">첨부파일</li>
+                      <li id="fileList" value="">aaa</li>
+                      <li id="fileUploadLi" value=""><button id="fileUploadBtn" type="file">파일선택</button></li>
+                    </ul>
+                  </div>
+                </div><!-- tabContainer -->
+                <div class="kakaoMiniMap">
 
-    for (let i = 0; i < files.length; i++) {
-      // 업로드 파일 수가 1장 이하인 경우에만 파일 추가
-      if (uploadFiles.length < 1) {
-        uploadFiles.push(files[i]);
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const preview = createElement(e, files[i]);
-          imagePreview.appendChild(preview);
-        };
-        reader.readAsDataURL(files[i]);
-      }
-    }
-  }
+                </div>
+                <!-- 버튼 -->
+                <div class="btnWrap">
+                  <div class="btnContainer">
+                    <button class="submitBtn">작성하기</button>
+                    <button class="cancelBtn">취소</button>
+                  </div>
+                </div>
+              </div><!-- TravelBody -->
 
-  function createElement(e, file) {
-    const li = document.createElement('li');
-    const img = document.createElement('img');
-    img.setAttribute('src', e.target.result);
-    img.setAttribute('data-file', file.name);
-    li.appendChild(img);
-    return li;
-  }
+              <div class="TravelFooter">
+                <jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp" />
+              </div>
+            </div>
+          </div>
 
-  const realUpload = document.querySelector('.real-upload');
-  const upload = document.querySelector('.upload');
+          <script>
+          	var calendarOnOff = false;
+          	var startDateClick =false;
+          	var endDateClick =false;
+          	
+          	//script
+          	
+                  window.onload = function () { buildCalendar(); }    // 웹 페이지가 로드되면 buildCalendar 실행
+				
+                  
+                  
+                  let nowMonth = new Date();  // 현재 달을 페이지를 로드한 날의 달로 초기화
+                  let today = new Date();     // 페이지를 로드한 날짜를 저장
+                  today.setHours(0, 0, 0, 0);    // 비교 편의를 위해 today의 시간을 초기화
+				  var selectYear = new Date().getFullYear();
+                  var selectMonth = nowMonth.getMonth()+1;
+                  console.log("selectYear : ", selectYear);
+                  console.log("selectMonth : ",selectMonth);
+                  
+                  var UserChoiceDay;
+                  
+                  // 달력 생성 : 해당 달에 맞춰 테이블을 만들고, 날짜를 채워 넣는다.
+                  function buildCalendar() {
+
+                    let firstDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth(), 1);     // 이번달 1일
+                    let lastDate = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, 0);  // 이번달 마지막날
+
+                    let tbody_Calendar = document.querySelector(".Calendar > tbody");
+                    document.getElementById("calYear").innerText = nowMonth.getFullYear();             // 연도 숫자 갱신
+                    document.getElementById("calMonth").innerText = leftPad(nowMonth.getMonth() + 1);  // 월 숫자 갱신
+
+                    while (tbody_Calendar.rows.length > 0) {                        // 이전 출력결과가 남아있는 경우 초기화
+                      tbody_Calendar.deleteRow(tbody_Calendar.rows.length - 1);
+                    }
+
+                    let nowRow = tbody_Calendar.insertRow();        // 첫번째 행 추가           
+
+                    for (let j = 0; j < firstDate.getDay(); j++) {  // 이번달 1일의 요일만큼
+                      let nowColumn = nowRow.insertCell();        // 열 추가
+                    }
+					var j = 1;
+                    for (let nowDay = firstDate; nowDay <= lastDate; nowDay.setDate(nowDay.getDate() + 1)) {   // day는 날짜를 저장하는 변수, 이번달 마지막날까지 증가시키며 반복  
+					  j++;
+                      let nowColumn = nowRow.insertCell();        // 새 열을 추가하고
 
 
+                      let newDIV = document.createElement("p");
+                      newDIV.setAttribute("id","forClick"+j);
+                      newDIV.innerHTML = leftPad(nowDay.getDate());        // 추가한 열에 날짜 입력
+                      nowColumn.appendChild(newDIV);
 
-  upload.addEventListener('click', () => realUpload.click());
+                      if (nowDay.getDay() == 6) {                 // 토요일인 경우
+                        nowRow = tbody_Calendar.insertRow();    // 새로운 행 추가
+                      }
 
-  realUpload.addEventListener('change', getImageFiles);
-</script>
+                      if (nowDay < today) {                       // 지난날인 경우
+                        newDIV.className = "pastDay";
+                      }
+                      else if (nowDay.getFullYear() == today.getFullYear() && nowDay.getMonth() == today.getMonth() && nowDay.getDate() == today.getDate()) { // 오늘인 경우           
+                        newDIV.className = "today";
+                        newDIV.onclick = function () { choiceDate(this); }
+                      }
+                      else {                                      // 미래인 경우
+                        newDIV.className = "futureDay";
+                      	
+                        newDIV.onclick = function () { choiceDate(this); }
+                      }
+                    }
+                  }
+
+                  // 날짜 선택
+                  function choiceDate(newDIV) {
+                    if (document.getElementsByClassName("choiceDay")[0]) {                              // 기존에 선택한 날짜가 있으면
+                      document.getElementsByClassName("choiceDay")[0].classList.remove("choiceDay");  // 해당 날짜의 "choiceDay" class 제거
+                    }
+                    newDIV.classList.add("choiceDay");           // 선택된 날짜에 "choiceDay" class 추가
+                    selectYear = document.getElementById("calYear").innerText;
+                    selectMonth = document.getElementById("calMonth").innerText;
+                    console.log("selectYear : ", selectYear);
+                    console.log(typeof selectYear)
+                    console.log("selectMonth : ",selectMonth);
+                    console.log(typeof selectMonth);
+                    console.log("selectYear : ", selectYear);
+                    console.log("selectMonth : ", selectMonth);
+                    console.log("newDIV : ",newDIV);
+                    
+                    console.log("choiceDay : ", newDIV.innerText);
+                    UserChoiceDay = newDIV.innerText;
+                    console.log("UserChoiceDay : ",UserChoiceDay);
+                    var choiceDay = newDIV.innerText;
+                    console.log(typeof choiceDay);
+
+                  }
+
+                  // 이전달 버튼 클릭
+                  function prevCalendar() {
+                    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() - 1, nowMonth.getDate());   // 현재 달을 1 감소
+                    buildCalendar();    // 달력 다시 생성
+                  }
+                  // 다음달 버튼 클릭
+                  function nextCalendar() {
+                    nowMonth = new Date(nowMonth.getFullYear(), nowMonth.getMonth() + 1, nowMonth.getDate());   // 현재 달을 1 증가
+                    buildCalendar();    // 달력 다시 생성
+                  }
+
+                  // input값이 한자리 숫자인 경우 앞에 '0' 붙혀주는 함수
+                  function leftPad(value) {
+                    if (value < 10) {
+                      value = "0" + value;
+                      return value;
+                    }
+                    return value;
+                  }
+          	
+            // jq
+            $(document).ready(function () {
+              $(".cancelBtn").on("click", function () {
+                location = "/travel/list";
+              });	//end cancleBtn;
+
+              $(".submitBtn").on("click", function () {
+
+              });
+
+              $('#performance').on('click', function () {
+
+                $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
+                $('#performance').css("color", "white").css("backgroundColor", "#49539E");
+
+                console.log($('#performance').attr("value"));
+
+              });
+
+              $('#outActivity').on('click', function () {
+
+                $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
+                $('#outActivity').css("color", "white").css("backgroundColor", "#49539E");
+
+                console.log($('#outActivity').attr("value"));
+
+              });
+
+              $('#popupStore').on('click', function () {
+
+                $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
+                $('#popupStore').css("color", "white").css("backgroundColor", "#49539E");
+
+                console.log($('#popupStore').attr("value"));
+
+              });
+
+              $('#exhibition').on('click', function () {
+
+                $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
+                $('#exhibition').css("color", "white").css("backgroundColor", "#49539E");
+
+                console.log($('#exhibition').attr("value"));
 
 
+              });
 
-</body>
-<jsp:include page="${pageContext.request.contextPath}/WEB-INF/views/common/footer.jsp"/>
-<%--   <jsp:include page="/WEB-INF/views/layout/footer.jsp"/> --%>
-</html>
+              // 달력
+
+              $('#startDate').on("click", function () {
+                whoClick = "startDateValue";
+                console.log("whoClick : ",whoClick);
+                if(calendarOnOff == false){
+                	window.onload = function () { buildCalendar(whoClick); };
+                	$(".CalendarWrap").css("display","block");
+                	calendarOnOff =true;
+                	startDateClick=true;
+                	console.log("calendarOnOff : ",calendarOnOff);
+                	console.log("startDateClick : ",startDateClick);
+                }
+              })
+              $('#endDate').on("click", function () {
+            	  whoClick = "endDateValue";
+                  console.log("whoClick : ",whoClick);
+            	  if(calendarOnOff == false){
+                  	$(".CalendarWrap").css("display","block");
+                  	calendarOnOff =true;
+                  	endDateClick=true;
+                  	console.log("calendarOnOff : ",calendarOnOff);
+                  	console.log("endDateClick : ",endDateClick);
+                  }
+              })
+              $('#CancleBtn').on("click",function(){
+            	  console.log("asdfasdfd : CancleBtn");
+            	  
+            	  
+            	  $(".CalendarWrap").css("display","none");
+            	  
+                  selectYear = document.getElementById("calYear").innerText;
+                  selectMonth = document.getElementById("calMonth").innerText;
+                  console.log("selectYear : ", selectYear);
+                  console.log(typeof selectYear)
+                  console.log("selectMonth : ",selectMonth);
+                  console.log(typeof selectMonth);
+                  console.log("selectYear : ", selectYear);
+                  console.log("selectMonth : ", selectMonth);
+                  console.log("choiceDay : ", UserChoiceDay);
+                  
+                  calendarOnOff = false;
+            	  startDateClick=false;
+            	  endDateClick=false;
+              })
+              
+			$('#OkBtn').on("click",function(){
+            	  console.log("asdfasdfd : OkBtn");
+            	  
+            	  
+            	  $(".CalendarWrap").css("display","none");
+            	  
+                  selectYear = document.getElementById("calYear").innerText;
+                  selectMonth = document.getElementById("calMonth").innerText;
+                  console.log("selectYear : ", selectYear);
+                  console.log(typeof selectYear)
+                  console.log("selectMonth : ",selectMonth);
+                  console.log(typeof selectMonth);
+                  console.log("selectYear : ", selectYear);
+                  console.log("selectMonth : ", selectMonth);
+                  console.log("choiceDay : ", UserChoiceDay);
+                  
+                  if(startDateClick == true){
+                	  $('#startDateValue').append(selectYear+"년 "+selectMonth+"월 "+UserChoiceDay+"일");
+                  }else if(endDateClick == true){
+                	  $('#endDateValue').append(selectYear+"년 "+selectMonth+"월 "+UserChoiceDay+"일");
+                  }
+                  
+                  
+                  calendarOnOff = false;
+            	  startDateClick=false;
+            	  endDateClick=false;
+              })
+
+            }); // end jq
+
+    //script
+
+          </script>
+        </body>
+
+        </html>
