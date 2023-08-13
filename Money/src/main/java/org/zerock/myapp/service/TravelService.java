@@ -24,4 +24,7 @@ public interface TravelService {
 	// 페이지 표시
 	public abstract Integer getPageTotal(Criteria cri) throws ServiceException;
 	
+	// travel 게시판에 글쓰기
+	public abstract Boolean writeTravel(String writer, String category,String title,String content,String address,Integer total,String start_date,String end_date) throws ServiceException;
+	
 }	// end interface

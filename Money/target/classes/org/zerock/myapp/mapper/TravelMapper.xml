@@ -57,7 +57,7 @@
   			1=1
   	</select>
   	
-  	<insert id="travelInsert">
+  	<insert id="writeTravel">
   		INSERT INTO
   			tbl_travel
   		(
@@ -69,19 +69,22 @@
   			address,
   			total,
   			write_date,
-  			modify_date
+  			start_date,
+  			end_date
   		)
   		VALUES 
   		(
-  			#{seq},
+  			travel_seq.NEXTVAL,
   			#{writer},
   			#{category},
   			#{title},
   			#{content},
   			#{address},
   			#{total},
-  			#{write_date},
-  			#{modify_date}
+  			current_date,
+  			to_date(#{start_date},'yyyy-mm-dd'),
+  			to_date(#{end_date},'yyyy-mm-dd')
+  			
   		)
   			
   	</insert>

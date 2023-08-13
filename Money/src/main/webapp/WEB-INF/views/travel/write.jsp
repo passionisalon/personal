@@ -9,9 +9,10 @@
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>Document</title>
-          <script type="text/javascript"
-            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1e94da7a1ab1c55879fcde4cfe8d086d&libraries=services"></script>
-          
+<!--           <script type="text/javascript" -->
+<!--             src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1e94da7a1ab1c55879fcde4cfe8d086d&libraries=services"></script> -->
+<!--           <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1e94da7a1ab1c55879fcde4cfe8d086&libraries=services,clusterer,drawing"></script> -->
+          <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1e94da7a1ab1c55879fcde4cfe8d086&libraries=services"> </script>
 
           <script src="https://kit.fontawesome.com/9776c2cb70.js" crossorigin="anonymous"></script>
           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
@@ -256,6 +257,11 @@
 
             text-align: center;
           }
+          #WriteTitle{
+          	font-weight:bolder;
+            font-size: larger;
+            text-align: center;
+          }
         </style>
 
         <body>
@@ -266,17 +272,23 @@
               </div>
               <div class="TravelBody">
 
-                <script>
-
-                </script>
-
-
                 <br>
                 <div class="TravelTitle">
                   <h2>여행지 글쓰기</h2>
                 </div>
                 <br>
                 <hr>
+                 <br>
+                <div class="TravelSmallWrap">
+                  <h4>주제</h4>
+                </div>
+                <br>
+                <hr>
+                <div class="placeWrap">
+                  <div class="placeContainer">
+                    <input id="WriteTitle" type="text" placeholder="장소명">
+                  </div>
+                </div>
                 <br>
                 <div class="TravelSmallWrap">
                   <h4>카테고리</h4>
@@ -292,16 +304,8 @@
                     </ul>
                   </div>
                 </div><!-- tabContainer -->
-                <br>
-                <div class="TravelSmallWrap">
-                  <h4>장소명</h4>
-                </div>
-                <br>
-                <div class="placeWrap">
-                  <div class="placeContainer">
-                    <input type="text" placeholder="장소명">
-                  </div>
-                </div>
+               
+
                 <br>
                 <div class="TravelSmallWrap">
                   <h4>일정</h4>
@@ -351,14 +355,14 @@
                 </div>
                 <div class="contentWrap">
                   <div class="contentContainer">
-                    <textarea name="content" id="" placeholder="내용을 입력해주세요"></textarea>
+                    <textarea name="content" id="WriteContent" placeholder="내용을 입력해주세요"></textarea>
                   </div>
                 </div>
                 <div class="tabContainer">
                   <div class="tab">
                     <ul class="tabulS">
                       <li id="locations" value="">위치</li>
-                      <li id="loc_num" value=""></li>
+<!--                       <li id="loc_num" value=""></li> -->
                       <li id="locationAddress" value=""></li>
                       <li id="AddressPlace" value=""><button id="AddressBtn" onclick="loc_btn()">주소검색</button></li>
                       <li id="fileUpload" value="">첨부파일</li>
@@ -369,27 +373,78 @@
                 </div><!-- tabContainer -->
 
 
+
+
+                
                 <!-- 카카오미니맵 -->
-                <div class="kakaoMiniMap">
-                  <div id="map"></div>
+                <div class="kakaoMiniMap" >
+                  <div id="map" style="display:hidden"></div>
                 </div>
 
                 <script type="text/javascript"
-                  src="//dapi.kakao.com/v2/maps/sdk.js?appkey=749bb5e3ab5373f2bac05d295edc0068"></script>
+                  src="//dapi.kakao.com/v2/maps/sdk.js?appkey=749bb5e3ab5373f2bac05d295edc0068&libraries=services"></script>
+<!-- 				<script type="text/javascript" -->
+<!--                   src="//dapi.kakao.com/v2/maps/sdk.js?appkey=1e94da7a1ab1c55879fcde4cfe8d086&libraries=services"></script> -->
+                 
                   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
                 <script>
+                
+                var userLocationAddress;
+                var temp;
+                
                   var container = document.getElementById('map');
+                  
                   var options = {
                     center: new kakao.maps.LatLng(33.450701, 126.570667), level: 3
                   };
-
                   var map = new kakao.maps.Map(container, options);
 
+                  
+               // 주소-좌표 변환 객체를 생성합니다
+                  var geocoder = new kakao.maps.services.Geocoder();
+
+                  // 주소로 좌표를 검색합니다
+                  temp = geocoder.addressSearch(userLocationAddress, function(result, status) {
+
+                      // 정상적으로 검색이 완료됐으면 
+                       if (status === kakao.maps.services.Status.OK) {
+
+                          var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                  		var message = 'latlng: new kakao.maps.LatLng(' + result[0].y + ', ';
+                  		message += result[0].x + ')';
+                  		
+//                   		var resultDiv = document.getElementById('clickLatlng');
+                  		var resultDiv = document.getElementById('map');
+                  		resultDiv.innerHTML = message;
+                  		
+                          // 결과값으로 받은 위치를 마커로 표시합니다
+                          var marker = new kakao.maps.Marker({
+                              map: map,
+                              position: coords
+                          });
+
+                          // 인포윈도우로 장소에 대한 설명을 표시합니다
+                          var infowindow = new kakao.maps.InfoWindow({
+                              content: '<div style="width:150px;text-align:center;padding:6px 0;">장소</div>'
+                          });
+                          infowindow.open(map, marker);
+
+                          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                          map.setCenter(coords);
+                      } 
+                  });  
+                  
+                  
+                  
+                  
+                  
+                  
 
             //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
             function loc_btn() {
               new daum.Postcode({
                 oncomplete: function (data) {
+                	console.log(data);
                   // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 
                   // 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
@@ -413,15 +468,15 @@
                   }
 
                   // 우편번호와 주소 정보를 해당 필드에 넣는다.
-                  document.getElementById('loc_num').value = data.zonecode;
+//                   document.getElementById('loc_num').value = data.zonecode;
                   document.getElementById("locationAddress").value = roadAddr;
-
+                  userLocationAddress = roadAddr;
                  console.log("data.zonecode : ",data.zonecode);
                  console.log("roadAddr : ",roadAddr);
 
                  document.querySelector('#locationAddress').append(roadAddr);
 
-
+                 
 
                   // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
                   // if (roadAddr !== '') {
@@ -438,16 +493,24 @@
                     guideTextBox.style.display = 'block';
 
                   } else if (data.autoJibunAddress) {
-                    var expJibunAddr = data.autoJibunAddress;
-                    guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
-                    guideTextBox.style.display = 'block';
+//                     var expJibunAddr = data.autoJibunAddress;
+//                     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+//                     guideTextBox.style.display = 'block';
                   } else {
                     // guideTextBox.innerHTML = '';
                     // guideTextBox.style.display = 'none';
                   }
                 }
               }).open();
+              console.log("llll");
+              temp();
+              console.log(temp);
             }
+            
+            
+            // 
+            
+            // 
             </script>
 
                 <!-- 버튼 -->
@@ -469,6 +532,7 @@
             var calendarOnOff = false;
             var startDateClick = false;
             var endDateClick = false;
+            var chooseCategory = "performance";
 
             //script
 
@@ -578,22 +642,16 @@
               }
               return value;
             }
-
+			
             // jq
             $(document).ready(function () {
-              $(".cancelBtn").on("click", function () {
-                location = "/travel/list";
-              });	//end cancleBtn;
-
-              $(".submitBtn").on("click", function () {
-
-              });
-
+              var userStartDate;
+              var userEndDate;
               $('#performance').on('click', function () {
 
                 $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
                 $('#performance').css("color", "white").css("backgroundColor", "#49539E");
-
+                chooseCategory = "performance";
                 console.log($('#performance').attr("value"));
 
               });
@@ -602,7 +660,7 @@
 
                 $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
                 $('#outActivity').css("color", "white").css("backgroundColor", "#49539E");
-
+                chooseCategory = "outActivity";
                 console.log($('#outActivity').attr("value"));
 
               });
@@ -611,7 +669,7 @@
 
                 $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
                 $('#popupStore').css("color", "white").css("backgroundColor", "#49539E");
-
+                chooseCategory = "popupStore";
                 console.log($('#popupStore').attr("value"));
 
               });
@@ -620,7 +678,7 @@
 
                 $('.tabul').find('li').css("color", "black").css("backgroundColor", "#f5f5f5");
                 $('#exhibition').css("color", "white").css("backgroundColor", "#49539E");
-
+                chooseCategory = "exhibition";
                 console.log($('#exhibition').attr("value"));
 
 
@@ -689,16 +747,43 @@
                 console.log("choiceDay : ", UserChoiceDay);
 
                 if (startDateClick == true) {
-                  $('#startDateValue').append(selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");
+                	var row = (selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");
+                  $('#startDateValue').append(row);
+                  userStartDate = selectYear+selectMonth+UserChoiceDay;
                 } else if (endDateClick == true) {
-                  $('#endDateValue').append(selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");
+                	var row = (selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");
+                  $('#endDateValue').append(row).val(selectYear + "년 " + selectMonth + "월 " + UserChoiceDay + "일");;
+                  userEndDate = selectYear+selectMonth+UserChoiceDay;
                 }
 
 
                 calendarOnOff = false;
                 startDateClick = false;
                 endDateClick = false;
-              })
+              }); // end OkBtn
+              
+              $(".cancelBtn").on("click", function () {
+                  location = "/travel/list";
+                });	//end cancleBtn;
+
+                $(".submitBtn").on("click", function () {
+					console.log("Writer : ","${USER_NICKNAME}");
+					console.log("category : ",chooseCategory);
+					console.log("타이틑 : ",$('#WriteTitle').val());
+					console.log("content : ",$('#WriteContent').val());
+					console.log("address : ",userLocationAddress);
+					
+					console.log("total : ",0);
+					console.log("start_date : ",userStartDate);
+					console.log("start_dateType : ",typeof userStartDate);
+					console.log("end_date : ",userEndDate);
+					console.log("end_dateType : ",typeof userEndDate);
+					
+					
+					
+					
+					
+                });
 
             }); // end jq
 

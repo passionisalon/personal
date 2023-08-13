@@ -20,10 +20,13 @@ public interface TravelMapper {
 	public abstract Integer SearchTravelPage(String searchType, String keyword);
 	
 	// travel 게시판 게시물 확인하기
-	public abstract TravelDTO getSelectTravel(Integer seq) throws ServiceException;
+	public abstract TravelDTO getSelectTravel(Integer seq);
 	
 	// travel 게시판의 페이지
 	public abstract Integer getPageTotalAmount(Criteria cri);
 	
-
+	// travel 게시판 글쓰기
+	public abstract Integer writeTravel(String writer, String category,String title,String content,String address,Integer total,String start_date,String end_date);
+	
+	
 }	// end class

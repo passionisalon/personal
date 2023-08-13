@@ -133,5 +133,40 @@ public class TravelController {
 		}catch(Exception e) {
 			throw new ControllerException(e);
 		}
+	}	//	end writeTravel
+	
+	@ResponseBody
+	@PostMapping("/TravelWrite")
+	public Boolean writeTravel(
+			String writer,
+			String category,
+			String title, 
+			String content, 
+			String address,
+			Integer total,
+			String start_date,
+			String end_date) 
+					throws ControllerException{
+		this.getThisClassInfo();
+		log.info("writer : {}",writer);
+		log.info("category : {}",category);
+		log.info("title : {}",title);
+		log.info("content : {}",content);
+		log.info("address : {}",address);
+		log.info("total : {}",total);
+		log.info("start_date : {}",start_date);
+		log.info("end_date : {}",end_date);
+		
+		try {
+			
+			Boolean result = this.travelService.writeTravel(writer, category, title, content, address, total, start_date, end_date);
+			this.getThisClassInfo();
+			log.info(result);
+			
+			return result;
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// end try-catch
+		
 	}
 }	// end class

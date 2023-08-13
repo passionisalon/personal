@@ -123,6 +123,34 @@ public class TravelServiceImpl implements TravelService {
 		
 	}	// end SearchTravelPage
 	
-	
+	@Override
+	public Boolean writeTravel(String writer, String category,String title,String content,String address,Integer total,String start_date,String end_date) throws ServiceException{
+		this.getThisClassInfo();
+		log.info("writer : {}",writer);
+		log.info("category : {}",category);
+		log.info("title : {}",title);
+		log.info("content : {}",content);
+		log.info("address : {}",address);
+		log.info("total : {}",total);
+		log.info("start_date : {}",start_date);
+		log.info("end_date : {}",end_date);
+		
+		try {
+			
+			Integer result = this.travelMapper.writeTravel(writer, category, title, content, address, total, start_date, end_date);
+			this.getThisClassInfo();
+			log.info("result : {}",result);
+			if(result == 1) {
+				log.info("글쓰기 성공!");
+				return true;
+			}else {
+				log.info("글쓰기 실패!");
+				return false;
+			}	// end if - else
+			
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}	// end try-catch
+	}
 	
 }	// end class
