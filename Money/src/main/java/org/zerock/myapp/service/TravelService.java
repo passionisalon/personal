@@ -27,4 +27,18 @@ public interface TravelService {
 	// travel 게시판에 글쓰기
 	public abstract Boolean writeTravel(String writer, String category,String title,String content,String address,String start_date,String end_date) throws ServiceException;
 	
+	// travel 게시판 작성자 확인
+	public abstract Boolean checkTravelViewUser(String loginUserNickName, Integer seq) throws ServiceException;
+	
+	// travel 게시판 수정
+	public abstract Boolean travelModify(
+			Integer seq,
+			String writer,
+			String category,
+			String title, 
+			String content, 
+			String address,
+			String start_date,
+			String end_date
+			) throws ServiceException;
 }	// end interface

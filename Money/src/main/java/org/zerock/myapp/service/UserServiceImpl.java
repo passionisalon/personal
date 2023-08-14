@@ -92,8 +92,8 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 					log.info("\n\t Session_USER_GENDER : {}",session.getAttribute("USER_GENDER"));
 					log.info("\n\t Session_USER_INTRODUCTION : {}",session.getAttribute("USER_INTRODUCTION"));
 					
-					model.addAttribute("__AUTH__",userInfo);
-					
+					model.addAttribute("__AUTHuserInfo__",userInfo);
+//					session.setAttribute("__AUTH__", userInfo);
 					this.getThisClassInfo();
 					log.info("\n\t end this method : {}","UserLogin");
 					return true;

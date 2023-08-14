@@ -166,5 +166,73 @@ public class TravelController {
 			throw new ControllerException(e);
 		}	// end try-catch
 		
-	}
+	}	// writeTravel
+	
+	@ResponseBody
+	@PostMapping("/TravelViewCheckUser")
+	public Boolean checkUser(String loginUserNickName , Integer seq) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("loginUserNickName : {}",loginUserNickName);
+		log.info("seq : {}",seq);
+		
+		try {
+			Boolean result = this.travelService.checkTravelViewUser(loginUserNickName, seq);
+			this.getThisClassInfo();
+			log.info("result : {}",result);
+			
+			return result;
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+	}	// checkUser
+	
+	@GetMapping("/modify")
+	public void travelModify(@RequestParam("seq") Integer seq, Model model) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("travelModify(seq : {}) invoked.",seq);
+		
+		try {
+			TravelDTO travelDTO = this.travelService.getSelectTravel(seq);
+			this.getThisClassInfo();
+			log.info("TravelDTO : {}", travelDTO);
+			model.addAttribute("__SELECTTRAVEL__",travelDTO);
+			
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+		
+	}	// end travelModfiy
+	
+	@ResponseBody
+	@PostMapping("/modifyAjax")
+	public Boolean travelModifyAjax(
+			Integer seq,
+			String writer,
+			String category,
+			String title, 
+			String content, 
+			String address,
+			String start_date,
+			String end_date
+			) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("seq : {}",seq);
+		log.info("writer : {}",writer);
+		log.info("category : {}",category);
+		log.info("title : {}",title);
+		log.info("content : ",content);
+		log.info("address : {}",address);
+		log.info("start_date : {}",start_date);
+		log.info("end_date : {}",end_date);
+		try {
+			Boolean result = this.travelService.travelModify(seq, writer, category, title, content, address, start_date, end_date);
+			this.getThisClassInfo();
+			log.info("result : {}",result);
+			
+			return result;
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+		
+	}	// end travelModfiyAjax
 }	// end class

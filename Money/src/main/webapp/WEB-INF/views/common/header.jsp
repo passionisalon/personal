@@ -28,20 +28,29 @@
                 <li class="fl" id="freeBoard">자유게시판</li>
                 <li class="fl" ><br></li>
                 <li class="fl" ><br></li>
-                <li class="fl" id="joinBtn">회원가입</li>
-                <li class="fl" id="loginBtn">로그인</li>   
-            </ul>
-            <ul class="bn">
-                <!-- <c:if test="${sessionScope.__AUTH__ == null}"> -->
-                    <!-- <li class="fr" id="joinBtn">íìê°ì</li> -->
-                    <!-- <li class="fr" id="loginBtn">ë¡ê·¸ì¸</li> -->
-                <!-- </c:if> -->
+<!--                 <li class="fl" id="joinBtn">회원가입</li> -->
+<!--                 <li class="fl" id="loginBtn">로그인</li> -->
+                <c:if test="${__AUTHuserInfo__ == null}">
+                    <li class="fr" id="joinBtn">회원가입</li>
+                    <li class="fr" id="loginBtn">로그인</li>
+                </c:if>
 
-                <!-- <c:if test="${sessionScope.__AUTH__ != null}">
-                    <li class="fr" id="logoutBtn">ë¡ê·¸ìì</li>
-                    <li class="fr" id="myPageBtn">ë§ì´íì´ì§</li>
-                </c:if> -->
+                <c:if test="${__AUTHuserInfo__ != null}">
+                    <li class="fr" id="logoutBtn">로그아웃</li>
+                    <li class="fr" id="myPageBtn">마이페이지</li>
+                </c:if>
             </ul>
+<!--             <ul class="bn"> -->
+<%--                 <c:if test="${__AUTH__} == null"> --%>
+<!--                     <li class="fr" id="joinBtn">회원가입</li> -->
+<!--                     <li class="fr" id="loginBtn">로그인</li> -->
+<%--                 </c:if> --%>
+
+<%--                 <c:if test="${__AUTH__} != null"> --%>
+<!--                     <li class="fr" id="logoutBtn">로그아웃</li> -->
+<!--                     <li class="fr" id="myPageBtn">마이페이지</li> -->
+<%--                 </c:if> --%>
+<!--             </ul> -->
 
         </div>
 

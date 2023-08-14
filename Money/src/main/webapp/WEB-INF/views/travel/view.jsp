@@ -149,6 +149,7 @@
             </div>
             <div class="TravelView_Body">
                 <div class="categoryTitleAddress">
+                	
                     <h2>${__SELECTTRAVEL__.category}</h2>
                     <br>
                     <h1>${__SELECTTRAVEL__.title}</h1>
@@ -218,7 +219,7 @@
 
                 <div class="btn">
 					<div class="btn_modify">
-						<a href="#" onclick=""><button id="modBtn">수정</button></a>
+						
 					</div>
 					<div class="btn_delete">
 						<a href="#" onclick=""><button id="delBtn">삭제</button></a>
@@ -239,9 +240,42 @@
     </div>
 
     <script>
+
+    
         $(document).ready(function () {
-            
-        });
+        	var user = "${USER_NICKNAME}";
+        	var seq = ${__SELECTTRAVEL__.seq};
+        	console.log("user : ",user);
+        	console.log("seq : ",seq);
+        	
+        	$.ajax({
+        		url : '/travel/TravelViewCheckUser',
+        		type: 'post',
+        		data:{
+        			loginUserNickName : user,
+        			seq : seq,
+        		},
+        		dataType : 'json',
+        		success : function(data){
+        			console.log("ajax성공!!!");
+        			console.log("data : ",data);
+        			if(data){
+        				$('.btn_modify').append('<a href="#" onclick="abc('+seq+')"><button id="modBtn">수정</button></a>');
+//         				<a href="#" onclick=""><button id="modBtn">수정</button></a>
+        			}else{
+        				
+        			}
+        		},error:function(xhr,status,error){
+        			console.log(xhr);
+        			console.log(status);
+        			console.log(error);
+        		}
+        	});// end ajax
+        });	// end jq
+        
+        function abc(seq){
+        	self.location = "/travel/modify?seq="+seq;
+        }
 
     </script>
 </body>

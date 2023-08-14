@@ -115,8 +115,28 @@
   		WHERE
   			1=1
 			<include refid="searchInclude"/>
-			
-  			
   	</select>
   	
+  	<select id="checkTravelViewUser" resultType="java.lang.String">
+  		SELECT writer 
+  		FROM tbl_travel
+		WHERE seq=#{seq} 
+
+  	</select>
+  	
+  	<update id="modifyTravel">
+  		UPDATE tbl_travel
+  		SET
+  			category = #{category},
+  			title = #{title},
+  			content = #{content},
+  			address = #{address},
+  			modify_date = current_date, 
+  			start_date = #{start_date},
+  			end_date = #{end_date}
+  		WHERE
+  			seq = #{seq}
+  		AND
+  			writer = #{writer}
+  	</update>
   </mapper>

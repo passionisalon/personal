@@ -2,11 +2,10 @@ package org.zerock.myapp.mapper;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.zerock.myapp.domain.Criteria;
-import org.zerock.myapp.domain.SearchDTO;
 import org.zerock.myapp.domain.TravelDTO;
-import org.zerock.myapp.exception.ServiceException;
 
 public interface TravelMapper {
 
@@ -26,7 +25,26 @@ public interface TravelMapper {
 	public abstract Integer getPageTotalAmount(Criteria cri);
 	
 	// travel 게시판 글쓰기
-	public abstract Integer writeTravel(String writer, String category,String title,String content,String address,String start_date,String end_date);
+	public abstract Integer writeTravel(
+			String writer, 
+			String category,
+			String title,
+			String content,
+			String address,
+			String start_date,
+			String end_date);
 	
+	// travel 게시판 작성자 확인
+	public abstract String checkTravelViewUser(Integer seq);
 	
+	// travel 게시판 수정
+	public abstract Integer modifyTravel(
+			Integer seq,
+			String writer,
+			String category,
+			String title, 
+			String content, 
+			String address,
+			String start_date,
+			String end_date);
 }	// end class

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.zerock.myapp.domain.Criteria;
 import org.zerock.myapp.domain.SearchDTO;
 import org.zerock.myapp.domain.TravelDTO;
+import org.zerock.myapp.exception.ControllerException;
 import org.zerock.myapp.exception.ServiceException;
 import org.zerock.myapp.mapper.TravelMapper;
 
@@ -151,6 +152,69 @@ public class TravelServiceImpl implements TravelService {
 		}catch(Exception e) {
 			throw new ServiceException(e);
 		}	// end try-catch
-	}
+	}	// writeTravel
+
+	// travel 게시판 작성자 확인
+	@Override
+	public Boolean checkTravelViewUser(String loginUserNickName, Integer seq) throws ServiceException{
+		this.getThisClassInfo();
+		log.info("loginUserNickName : {}",loginUserNickName);
+		log.info("seq : {}",seq);
+		try {
+			
+			String result = this.travelMapper.checkTravelViewUser(seq);
+			this.getThisClassInfo();
+			log.info("result : {}",result);
+			
+			if(result.equals(loginUserNickName)) {
+				log.info("게시글작성자와 로그인 작성자가 일치합니다!!");
+				return true;
+			}else {
+				log.info("게시글작성자와 로그인 작성자가 일치하지 않습니다!!");
+				return false;
+			}	// end if-else
+			
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}
+	}	// end checkTravelViewUser
+	
+	// travel 게시판 수정
+	@Override
+	public Boolean travelModify(
+				Integer seq,
+				String writer,
+				String category,
+				String title, 
+				String content, 
+				String address,
+				String start_date,
+				String end_date
+				) throws ServiceException{
+		this.getThisClassInfo();
+		log.info("seq : {}",seq);
+		log.info("writer : {}",writer);
+		log.info("category : {}",category);
+		log.info("title : {}",title);
+		log.info("content : ",content);
+		log.info("address : {}",address);
+		log.info("start_date : {}",start_date);
+		log.info("end_date : {}",end_date);
+		try {
+			Integer result = this.travelMapper.modifyTravel(seq, writer, category, title, content, address, start_date, end_date);
+			this.getThisClassInfo();
+			log.info("result : {}",result);
+			if(result == 1) {
+				log.info("수정 성공!!!");
+				return true;
+			}else {
+				log.info("수정 실패!!!");
+				return false;
+			}
+			
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}
+	}	// end travelModify
 	
 }	// end class
