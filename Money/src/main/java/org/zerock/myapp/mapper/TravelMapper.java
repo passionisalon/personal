@@ -26,7 +26,7 @@ public interface TravelMapper {
 	public abstract Integer getPageTotalAmount(Criteria cri);
 	
 	// travel 게시판 글쓰기
-	public abstract Integer writeTravel(String writer, String category,String title,String content,String address,Integer total,String start_date,String end_date);
+	public abstract Integer writeTravel(String writer, String category,String title,String content,String address,String start_date,String end_date);
 	
 	
 }	// end class

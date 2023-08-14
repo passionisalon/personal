@@ -80,7 +80,7 @@
   			#{title},
   			#{content},
   			#{address},
-  			#{total},
+  			0,
   			current_date,
   			to_date(#{start_date},'yyyy-mm-dd'),
   			to_date(#{end_date},'yyyy-mm-dd')

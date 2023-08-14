@@ -476,8 +476,16 @@
 
                  document.querySelector('#locationAddress').append(roadAddr);
 
+                 /////////////////////////////
                  
 
+                	 
+                	 
+                	 
+                	 
+                	 
+                 
+                 
                   // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
                   // if (roadAddr !== '') {
                   //   document.getElementById("sample4_extraAddress").value = extraRoadAddr;
@@ -503,8 +511,7 @@
                 }
               }).open();
               console.log("llll");
-              temp();
-              console.log(temp);
+              
             }
             
             
@@ -772,18 +779,67 @@
 					console.log("타이틑 : ",$('#WriteTitle').val());
 					console.log("content : ",$('#WriteContent').val());
 					console.log("address : ",userLocationAddress);
-					
-					console.log("total : ",0);
 					console.log("start_date : ",userStartDate);
 					console.log("start_dateType : ",typeof userStartDate);
 					console.log("end_date : ",userEndDate);
 					console.log("end_dateType : ",typeof userEndDate);
 					
+					if("${USER_NICKNAME}" == ''){
+						alert("로그인후 가능합니다!");
+						return false;
+					}
+					if(chooseCategory == ''){
+						alert("카테고리를 선택하셔야합니다!");
+						return false;
+					}
+					if($('#WriteTitle').val()==''){
+						alert("타이틀을 작성해주십시오");
+						return false;
+					}
+					if($('#WriteContent').val()==''){
+						alert("콘텐츠내용을 작성해주십시오.");
+						return false;
+					}	
+					if(userLocationAddress==null){
+						alert("주소를 지정해주십시오.");
+						return false;
+					}
+					if(userStartDate==null){
+						alert("시작일을 지정해주십시오.");
+						return false;
+					}
+					if(userEndDate==null){
+						alert("종료일을 지정해주십시오.");
+						return false;
+					}
 					
+					$.ajax({
+						url:'/travel/TravelWrite',
+						type:'post',
+						data:{
+							writer : "${USER_NICKNAME}",
+							category : chooseCategory,
+							title : $('#WriteTitle').val(),
+							content : $('#WriteContent').val(),
+							address : userLocationAddress,
+							start_date : userStartDate,
+							end_date : userEndDate,
+						},
+						dataType:'json',
+						success:function(data){
+							console.log("ajax성공!!");
+							console.log("data : ",data);
+							alert("작성성공!!!");
+						},error:function(xhr,status,error){
+							console.log(xhr);
+							console.log(status);
+							console.log(error);
+						}
+					});	// end ajax
 					
+					self.location = "/travel/list";
 					
-					
-                });
+                });	// end submitBtn
 
             }); // end jq
 
