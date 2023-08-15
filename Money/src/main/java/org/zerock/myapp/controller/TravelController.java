@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.zerock.myapp.domain.Criteria;
+import org.zerock.myapp.domain.LikeDTO;
 import org.zerock.myapp.domain.PageDTO;
 import org.zerock.myapp.domain.TravelDTO;
 import org.zerock.myapp.exception.ControllerException;
@@ -145,6 +146,25 @@ public class TravelController {
 		}
 		
 	}	// end userLike
+	
+	@ResponseBody
+	@PostMapping("/likeList")
+	public LinkedList<LikeDTO> selectLikeList(String Email,Integer board_seq,String board) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("Email : {}",Email);
+		log.info("board_seq : {}",board_seq);
+		log.info("board : {}",board);
+		
+		try {
+			LinkedList<LikeDTO> result = this.likeService.selectLikeList(Email, board_seq, board);
+			this.getThisClassInfo();
+			result.forEach(log::info);
+			return result;
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+	}	// end selectLikeList
+	
 	
 	// 게시물 확인 
 	@GetMapping("/view")

@@ -6,15 +6,23 @@
   
 <mapper namespace="org.zerock.myapp.mapper.LikeMapper">
   
+  	<sql id="likeInclude">
+  			email = #{Email}
+			AND
+			board_seq = #{board_seq}
+			AND
+			board = #{board}
+  	</sql>
+  
 	<insert id="setLike">
 		INSERT INTO
 			tbl_like
 		VALUES
 		(
 			like_SEQ.NEXTVAL,
-			#{userEmail},
+			#{Email},
 			#{board_seq},
-			#{board_name}
+			#{board}
 		)
 		
 	</insert>
@@ -23,12 +31,25 @@
 		DELETE FROM
 			tbl_like
 		WHERE
-			email = #{userEmail}
-			AND
-			board_seq = #{board_seq}
-			AND
-			board = #{board_name}
+			1=1
+			<include refid="likeInclude"/>
+		
 	</delete>
+	
+	<select id="selectLikeList" resultType="org.zerock.myapp.domain.LikeDTO">
+		SELECT *
+		FROM 
+		(
+			SELECT
+				/*+ INDEX_DESC(tbl_auditor PK_board) */
+				*
+			FROM
+				tbl_like
+			WHERE
+				1=1
+				<include refid="likeInclude"/>
+		)
+	</select>
   
 </mapper>
   	

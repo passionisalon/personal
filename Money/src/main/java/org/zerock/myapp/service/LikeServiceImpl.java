@@ -1,7 +1,10 @@
 package org.zerock.myapp.service;
 
+import java.util.LinkedList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.zerock.myapp.domain.LikeDTO;
 import org.zerock.myapp.exception.ServiceException;
 import org.zerock.myapp.mapper.LikeMapper;
 
@@ -26,14 +29,14 @@ public class LikeServiceImpl implements LikeService {
 	
 	// like Unlike 서비스
 	@Override
-	public String setLike(String userEmail, Integer board_seq, String board_name) throws ServiceException {
+	public String setLike(String Email, Integer board_seq, String board) throws ServiceException {
 		this.getThisClassInfo();
-		log.info("userEmail : {}",userEmail);
+		log.info("Email : {}",Email);
 		log.info("board_seq : {}",board_seq);
-		log.info("board_name : {}",board_name);
+		log.info("board : {}",board);
 		
 		try {
-			Integer result = this.likeMapper.setLike(userEmail, board_seq, board_name);
+			Integer result = this.likeMapper.setLike(Email, board_seq, board);
 			this.getThisClassInfo();
 			log.info("result : {}",result);
 			
@@ -53,14 +56,14 @@ public class LikeServiceImpl implements LikeService {
 
 	// unLike서비스
 	@Override
-	public String removeLike(String userEmail,Integer board_seq,String board_name) throws ServiceException{
+	public String removeLike(String Email,Integer board_seq,String board) throws ServiceException{
 		this.getThisClassInfo();
-		log.info("userEmail : {}",userEmail);
+		log.info("Email : {}",Email);
 		log.info("board_seq : {}",board_seq);
-		log.info("board_name : {}",board_name);
+		log.info("board : {}",board);
 		
 		try {
-			Integer result = this.likeMapper.removeLike(userEmail, board_seq, board_name);
+			Integer result = this.likeMapper.removeLike(Email, board_seq, board);
 			this.getThisClassInfo();
 			log.info("result : {}",result);
 			if(result == 1) {
@@ -74,6 +77,25 @@ public class LikeServiceImpl implements LikeService {
 			throw new ServiceException(e);
 		}
 	}	// end revmoveLike
+	
+	
+	// like리스트
+	@Override
+	public LinkedList<LikeDTO> selectLikeList(String Email,Integer board_seq,String board) throws ServiceException{
+		this.getThisClassInfo();
+		log.info("Email : {}",Email);
+		log.info("board_seq : {}",board_seq);
+		log.info("board : {}",board);
+		
+		try {
+			LinkedList<LikeDTO> result = this.likeMapper.selectLikeList(Email, board_seq, board);
+			this.getThisClassInfo();
+			result.forEach(log::info);
+			return result;
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}
+	}	// end selectLikeList
 	
 	
 }	// end class
