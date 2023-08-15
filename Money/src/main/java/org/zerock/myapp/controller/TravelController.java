@@ -17,6 +17,7 @@ import org.zerock.myapp.domain.Criteria;
 import org.zerock.myapp.domain.PageDTO;
 import org.zerock.myapp.domain.TravelDTO;
 import org.zerock.myapp.exception.ControllerException;
+import org.zerock.myapp.service.LikeService;
 import org.zerock.myapp.service.TravelService;
 
 import lombok.NoArgsConstructor;
@@ -31,6 +32,9 @@ public class TravelController {
 
 	@Setter(onMethod_= {@Autowired})
 	private TravelService travelService;
+	
+	@Setter(onMethod_= {@Autowired})
+	private LikeService likeService;
 	
 	public void getThisClassInfo() {
 		System.out.println();
@@ -105,7 +109,42 @@ public class TravelController {
 		
 	}	// end SearchTravelList
 	
-
+	@ResponseBody
+	@PostMapping("/like")
+	public Boolean userLike(String switchWord,String userEmail,Integer board_seq,String board_name) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("userEmail : {}",userEmail);
+		log.info("board_seq : {}",board_seq);
+		log.info("board_name : {}",board_name);
+		try {
+			Boolean result=false;
+			switch(switchWord) {
+			case "like" : 
+				String resultLike = this.likeService.setLike(userEmail, board_seq, board_name);
+				this.getThisClassInfo();
+				log.info("resultLike : {}",resultLike);
+				result = true;
+				break;
+				
+			case "unlike" : 
+				String resultUnLike = this.likeService.removeLike(userEmail, board_seq, board_name);
+				this.getThisClassInfo();
+				log.info("resultUnLike : {}",resultUnLike);
+				result = false;
+				break;
+				
+			default :
+				result = false;
+				break;
+			}	// end switch
+			
+			return result;
+			
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+		
+	}	// end userLike
 	
 	// 게시물 확인 
 	@GetMapping("/view")

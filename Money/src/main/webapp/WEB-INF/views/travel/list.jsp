@@ -137,8 +137,9 @@
     .heart .fa-heart.off , #heart #fa-heart.off{
      color:#e6e6e6;   
     }
-    .heart .fa-heart.on #heart #fa-heart.on{
-     color:hsl(0, 100%, 60%);   
+    .heart .fa-heart.on , #heart #fa-heart.on{
+     color:hsl(90%, 100%, 60%);   
+	
     }
 
 	/* pagenation */
@@ -234,25 +235,25 @@
                     <div class="list">
                     <c:forEach var="TravelDTO" items="${__TravelLIST__}">
                         <ul class="listUl" id="listUl">
-                            <li class="listwrap" id="listwrap" onclick="abc(${TravelDTO.seq})">
+                            <li class="listwrap" id="listwrap">
                                 <div class="contentSeq" id="contentSeq">
-                                    <a>${TravelDTO.seq}</a>
+                                    <a onclick="abc(${TravelDTO.seq})">${TravelDTO.seq}</a>
                                 </div>
                                 <div class="divwrap" id="divwrap">
-                                    <img src="https://picsum.photos/id/122/200" alt="샘플이미지">
+                                    <img src="https://picsum.photos/id/122/200" alt="샘플이미지" onclick="abc(${TravelDTO.seq})">
                                 </div>
                                 <div class="divwrap" id="divwrap">
-                                    <a>${TravelDTO.title}</a>
+                                    <a onclick="abc(${TravelDTO.seq})">${TravelDTO.title}</a>
                                 </div>
                                 <div class="divwrap" id="divwrap">
-                                    <a>
+                                    <a onclick="abc(${TravelDTO.seq})">
 										<fmt:formatDate value="${TravelDTO.start_date}" pattern="yyyy년 MM월 dd일"/>
 										~
 										<fmt:formatDate value="${TravelDTO.end_date}" pattern="yyyy년 MM월 dd일"/>
                                     </a>
                                 </div>
                                 <div class="heart contentSeq" id="heart contentSeq">
-                                    <i class="fas fa-heart off" id="fas fa-heart off"></i>
+                                    <i class="fas fa-heart off" id="fas fa-heart off" data-travel-seq="${TravelDTO.seq}"></i>
                                 </div>
                             </li>
                         </ul>
@@ -430,21 +431,21 @@
 	     				    const endyearmonthday   = endDateFormatted.getFullYear() + "년 "+ (("00"+endDateFormatted.getMonth().toString()).slice(-2)) +"월 "+(("00"+endDateFormatted.getDay().toString()).slice(-2))+"일 "
 	     				    row = 
 	     						'<ul class="listUl">' +
-							        '<li class="listwrap" onclick="abc(' + result.seq + ')">' +
+							        '<li class="listwrap" >' +
 							        	'<div class="contentSeq">' +
-							        		'<a>' + result.seq + '</a>' +
+							        		'<a onclick="abc(' + result.seq + ')">' + result.seq + '</a>' +
 							        	'</div>' +
 							        	'<div class="divwrap">' +
-							        		'<img src="https://picsum.photos/id/122/200" alt="샘플이미지">' +
+							        		'<img src="https://picsum.photos/id/122/200" alt="샘플이미지" onclick="abc(' + result.seq + ')">' +
 							        	'</div>' +
 							        	'<div class="divwrap">' +
-							        		'<a>' + result.title + '</a>' +
+							        		'<a onclick="abc(' + result.seq + ')">' + result.title + '</a>' +
 							        	'</div>' +
 							        	'<div class="divwrap">' +
-							        		'<a>' + startyearmonthday + ' ~ ' + endyearmonthday + '</a>' +
+							        		'<a onclick="abc(' + result.seq + ')">' + startyearmonthday + ' ~ ' + endyearmonthday + '</a>' +
 							        	'</div>' +
 							        	'<div class="heart contentSeq">' +
-							        		'<i class="fas fa-heart off"></i>' +
+							        		'<i class="fas fa-heart off" id="fas fa-heart off" data-travel-seq="'+result.seq+'" ></i>' +
 							        	'</div>' +
 							        '</li>' +
 								'</ul>';
@@ -465,6 +466,9 @@
 	     			}	//end error
 	     		});	// end ajax
 	     	}	// ajaxFunc
+	     	
+	     // 수정된 부분: JavascriptSearchListFunction에 ajaxFunc 함수를 할당
+	        JavascriptSearchListFunction = ajaxFunc;
 	     	
 	     	// 페이지네이션 function
 	     	function pagenationFunc(JspCurrPage,PageAmount,searchType , keyword){
@@ -538,8 +542,59 @@
 
 	     	};	// end pagenationFuc
 
-	     	 // 수정된 부분: JavascriptSearchListFunction에 ajaxFunc 함수를 할당
-	        JavascriptSearchListFunction = ajaxFunc;
+	     	 // 클릭 이벤트 핸들러 등록
+	        $(document).on('click', '.fas.fa-heart.off', likeSystem);
+	        $(document).on('click', '.fas.fa-heart.on', likeSystem);
+	        // likeSystem 함수 정의
+	        function likeSystem() {
+	            const TravelSeq = $(this).data('travel-seq');
+	            var switchWord='';
+	            console.log("heartSystem TravelSeq : ", TravelSeq);
+	            console.log($(this).attr('id'));
+	            console.log($(this).attr('class'));
+
+	            if($(this).attr('class')=='fas fa-heart off'){
+	            	console.log("맞다");
+	            }else{
+	            	console.log("ㄴㄴ");
+	            }
+	            
+	           	if($(this).attr('class')=='fas fa-heart off'){
+		            $(this).attr('id',"fas fa-heart on");
+		            $(this).attr('class',"fas fa-heart on");
+		            console.log("id : ",$(this).attr('id'));
+		            console.log("class : ",$(this).attr('class'));
+		            switchWord="like";
+	           	}else{
+		            $(this).attr('id',"fas fa-heart off");
+		            $(this).attr('class',"fas fa-heart off");
+		            console.log("id : ",$(this).attr('id'));
+		            console.log("class : ",$(this).attr('class'));
+		            switchWord="unlike";
+	           	}
+	            
+	            $.ajax({
+	            	url:"/travel/like",
+	            	type:"post",
+	            	data:{
+	            		switchWord : switchWord,
+	            		userEmail : "${USER_EMAIL}",
+	            		board_seq : TravelSeq,
+	            		board_name : "tbl_travel"
+	            	},
+	            	dataType:'json',
+	            	success:function(data){
+	            		console.log("ajax성공!!! : ",data);
+	            	},error:function(xhr,status,error){
+	            		console.log(xhr);
+	            		console.log(status);
+	            		console.log(error);
+	            	}
+	            });	// end ajax
+	        };	// end likeSystem
+	     	
+
+	     	
 	     	
 	     });	// end jq
     	
@@ -587,6 +642,10 @@
     	    }
 
     	}	// end def
+    	
+    	
+    	
+
         
     </script>
 </body>
