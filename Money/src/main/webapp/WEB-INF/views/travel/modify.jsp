@@ -435,12 +435,7 @@
                           map.setCenter(coords);
                       } 
                   });  
-                  
-                  
-                  
-                  
-                  
-                  
+                                 
 
             //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
             function loc_btn() {
@@ -479,15 +474,7 @@
                  document.querySelector('#locationAddress').append(roadAddr);
 
                  /////////////////////////////
-                 
-
-                	 
-                	 
-                	 
-                	 
-                	 
-                 
-                 
+                        
                   // 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
                   // if (roadAddr !== '') {
                   //   document.getElementById("sample4_extraAddress").value = extraRoadAddr;
@@ -515,11 +502,7 @@
               console.log("llll");
               
             }
-            
-            
-            // 
-            
-            // 
+
             </script>
 
                 <!-- 버튼 -->
@@ -892,7 +875,7 @@
 						}
 					});	// end ajax
 					
-// 					self.location = "/travel/list";
+					self.location = "/travel/list";
 					
                 });	// end submitBtn
 

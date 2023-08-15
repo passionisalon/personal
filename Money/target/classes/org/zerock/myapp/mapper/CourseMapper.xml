@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.myapp.mapper.CourseMapper">
+  
+  <select id="getCourseList" resultType="org.zerock.myapp.domain.CourseDTO">
+  	SELECT *
+  	FROM 
+  	(
+  		SELECT 
+  			/*+ INDEX_DESC(tbl_auditor PK_board) */
+  			*
+  		FROM 
+  			tbl_course
+  		WHERE
+  			#{searchType} LIKE '%' || #{keyword} || '%'
+  		ORDER BY
+  			OFFSET ( #{currPage} - 1 ) * #{amount} ROW FETCH NEXT #{amount} ROWS ONLY
+  	)
+  </select>
+  
+  <select id="getSelectCourseTravelList" resultType="org.zerock.myapp.domain.TravelDTO">
+  	SELECT *
+  	FROM
+  	(
+  		SELECT
+  			/*+ INDEX_DESC(tbl_auditor PK_board) */
+  			*
+  		FROM 
+  		(
+  			SELECT 
+  				ct.* , tt.category, tt.title, tt.content, tt.address
+  			FROM
+  				tbl_course_travel ct INNER JOIN tbl_travel tt ON ct.travel_seq = tt.seq
+  			WHERE
+  				board_seq = #{seq}
+  		)
+  		
+  	)
+  
+  </select>
+  
+</mapper>
+  	
