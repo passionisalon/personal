@@ -44,27 +44,14 @@ public class UserController {
 		System.out.printf("\n\t");
 	}	// end getThisClassInfo
 	
-	@ResponseBody
-	@PostMapping("/logout")
-	public ResponseEntity<Integer> logout(HttpServletRequest req) throws ControllerException {
-		System.out.println(":::logout:::");
-		
-		try {
-			HttpSession session = req.getSession(false);
-			
-			if(session != null) {
-				log.info("로그아웃 성공");
-				session.invalidate();
-				return ResponseEntity.ok(1);
-			}else {
-				log.info("로그아웃 실패");
-				return ResponseEntity.ok(0);
-			}
-			
-		}catch(Exception e) {
-			throw new ControllerException(e);
-		}
 	
+	@RequestMapping("/logout")
+	public String logoutMainGet(HttpServletRequest request) throws ControllerException{
+		
+		this.getThisClassInfo();
+		HttpSession session = request.getSession();
+		session.invalidate();
+		return "redirect:/user/login";
 	}	// end logout
 	
 	

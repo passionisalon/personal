@@ -233,6 +233,7 @@
                 <br>
                 <div class="listContainer">
                     <div class="list">
+                    
                     <c:forEach var="TravelDTO" items="${__TravelLIST__}">
                         <ul class="listUl" id="listUl">
                             <li class="listwrap" id="listwrap">
@@ -253,7 +254,7 @@
                                     </a>
                                 </div>
                                 <div class="heart contentSeq" id="heart contentSeq">
-                                    <i class="fas fa-heart off" id="fas fa-heart off" data-travel-seq="${TravelDTO.seq}">
+                                    <i class="fas fa-heart off" id="fas${TravelDTO.seq}"  data-travel-seq="${TravelDTO.seq}">
 
                                     </i>
                                     
@@ -302,6 +303,57 @@
    		var CallDef;
    		
 	    $(document).ready(function () {
+	    	<c:forEach var="TravelDTO" items="${__TravelLIST__}">
+	    		console.log(${TravelDTO.seq});
+	    	
+        	$.ajax({
+				url:'/travel/likeList',
+				type:'post',
+				dataType:'json',
+				data : {
+					Email : '${USER_EMAIL}',
+					board : 'tbl_travel'
+				},
+				success: function(ReturnData){
+					var heartIcons = $('.fas fa-heart off');
+					console.log("heartIcons : ",heartIcons);
+					console.log("heartIconss : ",$('#260'));
+					console.log('asdfasdf : ',heartIcons.data('travel-seq'));
+					
+					var userList = ReturnData;
+					var boardSeq = userList.board_seq;
+					
+					console.log("ajax성공!!!@@@");
+					console.log("data : ",ReturnData);
+				
+					  var travelSeq = $(".fas fa-heart off").data("travel-seq");
+					  // 가져온 값 출력 (개발자 도구 콘솔에 출력)
+					    console.log("Travel Seq:", travelSeq);
+					  
+			            heartIcons.each(function (asd) {
+			                var travelSeq = asd.data("travel-seq");
+			                console.log("Travel Seq : ", travelSeq);
+			            });
+					  
+					  
+// 					ReturnData.forEach(function(dataItem){
+// 						console.log("dataItem : ",dataItem);
+// 						var boardSeq = dataItem.board_seq;
+// 						console.log("boardSeq : ",boardSeq);
+						
+// 						heartIcons.filter(function(){
+// 							return $(this).find()
+// 						})
+// 					});
+				},error:function(xhr,status,error){
+					console.log(xhr);
+					console.log(status);
+					console.log(error);
+				}
+			});	// end ajax
+			</c:forEach>
+	    	
+	    	
 	    	
 	    	// 글쓰기 버튼
 	    	$('.writeBtn').on("click",function(){
@@ -321,7 +373,7 @@
 	     		$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
 	     		$('#ll').css("color","white").css("backgroundColor","#49539E");
 	     		
-	     		console.log("asdjfklasjdflkasdjflasdfj");
+// 	     		console.log("asdjfklasjdflkasdjflasdfj");
 	     		console.log($('#ll').attr("value"));
 	     		var searchType = 'll';
 	     		var keyword = "";
@@ -456,7 +508,7 @@
 	     				});//반복문
 	     				
 	     				console.log("데이터의 길이 : ",data.list.length);
-	     				
+	     				pppppp;
 	     				// 페이지네이션 function 호출 
 	     				pagenationFunc(JspCurrPage, data.resultPageAmount,searchType , keyword); 
 	     				
@@ -552,7 +604,7 @@
 	            const TravelSeq = $(this).data('travel-seq');
 	            var switchWord='';
 // 	            console.log("heartSystem TravelSeq : ", TravelSeq);
-// 	            console.log($(this).attr('id'));
+	            console.log($(this).attr('id'));
 // 	            console.log($(this).attr('class'));
 
 // 	            if($(this).attr('class')=='fas fa-heart off'){
@@ -562,13 +614,13 @@
 // 	            }
 	            
 	           	if($(this).attr('class')=='fas fa-heart off'){
-		            $(this).attr('id',"fas fa-heart on");
+// 		            $(this).attr('id',"fas fa-heart on");
 		            $(this).attr('class',"fas fa-heart on");
 // 		            console.log("id : ",$(this).attr('id'));
 // 		            console.log("class : ",$(this).attr('class'));
 		            switchWord="like";
 	           	}else{
-		            $(this).attr('id',"fas fa-heart off");
+// 		            $(this).attr('id',"fas fa-heart off");
 		            $(this).attr('class',"fas fa-heart off");
 // 		            console.log("id : ",$(this).attr('id'));
 // 		            console.log("class : ",$(this).attr('class'));
@@ -594,33 +646,7 @@
 	            	}
 	            });	// end ajax
 	        };	// end likeSystem
-	     	
-// 	        $(function(){
-// 	        	var heartIcons = $('.area_txt .fa-heart');
-	        	
-// 	        	$.ajax({
-// 					url:'/travel/likeList',
-// 					type:'post',
-// 					dataType:'json',
-// 					data : {
-// 						Email : '${USER_EMAIL}',
-// 						board : 'tbl_travel'
-// 					},
-// 					success: function(data){
-// 						var userList = data;
-// 						var boardSeq = userList.board_seq;
-						$(this).data('travel-seq');
-// // 						var a = heartIcons.find('input[name="board_seq"]').val();
-// 						console.log('a : ',a);
-// 						console.log('data : ',data);
-					
-// 					}
-// 				});	// end ajax
-// 	        })
-	        
-			
-	     	
-	     	
+	     	    	
 	     });	// end jq
     	
     	

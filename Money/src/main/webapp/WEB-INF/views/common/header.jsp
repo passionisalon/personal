@@ -36,7 +36,7 @@
                 </c:if>
 
                 <c:if test="${__AUTH__ != null}">
-                    <li class="fr" id="logoutBtn">로그아웃</li>
+                    <li class="fr" id="logoutBtn"><a href="/user/logout">로그아웃</a></li>
                     <li class="fr" id="myPageBtn">마이페이지</li>
                 </c:if>
             </ul>
@@ -67,8 +67,8 @@
                 $('#travelBoard').on("click",function(){
                     self.location.href="/travel/list";
                 });
-            	$('#logoutBtn').on('click',function(){
-            		
+            	$('#myPageBtn').on("click",function(){
+            		self.location.href="/user/mypage";
             	})
                 // $('#courseBoard').onlcik(function(){
                 //     self.location.href="/user/join";
