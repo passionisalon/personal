@@ -48,7 +48,7 @@
 	    VALUES (#{Email}, #{Password},#{userEmail}, #{NickName}, TO_DATE(#{BIRTH_DATE}, 'yyyymmdd'), current_date, #{GENDER}, #{Introduction})
 	</insert>
 	
-	<select id="findEmail" resultType="org.zerock.myapp.domain.UserDTO">
+	<select id="findEmail" resultType="java.lang.String">
 		SELECT Email
 		FROM tbl_member
 		WHERE userEmail = #{userEmail}

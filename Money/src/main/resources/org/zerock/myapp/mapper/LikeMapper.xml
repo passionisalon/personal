@@ -32,6 +32,7 @@
 			tbl_like
 		WHERE
 			1=1
+			AND
 			<include refid="likeInclude"/>
 		
 	</delete>
@@ -46,8 +47,9 @@
 			FROM
 				tbl_like
 			WHERE
-				1=1
-				<include refid="likeInclude"/>
+				email = #{Email}
+				AND
+				board = #{board}
 		)
 	</select>
   

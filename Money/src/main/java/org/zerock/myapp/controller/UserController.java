@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,30 @@ public class UserController {
 		log.info("\n\t thisClass : {}",this.getClass().getName());
 		System.out.printf("\n\t");
 	}	// end getThisClassInfo
+	
+	@ResponseBody
+	@PostMapping("/logout")
+	public ResponseEntity<Integer> logout(HttpServletRequest req) throws ControllerException {
+		System.out.println(":::logout:::");
+		
+		try {
+			HttpSession session = req.getSession(false);
+			
+			if(session != null) {
+				log.info("로그아웃 성공");
+				session.invalidate();
+				return ResponseEntity.ok(1);
+			}else {
+				log.info("로그아웃 실패");
+				return ResponseEntity.ok(0);
+			}
+			
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}
+	
+	}	// end logout
+	
 	
 	@GetMapping("/login")
 	public void login() throws ControllerException {

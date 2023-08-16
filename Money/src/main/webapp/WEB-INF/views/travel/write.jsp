@@ -26,21 +26,21 @@
             width: 1200px;
             height: 1300px;
             margin: 0 auto;
-            border: 1px solid blue;
+/*             border: 1px solid blue; */
           }
 
           .TravelContainer {
             width: 1200px;
             height: 1300px;
             margin: 0 auto;
-            border: 1px solid red;
+/*             border: 1px solid red; */
           }
 
           .TravelBody {
             width: 1200px;
             min-height: 1200px;
             margin: 0 auto;
-            border: 1px solid green;
+/*             border: 1px solid green; */
           }
 
           .TravelTitle,
@@ -53,7 +53,7 @@
           .tabContainer .tab {
             width: 99.7%;
             height: 50px;
-            border: 1px solid #49539E;
+/*             border: 1px solid #49539E; */
             background-color: #f5f5f5;
 
           }
@@ -119,7 +119,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid yellowgreen;
+/*             border: 1px solid yellowgreen; */
             width: 1200px;
             height: 50px;
           }
@@ -151,7 +151,7 @@
             height: 50px;
             /* display: flex; */
             /* justify-content: center; */
-            border: 1px solid violet;
+/*             border: 1px solid violet; */
           }
 
           .btnContainer {

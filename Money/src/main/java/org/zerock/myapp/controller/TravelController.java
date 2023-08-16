@@ -149,14 +149,13 @@ public class TravelController {
 	
 	@ResponseBody
 	@PostMapping("/likeList")
-	public LinkedList<LikeDTO> selectLikeList(String Email,Integer board_seq,String board) throws ControllerException{
+	public LinkedList<LikeDTO> selectLikeList(String Email,String board) throws ControllerException{
 		this.getThisClassInfo();
 		log.info("Email : {}",Email);
-		log.info("board_seq : {}",board_seq);
 		log.info("board : {}",board);
 		
 		try {
-			LinkedList<LikeDTO> result = this.likeService.selectLikeList(Email, board_seq, board);
+			LinkedList<LikeDTO> result = this.likeService.selectLikeList(Email, board);
 			this.getThisClassInfo();
 			result.forEach(log::info);
 			return result;

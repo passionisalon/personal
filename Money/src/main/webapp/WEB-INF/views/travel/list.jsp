@@ -253,7 +253,10 @@
                                     </a>
                                 </div>
                                 <div class="heart contentSeq" id="heart contentSeq">
-                                    <i class="fas fa-heart off" id="fas fa-heart off" data-travel-seq="${TravelDTO.seq}"></i>
+                                    <i class="fas fa-heart off" id="fas fa-heart off" data-travel-seq="${TravelDTO.seq}">
+
+                                    </i>
+                                    
                                 </div>
                             </li>
                         </ul>
@@ -592,7 +595,30 @@
 	            });	// end ajax
 	        };	// end likeSystem
 	     	
-
+// 	        $(function(){
+// 	        	var heartIcons = $('.area_txt .fa-heart');
+	        	
+// 	        	$.ajax({
+// 					url:'/travel/likeList',
+// 					type:'post',
+// 					dataType:'json',
+// 					data : {
+// 						Email : '${USER_EMAIL}',
+// 						board : 'tbl_travel'
+// 					},
+// 					success: function(data){
+// 						var userList = data;
+// 						var boardSeq = userList.board_seq;
+						$(this).data('travel-seq');
+// // 						var a = heartIcons.find('input[name="board_seq"]').val();
+// 						console.log('a : ',a);
+// 						console.log('data : ',data);
+					
+// 					}
+// 				});	// end ajax
+// 	        })
+	        
+			
 	     	
 	     	
 	     });	// end jq

@@ -19,17 +19,17 @@
 <style>
     .view_Wrap{
         width:1200px;
-        height:2000px;
+        height:1700px;
         margin: 0 auto;
     }
     .view_Container{
         width:1200px;
-        height:2000px;
+        height:1700px;
         margin: 0 auto;
     }
     .TravelView_Body{
         width:1200px;
-        min-height: 1900px;
+        min-height: 1500px;
 /*         border: 1px solid red; */
     }
     .categoryTitleAddress{
@@ -71,7 +71,7 @@
     }
     .mapAPI{
     	width:1000px;
-    	height:700px;
+    	height:300px;
     }
 
     .btn {
@@ -196,14 +196,14 @@
                         <br>
                         <span class="spanBold">${__SELECTTRAVEL__.content}</span>
                         <br>
-                        <hr>
+<!--                         <hr> -->
                         <span class="spanBold">기간 : </span>
                         <span class="spanBold">
 							<fmt:formatDate value="${__SELECTTRAVEL__.start_date}" pattern="yyyy년 MM월 dd일" /> ${__BOARD__.start_time} ~
                 			<fmt:formatDate value="${__SELECTTRAVEL__.end_date}" pattern="yyyy년 MM월 dd일" /> ${__BOARD__.end_time}
 						</span>
                         <br>
-                        <hr>
+<!--                         <hr> -->
                         <span class="spanBold">위치 : </span>
                         <span class="spanBold">${__SELECTTRAVEL__.address}</span>
                     </div>
@@ -213,7 +213,7 @@
                     <span class="spanBold">지도</span>
                     <hr>
                     <div class="mapAPI">
-                        지도 API 끌고오기
+<!--                         지도 API 끌고오기 -->
                     </div>
                 </div>
 

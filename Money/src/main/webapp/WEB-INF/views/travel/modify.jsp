@@ -26,21 +26,21 @@
             width: 1200px;
             height: 1300px;
             margin: 0 auto;
-            border: 1px solid blue;
+/*             border: 1px solid blue; */
           }
 
           .TravelContainer {
             width: 1200px;
             height: 1300px;
             margin: 0 auto;
-            border: 1px solid red;
+/*             border: 1px solid red; */
           }
 
           .TravelBody {
             width: 1200px;
             min-height: 1200px;
             margin: 0 auto;
-            border: 1px solid green;
+/*             border: 1px solid green; */
           }
 
           .TravelTitle,
@@ -151,7 +151,7 @@
             height: 50px;
             /* display: flex; */
             /* justify-content: center; */
-            border: 1px solid violet;
+/*             border: 1px solid violet; */
           }
 
           .btnContainer {
@@ -274,7 +274,7 @@
 
                 <br>
                 <div class="TravelTitle">
-                  <h2>여행지 글쓰기</h2>
+                  <h2>여행지 수정</h2>
                 </div>
                 <br>
                 <hr>
