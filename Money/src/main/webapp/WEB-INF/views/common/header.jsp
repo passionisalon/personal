@@ -30,12 +30,14 @@
                 <li class="fl" ><br></li>
 <!--                 <li class="fl" id="joinBtn">회원가입</li> -->
 <!--                 <li class="fl" id="loginBtn">로그인</li> -->
-                <c:if test="${__AUTH__ == null}">
+<%--                 <c:if test="${__AUTH__ == null}"> --%>
+                <c:if test="${USER_EMAIL == null}">
                     <li class="fr" id="joinBtn">회원가입</li>
                     <li class="fr" id="loginBtn">로그인</li>
                 </c:if>
 
-                <c:if test="${__AUTH__ != null}">
+<%--                 <c:if test="${__AUTH__ != null}"> --%>
+                <c:if test="${USER_EMAIL != null}">
                     <li class="fr" id="logoutBtn"><a href="/user/logout">로그아웃</a></li>
                     <li class="fr" id="myPageBtn">마이페이지</li>
                 </c:if>

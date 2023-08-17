@@ -81,14 +81,17 @@ public class LikeServiceImpl implements LikeService {
 	
 	// like리스트
 	@Override
-	public LikeDTO selectLikeList(String Email,Integer board_seq,String board) throws ServiceException{
+//	public LikeDTO selectLikeList(String Email,Integer board_seq,String board) throws ServiceException{
+	public LikeDTO selectLikeList(LikeDTO request) throws ServiceException{
 		this.getThisClassInfo();
-		log.info("Email : {}",Email);
-		log.info("board_seq : {}",board_seq);
-		log.info("board : {}",board);
+		log.info("LikeDTO : {}",request);
+//		log.info("Email : {}",Email);
+//		log.info("board_seq : {}",board_seq);
+//		log.info("board : {}",board);
 		
 		try {
-			LikeDTO result = this.likeMapper.selectLikeList(Email,board_seq,board);
+			LikeDTO result = this.likeMapper.selectLikeList(request);
+//			LikeDTO result = this.likeMapper.selectLikeList(Email,board_seq,board);
 			this.getThisClassInfo();
 			
 			return result;

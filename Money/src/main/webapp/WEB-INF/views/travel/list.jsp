@@ -306,15 +306,19 @@
 	    	<c:forEach var="TravelDTO" items="${__TravelLIST__}">
 // 	    		console.log(${TravelDTO.seq});
 	    		var board_seq = ${TravelDTO.seq};
+	    		var JspBoard = 'tbl_travel';
+	    		var user = '${USER_EMAIL}';
         	$.ajax({
 				url:'/travel/likeList',
 				type:'post',
 				dataType:'json',
-				data : {
-					Email : '${USER_EMAIL}',
+				contentType: 'application/json', // Content-Type 설정
+			    data: JSON.stringify({
+					seq : 0,
+					email : user,
 					board_seq : board_seq,
-					board : 'tbl_travel'
-				},
+					board : JspBoard
+			    }),
 				success: function(ReturnData){
 					
 					console.log("ajax성공!!!@@@");
@@ -485,15 +489,50 @@
 							        		'<a onclick="abc(' + result.seq + ')">' + startyearmonthday + ' ~ ' + endyearmonthday + '</a>' +
 							        	'</div>' +
 							        	'<div class="heart contentSeq">' +
-							        		'<i class="fas fa-heart off" id="fas fa-heart off" data-travel-seq="'+result.seq+'" ></i>' +
+							        		'<i class="fas fa-heart off" id="fas'+result.seq+'" data-travel-seq="'+result.seq+'" ></i>' +
 							        	'</div>' +
 							        '</li>' +
 								'</ul>';
      						$('.list').append(row);
+     						
+     						$.ajax({
+     							url:'/travel/likeList',
+     							type:'post',
+     							dataType:'json',
+     							contentType: 'application/json', // Content-Type 설정
+     						    data: JSON.stringify({
+     								seq : 0,
+     								email : '${USER_EMAIL}',
+     								board_seq : result.seq,
+     								board : "tbl_travel"
+     						    }),
+     							success: function(ReturnData){
+     								
+     								console.log("ajax성공!!!@@@");
+     								console.log("ReturnData : ",ReturnData);
+     								console.log("Return번호 : ",ReturnData.board_seq);
+     								console.log("일치 확인 : ",ReturnData.board_seq == board_seq);
+     								var temp = "fas"+ReturnData.board_seq;
+     								console.log(temp);
+     								$("#"+temp).attr('class','fas fa-heart on');
+     								console.log("확인 : ",$("#fas+ReturnData.board_seq"));
+     								console.log("재확인 : ",$(temp));
+//     			 					console.log("성공");
+     								
+
+     				
+     							},error:function(xhr,status,error){
+     								console.log(xhr);
+     								console.log(status);
+     								console.log(error);
+     							}
+     						});
+     						
+     						
 	     				});//반복문
 	     				
 	     				console.log("데이터의 길이 : ",data.list.length);
-	     				pppppp;
+	     				
 	     				// 페이지네이션 function 호출 
 	     				pagenationFunc(JspCurrPage, data.resultPageAmount,searchType , keyword); 
 	     				

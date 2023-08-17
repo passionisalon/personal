@@ -14,5 +14,6 @@ public interface LikeService {
 	public abstract String removeLike(String Email,Integer board_seq,String board) throws ServiceException;
 
 	// like리스트
-	public abstract LikeDTO selectLikeList(String email,Integer board_seq , String board) throws ServiceException;
+	public abstract LikeDTO selectLikeList(LikeDTO request) throws ServiceException;
+//	public abstract LikeDTO selectLikeList(String email,Integer board_seq , String board) throws ServiceException;
 }	// end Service

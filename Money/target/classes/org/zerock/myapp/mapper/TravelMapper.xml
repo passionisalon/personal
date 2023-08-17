@@ -14,17 +14,17 @@
 			
   			<choose>
   			  	<when test='searchType == "ll"'>
-  				
+  					<if test='keyword !=""'>
+  						title LIKE '%' || #{keyword} || '%'
+  					</if>
   				</when>
-  				<when test='searchType != ""'>
-  					AND category = #{searchType}
-  				</when> 
-				<when test='keyword !=""'>
-  					AND title LIKE '%' || #{keyword} || '%'
-  				</when>
-
+				<when test ='searchType !=""'>
+					category = #{searchType}
+					<if test='keyword !=""'>
+						AND title LIKE '%' || #{keyword} || '%'
+					</if>
+				</when>
   			</choose>
-
   	</trim>
   </sql>
   

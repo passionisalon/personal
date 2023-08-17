@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -149,14 +150,16 @@ public class TravelController {
 	
 	@ResponseBody
 	@PostMapping("/likeList")
-	public LikeDTO selectLikeList(String Email,Integer board_seq,String board) throws ControllerException{
+	public LikeDTO selectLikeList(@RequestBody LikeDTO request) throws ControllerException{
 		this.getThisClassInfo();
-		log.info("Email : {}",Email);
-		log.info("board_seq : {}",board_seq);
-		log.info("board : {}",board);
+		log.info("LikeDTO : {}",request);
+//		log.info("Email : {}",Email);
+//		log.info("board_seq : {}",board_seq);
+//		log.info("board : {}",board);
 		
 		try {
-			LikeDTO result = this.likeService.selectLikeList(Email, board_seq,board);
+			LikeDTO result = this.likeService.selectLikeList(request);
+//			LikeDTO result = this.likeService.selectLikeList(Email, board_seq,board);
 			this.getThisClassInfo();
 			
 			return result;
