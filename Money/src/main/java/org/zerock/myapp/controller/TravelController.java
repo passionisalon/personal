@@ -150,7 +150,7 @@ public class TravelController {
 	
 	@ResponseBody
 	@PostMapping("/likeList")
-	public LikeDTO selectLikeList(@RequestBody LikeDTO request) throws ControllerException{
+	public Integer selectLikeList(@RequestBody LikeDTO request) throws ControllerException{
 		this.getThisClassInfo();
 		log.info("LikeDTO : {}",request);
 //		log.info("Email : {}",Email);
@@ -159,10 +159,23 @@ public class TravelController {
 		
 		try {
 			LikeDTO result = this.likeService.selectLikeList(request);
+			if(result == null) {
+				this.getThisClassInfo();
+				log.info("result : {}",result);
+				return 0;
+			}else {
+				this.getThisClassInfo();
+				log.info("result : {}",result);
+				return result.getBoard_seq();
+				
+			}
 //			LikeDTO result = this.likeService.selectLikeList(Email, board_seq,board);
-			this.getThisClassInfo();
 			
-			return result;
+//			Map<String,Object> map = new HashMap<>();
+//			map.getOrDefault("email",result.getEmail());
+//			map.getOrDefault("board_seq", result.getBoard_seq());
+//			map.getOrDefault("board", result.getBoard());
+			
 		}catch(Exception e) {
 			throw new ControllerException(e);
 		}

@@ -303,47 +303,45 @@
    		var CallDef;
    		
 	    $(document).ready(function () {
+	    	var JspBoard = 'tbl_travel';
+    		var user = '${USER_EMAIL}';
 	    	<c:forEach var="TravelDTO" items="${__TravelLIST__}">
-// 	    		console.log(${TravelDTO.seq});
 	    		var board_seq = ${TravelDTO.seq};
-	    		var JspBoard = 'tbl_travel';
-	    		var user = '${USER_EMAIL}';
-        	$.ajax({
-				url:'/travel/likeList',
-				type:'post',
-				dataType:'json',
-				contentType: 'application/json', // Content-Type 설정
-			    data: JSON.stringify({
-					seq : 0,
-					email : user,
-					board_seq : board_seq,
-					board : JspBoard
-			    }),
-				success: function(ReturnData){
-					
-					console.log("ajax성공!!!@@@");
-					console.log("ReturnData : ",ReturnData);
-					console.log("Return번호 : ",ReturnData.board_seq);
-					console.log("일치 확인 : ",ReturnData.board_seq == board_seq);
-					var temp = "fas"+ReturnData.board_seq;
-					console.log(temp);
-					$("#"+temp).attr('class','fas fa-heart on');
-					console.log("확인 : ",$("#fas+ReturnData.board_seq"));
-					console.log("재확인 : ",$(temp));
-// 					console.log("성공");
-					
-
-	
-				},error:function(xhr,status,error){
-					console.log(xhr);
-					console.log(status);
-					console.log(error);
-				}
-			});	// end ajax
+	    		startAjax(board_seq);
 			</c:forEach>
 	    	
-	    	
-	    	
+			function startAjax(board_seqp){
+    			$.ajax({
+    				url:'/travel/likeList',
+    				type:'post',
+    				dataType:'json',
+    				contentType: 'application/json', // Content-Type 설정
+    			    data: JSON.stringify({
+    					seq : 0,
+    					email : user,
+    					board_seq : board_seqp,
+    					board : JspBoard
+    			    }),
+    				success: function(ReturnData){
+    					
+    					console.log("ajax성공!!!@@@");
+    					console.log("ReturnData : ",ReturnData);
+//     					console.log("Return번호 : ",ReturnData.board_seq);
+//     					var temp = "fas"+ReturnData.board_seq;
+    					var temp = "fas"+ReturnData;
+    					console.log(temp);
+    					$("#"+temp).attr('class','fas fa-heart on');
+//     					console.log("확인 : ",$("#fas+ReturnData.board_seq"));
+    					console.log("재확인 : ",$(temp));
+    					
+    				},error:function(xhr,status,error){
+    					console.log(xhr);
+    					console.log(status);
+    					console.log(error);
+    				}	// end error
+    			});	// end ajax
+			};	// END start / startAjax
+			
 	    	// 글쓰기 버튼
 	    	$('.writeBtn').on("click",function(){
 	    		self.location = "/travel/write";
@@ -422,10 +420,7 @@
 	     	$(".searchButton").on("click",function(){
 	     		var JspCurrPage = 1;
 	     		var searchType = $('#SearchSelector').val();
-// 	     		console.log("searchType : ",searchType);
 	     		var keyword =  $(".searchPlace").val();
-// 	     		console.log("keyword : ",keyword);
-// 	     		console.log("잘 작동됨");
 	     		
 	     		if(searchType == ''){
 	     			$('.tabul').find('li').css("color","black").css("backgroundColor","#f5f5f5");
@@ -442,13 +437,8 @@
 	     	
 	     	// keyword, searchType, tap을 눌렀을 경우 사용되는 function
 	     	function ajaxFunc(JspCurrPage, searchType , keyword){
-	     		
-// 				console.log("JspCurrPage : ",JspCurrPage);
-// 				console.log("searchType : ",searchType);
 				var JavaScriptSearchType = searchType.id;
-// 				console.log("JavaScriptSearchType : ",JavaScriptSearchType);
-// 				console.log("keyword : ",keyword);
-	     		
+
 	     		$.ajax({
 	     			url:'/travel/SearchList',
 	     			type:'post',
@@ -459,13 +449,11 @@
 	     			},
 	     			dataType:'json',
 	     			success : function(data){
-	     				$('.list').empty();
-// 	     				console.log("ajax성공!!!");
-// 	     				console.log("list : ",data.list);
-// 	     				console.log("resultPageAmount : ",data.resultPageAmount);
-	     				data.list.forEach(function(result){
+	     				$('.list').empty();	     				
+						data.list.forEach(function(result){
 	     					console.log(result);
 	     				})
+
 	     				
 	     				var row;
 	     				data.list.forEach(function(result){
@@ -495,40 +483,8 @@
 								'</ul>';
      						$('.list').append(row);
      						
-     						$.ajax({
-     							url:'/travel/likeList',
-     							type:'post',
-     							dataType:'json',
-     							contentType: 'application/json', // Content-Type 설정
-     						    data: JSON.stringify({
-     								seq : 0,
-     								email : '${USER_EMAIL}',
-     								board_seq : result.seq,
-     								board : "tbl_travel"
-     						    }),
-     							success: function(ReturnData){
-     								
-     								console.log("ajax성공!!!@@@");
-     								console.log("ReturnData : ",ReturnData);
-     								console.log("Return번호 : ",ReturnData.board_seq);
-     								console.log("일치 확인 : ",ReturnData.board_seq == board_seq);
-     								var temp = "fas"+ReturnData.board_seq;
-     								console.log(temp);
-     								$("#"+temp).attr('class','fas fa-heart on');
-     								console.log("확인 : ",$("#fas+ReturnData.board_seq"));
-     								console.log("재확인 : ",$(temp));
-//     			 					console.log("성공");
-     								
+     						startAjax(result.seq);
 
-     				
-     							},error:function(xhr,status,error){
-     								console.log(xhr);
-     								console.log(status);
-     								console.log(error);
-     							}
-     						});
-     						
-     						
 	     				});//반복문
 	     				
 	     				console.log("데이터의 길이 : ",data.list.length);
