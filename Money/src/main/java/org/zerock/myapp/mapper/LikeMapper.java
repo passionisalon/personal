@@ -13,5 +13,5 @@ public interface LikeMapper {
 	public abstract Integer removeLike(String Email,Integer board_seq,String board);
 	
 	// like 리스트
-	public abstract LinkedList<LikeDTO> selectLikeList(String Email,String board);
+	public abstract LikeDTO selectLikeList(String Email,Integer board_seq,String board);
 }	// end interface

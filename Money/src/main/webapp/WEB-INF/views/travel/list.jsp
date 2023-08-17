@@ -304,47 +304,32 @@
    		
 	    $(document).ready(function () {
 	    	<c:forEach var="TravelDTO" items="${__TravelLIST__}">
-	    		console.log(${TravelDTO.seq});
-	    	
+// 	    		console.log(${TravelDTO.seq});
+	    		var board_seq = ${TravelDTO.seq};
         	$.ajax({
 				url:'/travel/likeList',
 				type:'post',
 				dataType:'json',
 				data : {
 					Email : '${USER_EMAIL}',
+					board_seq : board_seq,
 					board : 'tbl_travel'
 				},
 				success: function(ReturnData){
-					var heartIcons = $('.fas fa-heart off');
-					console.log("heartIcons : ",heartIcons);
-					console.log("heartIconss : ",$('#260'));
-					console.log('asdfasdf : ',heartIcons.data('travel-seq'));
-					
-					var userList = ReturnData;
-					var boardSeq = userList.board_seq;
 					
 					console.log("ajax성공!!!@@@");
-					console.log("data : ",ReturnData);
-				
-					  var travelSeq = $(".fas fa-heart off").data("travel-seq");
-					  // 가져온 값 출력 (개발자 도구 콘솔에 출력)
-					    console.log("Travel Seq:", travelSeq);
-					  
-			            heartIcons.each(function (asd) {
-			                var travelSeq = asd.data("travel-seq");
-			                console.log("Travel Seq : ", travelSeq);
-			            });
-					  
-					  
-// 					ReturnData.forEach(function(dataItem){
-// 						console.log("dataItem : ",dataItem);
-// 						var boardSeq = dataItem.board_seq;
-// 						console.log("boardSeq : ",boardSeq);
-						
-// 						heartIcons.filter(function(){
-// 							return $(this).find()
-// 						})
-// 					});
+					console.log("ReturnData : ",ReturnData);
+					console.log("Return번호 : ",ReturnData.board_seq);
+					console.log("일치 확인 : ",ReturnData.board_seq == board_seq);
+					var temp = "fas"+ReturnData.board_seq;
+					console.log(temp);
+					$("#"+temp).attr('class','fas fa-heart on');
+					console.log("확인 : ",$("#fas+ReturnData.board_seq"));
+					console.log("재확인 : ",$(temp));
+// 					console.log("성공");
+					
+
+	
 				},error:function(xhr,status,error){
 					console.log(xhr);
 					console.log(status);

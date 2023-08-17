@@ -81,15 +81,16 @@ public class LikeServiceImpl implements LikeService {
 	
 	// like리스트
 	@Override
-	public LinkedList<LikeDTO> selectLikeList(String Email,String board) throws ServiceException{
+	public LikeDTO selectLikeList(String Email,Integer board_seq,String board) throws ServiceException{
 		this.getThisClassInfo();
 		log.info("Email : {}",Email);
+		log.info("board_seq : {}",board_seq);
 		log.info("board : {}",board);
 		
 		try {
-			LinkedList<LikeDTO> result = this.likeMapper.selectLikeList(Email,board);
+			LikeDTO result = this.likeMapper.selectLikeList(Email,board_seq,board);
 			this.getThisClassInfo();
-			result.forEach(log::info);
+			
 			return result;
 		}catch(Exception e) {
 			throw new ServiceException(e);

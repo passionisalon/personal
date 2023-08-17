@@ -47,9 +47,7 @@
 			FROM
 				tbl_like
 			WHERE
-				email = #{Email}
-				AND
-				board = #{board}
+				<include refid="likeInclude"/>
 		)
 	</select>
   
