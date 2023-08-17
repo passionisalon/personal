@@ -144,10 +144,18 @@
     /* height: 150px; */
     height:auto;
     padding: 20px 30px;
-    background: #f7f8ff;
+	background: #f7f8ff;
     border: 1px solid #ededed;
 }
+/*  */
 
+.right_menu .my_box .like_cont .list_thumType {
+    display: flex;
+    flex-wrap: wrap; /* Display images in a flex container and wrap them */
+    gap: 20px; /* Add some gap between images */
+}
+
+/*  */
 .right_menu .my_box .like_cont .list_thumType li.thum{
     float: left;
     /* position: relative; */
@@ -290,7 +298,7 @@
         <!-- 프로필 -->
         <p class="user_box">
             <img src="/resources/img/user.png" alt="프로필">
-            <span class="user_id">"${__AUTH__.nickName}"</span>
+            <span class="user_id">"${USER_NICKNAME}"</span>
         </p>
         <!-- 사이드메뉴 -->
         <ul class="side_menu">
@@ -309,58 +317,22 @@
             <!-- 찜목록 -->
             <div class="my_cont_box like_cont">
                 <h2>찜목록</h2>
-                <p class="more_btn"><a href="/board/review/list" id="likeList1">더보기</a><i
-                        class="fas fa-chevron-right"></i></p>
+                <p class="more_btn">
+<!--                 	<a href="/board/review/list" id="likeList1">더보기</a> -->
+<!--                 	<i class="fas fa-chevron-right"></i> -->
+                </p>
                 <div class="container">
                     <ul class="list_thumType flnon">
-
-                        <c:forEach var="REVIEW" items="${__LIKE_REVIEW_LIST__}">
+                        <c:forEach var="Like" items="${__LIKELIST__}">
                             <li class="thum thum_2">
                                 <div class="photo">
-                                	<a href="/board/review/view?seq=${REVIEW.seq}">
+                                	<a href="/${Like.board}/view?seq=${Like.seq}">
 	                                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&amp;id=870e2a7c-eb93-4708-83b0-94cd277b6f04" alt="석촌호수 벚꽃축제">
-	                                  
-	                                  
                                     </a>
                                 </div>
                                 <div class="area_txt">
                                     <div class="tit">
-                                        <a
-                                                href="/board/review/view?seq=${REVIEW.seq}">${REVIEW.title}</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </c:forEach>
-                        <c:forEach var="COURSE" items="${__LIKE_COURSE_LIST__}">
-                            <li class="thum thum_2">
-                                <div class="photo"><a
-                                        href="/board/course/get?seq=${COURSE.seq}"><img
-                                        src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&amp;id=870e2a7c-eb93-4708-83b0-94cd277b6f04"
-                                        alt="석촌호수 벚꽃축제"></a>
-                                    <!--                                                             <em class="flag type_before">진행전</em></a> -->
-                                    <!--                                                         <i class="fas fa-heart on"></i> -->
-                                </div>
-                                <div class="area_txt">
-                                    <div class="tit">
-                                        <a
-                                                href="/board/course/get?seq=${COURSE.seq}">${COURSE.title}</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </c:forEach>
-                        <c:forEach var="TRAVEL" items="${__LIKE_TRAVEL_LIST__}">
-                            <li class="thum thum_2">
-                                <div class="photo">
-                                    <a href="/board/travel/view?seq=${TRAVEL.seq}">
-                                        <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&amp;id=870e2a7c-eb93-4708-83b0-94cd277b6f04"
-                                             alt="석촌호수 벚꽃축제"></a>
-                                    <!--                                                             <em class="flag type_before">진행전</em></a> -->
-                                    <!--                                                         <i class="fas fa-heart on"></i> -->
-                                </div>
-                                <div class="area_txt">
-                                    <div class="tit">
-                                        <a
-                                                href="/board/travel/view?seq=${TRAVEL.seq}">${TRAVEL.title}</a>
+                                        <a href="/${Like.board}/view?seq=${Like.seq}">${Like.title}</a>
                                     </div>
                                 </div>
                             </li>

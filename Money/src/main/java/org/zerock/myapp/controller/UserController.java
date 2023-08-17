@@ -1,6 +1,7 @@
 package org.zerock.myapp.controller;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +17,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.myapp.domain.TotalBoardDTO;
 import org.zerock.myapp.domain.UserDTO;
 import org.zerock.myapp.exception.ControllerException;
+import org.zerock.myapp.service.LikeService;
 import org.zerock.myapp.service.MailSendService;
+import org.zerock.myapp.service.TravelService;
 import org.zerock.myapp.service.UserService;
 
 import lombok.NoArgsConstructor;
@@ -37,6 +41,12 @@ public class UserController {
 	
 	@Setter(onMethod_= {@Autowired})
 	private MailSendService mailService;
+	
+	@Setter(onMethod_= {@Autowired})
+	private TravelService travelService;
+	
+	@Setter(onMethod_= {@Autowired})
+	private LikeService likeService;
 	
 	public void getThisClassInfo() {
 		System.out.printf("\n\t");
@@ -95,7 +105,7 @@ public class UserController {
 				return "/domain";
 			}else {
 				log.info("\n\t 로그인 성공!!! 마이페이지로 이동");
-				return "/user/mypage";
+				return "redirect: /user/mypage";
 			}	// end if - else
 			
 		}catch(Exception e) {
@@ -351,8 +361,18 @@ public class UserController {
 	
 	
 	@GetMapping("/mypage")
-	public void mypage() throws ControllerException{
-		log.info("mypage() invoked.");
+	public void mypage(Model model,HttpSession session) throws ControllerException{
+		this.getThisClassInfo();
+		log.info("mypage(Model : {}) invoked.",model);
+		
+		try {
+			String userEmail = (String) session.getAttribute("USER_EMAIL");
+			LinkedList<TotalBoardDTO> result = this.likeService.getLikeList(userEmail);
+			model.addAttribute("__LIKELIST__", result);
+		}catch(Exception e) {
+			throw new ControllerException(e);
+		}	// end try-catch
+		
 	}	//	end mypage	
 	
 	

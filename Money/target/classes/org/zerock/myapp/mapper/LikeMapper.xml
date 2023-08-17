@@ -54,6 +54,46 @@
 				board = #{board}
 		)
 	</select>
+	
+	<select id="getLikeList" resultType="org.zerock.myapp.domain.TotalBoardDTO">
+		SELECT *
+		FROM 
+		(
+			SELECT co.seq, co.writer, co.title, co.write_date , 'course' as board
+			FROM tbl_course co
+			WHERE seq in (
+    			SELECT lik.board_seq
+    			FROM tbl_member me INNER JOIN tbl_like lik ON me.email = lik.email
+    			WHERE
+    				lik.email = #{userEmail}
+        		AND
+    				lik.board = 'tbl_course'
+			)
+			UNION
+			SELECT tr.seq, tr.writer, tr.title, tr.write_date , 'travel' as board
+			FROM tbl_travel tr
+			WHERE seq IN (
+    			SELECT lik.board_seq
+    			FROM tbl_member me INNER JOIN tbl_like lik ON me.email = lik.email
+    			WHERE
+    				lik.email = #{userEmail}
+        		AND
+    				lik.board = 'tbl_travel'
+			)
+			UNION
+			SELECT re.seq, re.writer, re.title, re.write_date , 'review' as board
+			FROM tbl_review re
+			WHERE seq IN (
+    			SELECT lik.board_seq
+    			FROM tbl_member me INNER JOIN tbl_like lik ON me.email = lik.email
+    			WHERE
+    				lik.email = #{userEmail}
+        		AND
+    				lik.board = 'tbl_review'
+			)
+		)
+		ORDER BY write_date DESC
+	</select>
   
 </mapper>
   	

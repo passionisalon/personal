@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zerock.myapp.domain.LikeDTO;
+import org.zerock.myapp.domain.TotalBoardDTO;
 import org.zerock.myapp.exception.ServiceException;
 import org.zerock.myapp.mapper.LikeMapper;
 
@@ -100,5 +101,21 @@ public class LikeServiceImpl implements LikeService {
 		}
 	}	// end selectLikeList
 	
+	// 본인의 Like 리스트 리스트로 들고오기 mypage용
+	@Override
+	public LinkedList<TotalBoardDTO> getLikeList(String userEmail) throws ServiceException{
+		this.getThisClassInfo();
+		log.info("userEmail : {}",userEmail);
+		
+		try {
+			LinkedList<TotalBoardDTO> result = this.likeMapper.getLikeList(userEmail);
+			this.getThisClassInfo();
+			return result;
+		}catch(Exception e) {
+			throw new ServiceException(e);
+		}	// end try-catch
+		
+		
+	}	// end getLikeList
 	
 }	// end class
