@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>aaaa</h1>
+	<h1>첨부파일 완료!</h1>
 </body>
 </html>
