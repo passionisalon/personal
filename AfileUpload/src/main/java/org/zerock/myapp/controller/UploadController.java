@@ -27,6 +27,9 @@ public class UploadController {
 		log.info("uploadForm() invoked.");
 	}	// end uploadForm
 	
+	
+	
+	
 	// 업로드 폼 형식 post
 	@PostMapping("/uploadFormAction")
 	public void uploadFormPost(MultipartFile[] uploadFile,Model model) throws Exception {
@@ -81,7 +84,7 @@ public class UploadController {
 	}	// end uploadAjax
 	
 	@PostMapping("/uploadAjaxAction")
-	public void uploadAjaxPost(MultipartFile[] uploadFile) throws Exception {
+	public String uploadAjaxPost(MultipartFile[] uploadFile) throws Exception {
 		this.getThisClassInfo();
 		log.info("uploadAjaxPost() invoked.");
 		try {
@@ -108,12 +111,15 @@ public class UploadController {
 				multipartFile.transferTo(saveFile);
 				
 				log.info("------------------------------");
-				
+				return "redirect:/uploadAjax";	
 			}	// end for
-//			return "controller에서 처리완료!";
+			
 		}catch(Exception e) {
+//			return "controller에서 처리완료???";
 			throw new Exception(e);
+			
 		}
+		return "redirect:/uploadAjax";
 		
 		
 		
