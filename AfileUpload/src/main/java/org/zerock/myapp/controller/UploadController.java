@@ -20,12 +20,14 @@ public class UploadController {
 		System.out.println();
 	}	// end getThisClassInfo
 	
+	// 업로드 폼 형식 get
 	@GetMapping("/uploadForm")
 	public void uploadForm() {
 		this.getThisClassInfo();
 		log.info("uploadForm() invoked.");
 	}	// end uploadForm
 	
+	// 업로드 폼 형식 post
 	@PostMapping("/uploadFormAction")
 	public void uploadFormPost(MultipartFile[] uploadFile,Model model) throws Exception {
 		this.getThisClassInfo();
@@ -40,16 +42,28 @@ public class UploadController {
 			log.info("Upload File Name : {}",multipartFile.getOriginalFilename());
 			log.info("Upload File Size : {}",multipartFile.getSize());
 			
+			log.info("파라미터의 이름<input>태그의 이름");
 			log.info("Upload File getName : {}",multipartFile.getName());
+			
+			log.info("업로드되는 파일의 이름");
 			log.info("String getOriginalFileName() : {}",multipartFile.getOriginalFilename());
+			
+			log.info("파일이 존재하지 않는 경우 true");
 			log.info("boolean isEmpty() : {}",multipartFile.isEmpty());
+			
+			log.info("업로드되는 파일의 크기");
 			log.info("getSize() : {}",multipartFile.getSize());
+			
+			log.info("byte[]로 파일 데이터 변환");
 			log.info("getBytes() : {}",multipartFile.getBytes());
+			
+			log.info("파일데이터와 연결된 InputStream을 반환");
 			log.info("inputStream getInputStream() : {}",multipartFile.getInputStream());
 			
 			File saveFile = new File(uploadFolder,multipartFile.getOriginalFilename());
 			
 			try {
+				log.info("파일의 저장");
 				multipartFile.transferTo(saveFile);
 				log.info("uploadFile");
 			}catch(Exception e) {
@@ -59,4 +73,52 @@ public class UploadController {
 		}	// end for
 		
 	}	// end uploadFormPost
+	
+	@GetMapping("/uploadAjax")
+	public void uploadAjax() {
+		this.getThisClassInfo();
+		log.info("upload ajax");
+	}	// end uploadAjax
+	
+	@PostMapping("/uploadAjaxAction")
+	public void uploadAjaxPost(MultipartFile[] uploadFile) throws Exception {
+		this.getThisClassInfo();
+		log.info("uploadAjaxPost() invoked.");
+		try {
+			log.info("MultipartFile[] : {}",uploadFile);
+			String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
+			log.info("uploadFolder : {}",uploadFolder);
+			for(MultipartFile multipartFile : uploadFile) {
+				
+				log.info("------------------------------");
+				log.info("Upload File Name : {}",multipartFile);
+				log.info("Upload File Name getOriginalFillename() : {}",multipartFile.getOriginalFilename());
+				log.info("Upload File Size : {}",multipartFile.getSize());
+				
+				String uploadFileName = multipartFile.getOriginalFilename();
+				log.info("uploadFileName : {}",uploadFileName);
+				
+				// IE has file path
+				uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+				log.info("only file name : ",uploadFileName);
+				
+				File saveFile = new File(uploadFolder, uploadFileName);
+				log.info("saveFile : {}",saveFile);
+				
+				multipartFile.transferTo(saveFile);
+				
+				log.info("------------------------------");
+				
+			}	// end for
+//			return "controller에서 처리완료!";
+		}catch(Exception e) {
+			throw new Exception(e);
+		}
+		
+		
+		
+		
+	}	// end uploadAjaxPost
+	
+	
 }	// end class

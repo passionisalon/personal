@@ -11,7 +11,9 @@
 
 <P>  The time on the server is ${serverTime}. </P>
 
-	<a href="/uploadForm">pppp</a>
-
+	<a href="/uploadForm">uploadForm</a>
+	<br>
+	
+	<a href="/uploadAjax">uploadAjax</a>
 </body>
 </html>
