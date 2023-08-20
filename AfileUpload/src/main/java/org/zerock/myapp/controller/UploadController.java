@@ -1,14 +1,28 @@
 package org.zerock.myapp.controller;
 
-import java.io.File;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.myapp.domain.AttachFileDTO;
 
 import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Controller
 @Log4j2
@@ -83,48 +97,155 @@ public class UploadController {
 		log.info("upload ajax");
 	}	// end uploadAjax
 	
-	@PostMapping("/uploadAjaxAction")
-	public String uploadAjaxPost(MultipartFile[] uploadFile) throws Exception {
-		this.getThisClassInfo();
-		log.info("uploadAjaxPost() invoked.");
-		try {
-			log.info("MultipartFile[] : {}",uploadFile);
-			String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
-			log.info("uploadFolder : {}",uploadFolder);
-			for(MultipartFile multipartFile : uploadFile) {
-				
-				log.info("------------------------------");
-				log.info("Upload File Name : {}",multipartFile);
-				log.info("Upload File Name getOriginalFillename() : {}",multipartFile.getOriginalFilename());
-				log.info("Upload File Size : {}",multipartFile.getSize());
-				
-				String uploadFileName = multipartFile.getOriginalFilename();
-				log.info("uploadFileName : {}",uploadFileName);
-				
-				// IE has file path
-				uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
-				log.info("only file name : ",uploadFileName);
-				
-				File saveFile = new File(uploadFolder, uploadFileName);
-				log.info("saveFile : {}",saveFile);
-				
+	@SuppressWarnings("deprecation")
+	@PostMapping(value="/uploadAjaxAction",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile){
+		
+		List<AttachFileDTO> list = new ArrayList<>();
+		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
+		
+		String uploadFolderPath = getFolder();
+		
+		// make folder ----
+		File uploadPath = new File(uploadFolder,uploadFolderPath);
+		
+		if(uploadPath.exists()==false) {
+			uploadPath.mkdirs();
+		}	// end if
+		// make yyyy/MM/dd folder
+		
+		for(MultipartFile multipartFile : uploadFile) {
+			AttachFileDTO attachDTO = new AttachFileDTO();
+			String uploadFileName = multipartFile.getOriginalFilename();
+			
+			// IE has file path
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+			log.info("only file name : {}",uploadFileName);
+			attachDTO.setFileName(uploadFileName);
+			
+			UUID uuid = UUID.randomUUID();
+			
+			uploadFileName = uuid.toString()+"_"+uploadFileName;
+			
+			try {
+				File saveFile = new File(uploadPath,uploadFileName);
 				multipartFile.transferTo(saveFile);
 				
-				log.info("------------------------------");
-				return "redirect:/uploadAjax";	
-			}	// end for
-			
-		}catch(Exception e) {
-//			return "controller에서 처리완료???";
-			throw new Exception(e);
-			
-		}
-		return "redirect:/uploadAjax";
-		
-		
-		
-		
+				attachDTO.setUuid(uuid.toString());
+				attachDTO.setUploadPath(uploadFolderPath);
+				
+				// check image type file
+				if(checkImageType(saveFile)) {
+					attachDTO.setImage(true);
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+uploadFileName));
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
+					thumbnail.close();
+				}	// end if
+				// add to List
+				list.add(attachDTO);
+			}catch(Exception e) {
+				e.getStackTrace();
+			}
+		}	// end for
+		return new ResponseEntity<>(list,HttpStatus.OK);
 	}	// end uploadAjaxPost
 	
+	
+	// 기존 ajax파일 업로드
+//	@PostMapping("/uploadAjaxAction")
+//	public String uploadAjaxPost(MultipartFile[] uploadFile) throws Exception {
+//		this.getThisClassInfo();
+//		log.info("uploadAjaxPost() invoked.");
+//		try {
+//			log.info("MultipartFile[] : {}",uploadFile);
+//			String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
+//			log.info("uploadFolder : {}",uploadFolder);
+//			
+//			// make folder 
+//			File uploadPath = new File(uploadFolder,getFolder());
+//			log.info("uploadPath : {}",uploadPath);
+//			
+//			if(uploadPath.exists() == false) {
+//				uploadPath.mkdirs();
+//			}
+//			
+//			for(MultipartFile multipartFile : uploadFile) {
+//				
+//				log.info("------------------------------");
+//				log.info("Upload File Name : {}",multipartFile);
+//				log.info("Upload File Name getOriginalFillename() : {}",multipartFile.getOriginalFilename());
+//				log.info("Upload File Size : {}",multipartFile.getSize());
+//				
+//				String uploadFileName = multipartFile.getOriginalFilename();
+//				log.info("uploadFileName : {}",uploadFileName);
+//				
+//				// IE has file path
+//				uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+//				log.info("only file name : ",uploadFileName);
+//				
+//				UUID uuid = UUID.randomUUID();
+//				log.info("uuid : {}",uuid);
+//				
+//				uploadFileName = uuid.toString() + "_" + uploadFileName;
+//				log.info("uploadFileName : {}",uploadFileName);
+//				
+//				
+////				File saveFile = new File(uploadFolder, uploadFileName);
+//				File saveFile = new File(uploadPath,uploadFileName);
+//				log.info("saveFile : {}",saveFile);
+//				
+//				multipartFile.transferTo(saveFile);
+//				
+//				if(checkImageType(saveFile)) {
+//					
+//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+uploadFileName));
+//					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
+//					
+//					thumbnail.close();
+//				}
+//				
+//				log.info("------------------------------");
+//				return "redirect:/uploadAjax";	
+//			}	// end for
+//			
+//		}catch(Exception e) {
+//			throw new Exception(e);
+//		}
+//		return "redirect:/uploadAjax";
+//		
+//	}	// end uploadAjaxPost
+	
+	private String getFolder() {
+		
+		this.getThisClassInfo();
+		log.info("getFolder() invoked.");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		log.info("sdf : {}",sdf);
+		
+		Date date = new Date();
+		log.info("date : {}",date);
+		
+		String str = sdf.format(date);
+		log.info("str : {}",str);
+		
+		String result = str.replace("-", File.separator);
+		log.info("result : {}",result);
+		
+		return result;
+	}	// end getFolder
+		
+	private boolean checkImageType(File file) {
+		try {
+			String contentType = Files.probeContentType(file.toPath());
+			log.info("contentType : {}",contentType);
+			
+			return contentType.startsWith("image");
+
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}	// end checkImageType
 	
 }	// end class

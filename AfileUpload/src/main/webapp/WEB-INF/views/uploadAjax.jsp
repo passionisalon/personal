@@ -64,9 +64,10 @@
 					contentType : false,
 					data :formData,
 					type : 'POST',
+					dataType:'json',
 					success : function(data){
 						alert("성공!!");
-// 						alert("Uploaded : ",data);
+						alert("Uploaded : ",data);
 					},error:function(xhr,status,error){
 						console.log("Ajax오류 발생 : ");
 						console.log("상태 코드 : ",xhr.status);
