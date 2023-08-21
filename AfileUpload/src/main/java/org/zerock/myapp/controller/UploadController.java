@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,6 +32,9 @@ import net.coobird.thumbnailator.Thumbnailator;
 @Controller
 @Log4j2
 public class UploadController {
+	
+	// temp
+//	private static String pathP = "";
 	
 	public void getThisClassInfo() {
 		System.out.println();
@@ -104,12 +109,14 @@ public class UploadController {
 	@PostMapping(value="/uploadAjaxAction",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile){
-		
+		this.getThisClassInfo();
+		log.info("uploadAjaxPost() invoked.");
+		log.info("uploadFile : {}",uploadFile);
 		List<AttachFileDTO> list = new ArrayList<>();
 		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
 		
 		String uploadFolderPath = getFolder();
-		
+//		UploadController.pathP = uploadFolderPath;
 		// make folder ----
 		File uploadPath = new File(uploadFolder,uploadFolderPath);
 		
@@ -133,15 +140,18 @@ public class UploadController {
 			
 			try {
 				File saveFile = new File(uploadPath,uploadFileName);
+//				File saveFile = new File(uploadFolder,uploadFileName);
 				multipartFile.transferTo(saveFile);
 				
-				attachDTO.setUuid(uuid.toString());
+//				attachDTO.setUuid(uuid.toString());
 				attachDTO.setUploadPath(uploadFolderPath);
+				attachDTO.setUploadPath(uploadFolder);
 				
 				// check image type file
 				if(checkImageType(saveFile)) {
 					attachDTO.setImage(true);
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+uploadFileName));
+//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder,"s_" + uploadFileName));
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
 					thumbnail.close();
 				}	// end if
@@ -258,7 +268,12 @@ public class UploadController {
 		log.info("getFile() invoked.");
 		log.info("fileName : {}",fileName);
 		
-		File file = new File("/Users/wisdlogos/Temp/upload/tmp/");
+		// Check if fileName is not null or empty
+		if(fileName == null || fileName.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		File file = new File("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
 		log.info("file : {}",file);
 		ResponseEntity<byte[]> result = null;
 		
@@ -273,6 +288,43 @@ public class UploadController {
 		return result;
 	}	// end getFile
 	
+//	@GetMapping(value="/download",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<Resource> downloadFile(String fileName){
+//		this.getThisClassInfo();
+//		log.info("downloadFile() invoked.");
+//		log.info("fileName : {}",fileName);
+//		
+//		FileSystemResource resource = new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+//		
+//		log.info("resource : {}",resource);
+//		
+//		return null;
+//		
+//	}	// downloadFile
 	
+	@GetMapping(value="/download",produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@ResponseBody
+	public ResponseEntity<Resource> downloadFile(String fileName){
+		this.getThisClassInfo();
+		log.info("downloadFile() invoked.");
+		log.info("download file : {}",fileName);
+		
+		Resource resource = new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+		
+		log.info("resouece : {}",resource);
+		String resourceName = resource.getFilename();
+		
+		HttpHeaders headers = new HttpHeaders();
+		
+		try {
+			headers.add("Content-Disposition","attachment; filename="+new String(resourceName.getBytes("UTF-8"),"ISO-8859-1"));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+//		return null;
+	}	// downloadFile
 	
 }	// end class
