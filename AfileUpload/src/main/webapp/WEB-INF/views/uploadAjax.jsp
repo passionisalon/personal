@@ -22,9 +22,36 @@
 	.uploadResult ul li{
 		list-style:none;
 		padding:10px;
+		align-content:center;
+		text-align:center;
 	}
 	.uploadResult ul li img{
-		width: 20px;
+/* 		width: 20px; */
+		width:100px;
+	}
+	.uploadResult ul li span{
+		color:white;
+	}
+	.bigPictureWrapper{
+		position:absolute;
+		display:none;
+		justify-content:center;
+		align-items:center;
+		top:0%;
+		width:100%;
+		height:100%;
+		background-color:gray;
+		z-index:100;
+		background:rgba(255,255,255,0.5);
+	}
+	.bigPicture{
+		position:relative;
+		display:flex;
+		justify-content:center;
+		align-items:center;
+	}
+	.bigPicture img{
+		width:6600px;
 	}
 </style>
 
@@ -40,6 +67,13 @@
 		
 		</ul>
 	</div>
+	
+	<div class='bigPictureWrapper'>
+		<div class='bigPicture'>
+		
+		</div>
+	</div>
+	
 	<button id='uploadBtn'>Upload</button>
 	<script>
 		$(document).ready(function(){
@@ -105,12 +139,17 @@
 // 					str += "<li>" + obj.fileName + "</li>";
 
 					if(!obj.image){
-						var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+// 						var fileCallPath = encodeURIComponent(obj.uploadPath + "/" + obj.uuid + "_" + obj.fileName);
+						var fileCallPath = encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);
+
 // 						str += "<li><img src='/resources/img/attach.png'>"+obj.fileName+"</li>";
 						str += "<li><a href='/download?fileName="+fileCallPath+"'>"+"<img src='/resources/img/attach.png'>"+obj.fileName+"</a></li>";
 					}else{
 						var fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
-						str += "<li><img src='/display?fileName"+fileCallPath+"'<li>";
+// 						str += "<li><img src='/display?fileName"+fileCallPath+"'<li>";
+						var originPath = obj.uploadPath + "\\"+obj.uuid+"_"+obj.fileName;
+						originPath = originPath.replace(new RegExp(/\\/g),"/");
+						str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\"><img src='/display?fileName="+fileCallPath+"'></a><li>";
 					}
 					
 				});	// end each
@@ -118,11 +157,22 @@
 				uploadResult.append(str);
 			}	// end showUploadedFile
 			
-			function downloadFile(fileName) {
-			    // Replace '/download/' with the actual URL of your getFile endpoint.
-			    var downloadUrl = '/download/?fileName=' + fileName;
-			    window.open(downloadUrl, '_blank');
-			}
+			$(".bigPictureWrapper").on("click",function(e){
+				$(".bigPicture").animate({width:'0%',height:'0%'},1000);
+				setTimeout(()=>{
+					$(this).hide();
+				},1000);
+			})
+			
+			
+			function showImage(fileCallPath){
+				
+				$('.bigPictureWrapper').css('display','flex').show();
+				
+				$('.bigPicture').html("<img src='/display?fileName=" + encodeURIComponent(fileCallPath) + "'>").animate({ width: '100%', height: '100%' }, 1000);
+
+				
+			};	// end showImage
 			
 		});	// end jq
 	</script>

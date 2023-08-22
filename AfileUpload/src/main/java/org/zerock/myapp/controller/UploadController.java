@@ -4,6 +4,7 @@ package org.zerock.myapp.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.myapp.domain.AttachFileDTO;
@@ -303,28 +305,83 @@ public class UploadController {
 //		
 //	}	// downloadFile
 	
-	@GetMapping(value="/download",produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//	@GetMapping(value="/download",produces=MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<Resource> downloadFile(String fileName){
+//		this.getThisClassInfo();
+//		log.info("downloadFile() invoked.");
+//		log.info("download file : {}",fileName);
+//		
+//		Resource resource = new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+//		
+//		log.info("resouece : {}",resource);
+//		String resourceName = resource.getFilename();
+//		
+//		HttpHeaders headers = new HttpHeaders();
+//		
+//		try {
+//			headers.add("Content-Disposition","attachment; filename="+new String(resourceName.getBytes("UTF-8"),"ISO-8859-1"));
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+//
+//	}	// downloadFile
+
+	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	@ResponseBody
-	public ResponseEntity<Resource> downloadFile(String fileName){
+	public ResponseEntity<Resource> downloadFile(@RequestHeader("UserAgent") String userAgent, String fileName){
+		
 		this.getThisClassInfo();
-		log.info("downloadFile() invoked.");
-		log.info("download file : {}",fileName);
+		log.info("downloadFile(userAgent : {}, fileName : {}) invoked.",userAgent,fileName);
 		
 		Resource resource = new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+		log.info("resource : {}",resource);
 		
-		log.info("resouece : {}",resource);
+		if(resource.exists() == false) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}// end if
+		
 		String resourceName = resource.getFilename();
+		log.info("resource : {}",resource);
+		
+		// remove UUID
+		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
+		log.info("resourceOriginalName : {}",resourceOriginalName);
 		
 		HttpHeaders headers = new HttpHeaders();
+		log.info("headers : {}",headers);
 		
 		try {
-			headers.add("Content-Disposition","attachment; filename="+new String(resourceName.getBytes("UTF-8"),"ISO-8859-1"));
+			String downloadName = null;
+			if(userAgent.contains("Trident")) {
+				log.info("IE browser");
+//				downloadName = URLEncoder.encode(resourceName,"UTF-8").replaceAll("\\+", " ");
+				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8").replaceAll("\\+", " ");
+				log.info("downloadName : {}",downloadName);
+			}else if(userAgent.contains("Edge")){
+				log.info("Edge borwser");
+//				downloadName = URLEncoder.encode(resourceName,"UTF-8");
+				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8");
+				log.info("downloadName : {}",downloadName);
+			}else {
+				log.info("Chrome browser");
+//				downloadName = new String(resourceName.getBytes("UTF-8"),"ISO-8858-1");
+				downloadName = new String(resourceOriginalName.getBytes("UTF-8"),"ISO-8859-1");
+				log.info("downloadName : {}",downloadName);
+			}	// end if - else
+			
+			log.info("downloadName : {}",downloadName);
+			
+			headers.add("Content-Disposition","attachment; filename="+downloadName);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
-		}
+		}	// end try-catch
 		
 		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
-//		return null;
-	}	// downloadFile
+		
+	}	// end downloadFile
 	
 }	// end class
