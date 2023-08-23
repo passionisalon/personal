@@ -108,64 +108,103 @@ public class UploadController {
 		log.info("upload ajax");
 	}	// end uploadAjax
 	
-	@SuppressWarnings("deprecation")
-	@PostMapping(value="/uploadAjaxAction",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@ResponseBody
-	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile){
+	@PostMapping("/uploadAjaxAction")
+	public void uploadAjaxPost(MultipartFile[] uploadFile) throws IOException {
 		this.getThisClassInfo();
 		log.info("uploadAjaxPost() invoked.");
-		log.info("uploadFile : {}",uploadFile);
-		List<AttachFileDTO> list = new ArrayList<>();
+		
 		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
-		
-		String uploadFolderPath = getFolder();
-//		UploadController.pathP = uploadFolderPath;
-		// make folder ----
-		File uploadPath = new File(uploadFolder,uploadFolderPath);
-		
-		if(uploadPath.exists()==false) {
-			uploadPath.mkdirs();
-		}	// end if
-		// make yyyy/MM/dd folder
+		log.info("uploadFolder : {}",uploadFolder);
 		
 		for(MultipartFile multipartFile : uploadFile) {
-			AttachFileDTO attachDTO = new AttachFileDTO();
-			String uploadFileName = multipartFile.getOriginalFilename();
+			log.info("---------------------------------");
+			System.out.println("파라미터의 이름 <input> 태그의 이름");
+			System.out.printf("String getName : %s\n",multipartFile.getName());
+			System.out.println("업로드되는 파일의 이름");
+			System.out.printf("String getOriginalFileName : %s\n",multipartFile.getOriginalFilename());
+			System.out.println("파일이 존재하지 않는 경우 true");
+			System.out.printf("boolean isEmpty() : %s\n",multipartFile.isEmpty());
+			System.out.println("업로드되는 파일의 크기");
+			System.out.printf("log getSize() : %s\n",multipartFile.getSize());
+			System.out.println("byte[]로 파일 데이터 반환");
+			System.out.printf("byte[] getByttes() : %s\n",multipartFile.getBytes());
+			System.out.println("파일데이터와 연결된 InputStream을 반환");
+			System.out.printf("InputStream getInputStream() : %s\n",multipartFile.getInputStream());
+			System.out.println("파일의 저장");
+			System.out.printf("transferTo(File file) lllll");
 			
-			// IE has file path
-			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
-			log.info("only file name : {}",uploadFileName);
-			attachDTO.setFileName(uploadFileName);
+			System.out.println("여기서부터 실제 소스코드 시작!!!");
+			log.info("upload File Name : {}",multipartFile.getOriginalFilename());
+			log.info("upload File Size : {}",multipartFile.getSize());
 			
-			UUID uuid = UUID.randomUUID();
 			
-			uploadFileName = uuid.toString()+"_"+uploadFileName;
 			
-			try {
-				File saveFile = new File(uploadPath,uploadFileName);
-//				File saveFile = new File(uploadFolder,uploadFileName);
-				multipartFile.transferTo(saveFile);
-				
-//				attachDTO.setUuid(uuid.toString());
-				attachDTO.setUploadPath(uploadFolderPath);
-				attachDTO.setUploadPath(uploadFolder);
-				
-				// check image type file
-				if(checkImageType(saveFile)) {
-					attachDTO.setImage(true);
-					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+uploadFileName));
-//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder,"s_" + uploadFileName));
-					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
-					thumbnail.close();
-				}	// end if
-				// add to List
-				list.add(attachDTO);
-			}catch(Exception e) {
-				e.getStackTrace();
-			}
-		}	// end for
-		return new ResponseEntity<>(list,HttpStatus.OK);
-	}	// end uploadAjaxPost
+			log.info("---------------------------------");
+		}	// end ofr 
+		
+		
+	}	// en duploadAjaxPost
+	
+	
+	// 첨부파일 삭제까지 적용된 부분 
+//	@SuppressWarnings("deprecation")
+//	@PostMapping(value="/uploadAjaxAction",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile){
+//		this.getThisClassInfo();
+//		log.info("uploadAjaxPost() invoked.");
+//		log.info("uploadFile : {}",uploadFile);
+//		List<AttachFileDTO> list = new ArrayList<>();
+//		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
+//		
+//		String uploadFolderPath = getFolder();
+////		UploadController.pathP = uploadFolderPath;
+//		// make folder ----
+//		File uploadPath = new File(uploadFolder,uploadFolderPath);
+//		
+//		if(uploadPath.exists()==false) {
+//			uploadPath.mkdirs();
+//		}	// end if
+//		// make yyyy/MM/dd folder
+//		
+//		for(MultipartFile multipartFile : uploadFile) {
+//			AttachFileDTO attachDTO = new AttachFileDTO();
+//			String uploadFileName = multipartFile.getOriginalFilename();
+//			
+//			// IE has file path
+//			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+//			log.info("only file name : {}",uploadFileName);
+//			attachDTO.setFileName(uploadFileName);
+//			
+//			UUID uuid = UUID.randomUUID();
+//			
+//			uploadFileName = uuid.toString()+"_"+uploadFileName;
+//			
+//			try {
+//				File saveFile = new File(uploadPath,uploadFileName);
+////				File saveFile = new File(uploadFolder,uploadFileName);
+//				multipartFile.transferTo(saveFile);
+//				
+////				attachDTO.setUuid(uuid.toString());
+//				attachDTO.setUploadPath(uploadFolderPath);
+//				attachDTO.setUploadPath(uploadFolder);
+//				
+//				// check image type file
+//				if(checkImageType(saveFile)) {
+//					attachDTO.setImage(true);
+//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_"+uploadFileName));
+////					FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder,"s_" + uploadFileName));
+//					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
+//					thumbnail.close();
+//				}	// end if
+//				// add to List
+//				list.add(attachDTO);
+//			}catch(Exception e) {
+//				e.getStackTrace();
+//			}
+//		}	// end for
+//		return new ResponseEntity<>(list,HttpStatus.OK);
+//	}	// end uploadAjaxPost
 	
 	
 	// 기존 ajax파일 업로드
