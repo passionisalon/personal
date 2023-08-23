@@ -41,6 +41,7 @@ public class UploadController {
 	
 	public void getThisClassInfo() {
 		System.out.println();
+		System.out.println();
 		log.info("\n\t현재 클래스는 {}입니다.",this.getClass().getName());
 		System.out.println();
 	}	// end getThisClassInfo
@@ -109,7 +110,7 @@ public class UploadController {
 	}	// end uploadAjax
 	
 	@PostMapping("/uploadAjaxAction")
-	public void uploadAjaxPost(MultipartFile[] uploadFile) throws IOException {
+	public String uploadAjaxPost(MultipartFile[] uploadFile) throws IOException {
 		this.getThisClassInfo();
 		log.info("uploadAjaxPost() invoked.");
 		
@@ -118,32 +119,55 @@ public class UploadController {
 		
 		for(MultipartFile multipartFile : uploadFile) {
 			log.info("---------------------------------");
-			System.out.println("파라미터의 이름 <input> 태그의 이름");
-			System.out.printf("String getName : %s\n",multipartFile.getName());
-			System.out.println("업로드되는 파일의 이름");
-			System.out.printf("String getOriginalFileName : %s\n",multipartFile.getOriginalFilename());
-			System.out.println("파일이 존재하지 않는 경우 true");
-			System.out.printf("boolean isEmpty() : %s\n",multipartFile.isEmpty());
-			System.out.println("업로드되는 파일의 크기");
-			System.out.printf("log getSize() : %s\n",multipartFile.getSize());
-			System.out.println("byte[]로 파일 데이터 반환");
-			System.out.printf("byte[] getByttes() : %s\n",multipartFile.getBytes());
-			System.out.println("파일데이터와 연결된 InputStream을 반환");
-			System.out.printf("InputStream getInputStream() : %s\n",multipartFile.getInputStream());
-			System.out.println("파일의 저장");
-			System.out.printf("transferTo(File file) lllll");
+			System.out.println("\t파라미터의 이름 <input> 태그의 이름");
+			System.out.printf("\tString getName : %s\n",multipartFile.getName());
+			System.out.println("\t업로드되는 파일의 이름");
+			System.out.printf("\tString getOriginalFileName : %s\n",multipartFile.getOriginalFilename());
+			System.out.println("\t파일이 존재하지 않는 경우 true");
+			System.out.printf("\tboolean isEmpty() : %s\n",multipartFile.isEmpty());
+			System.out.println("\t업로드되는 파일의 크기");
+			System.out.printf("\tlog getSize() : %s\n",multipartFile.getSize());
+			System.out.println("\tbyte[]로 파일 데이터 반환");
+			System.out.printf("\tbyte[] getByttes() : %s\n",multipartFile.getBytes());
+			System.out.println("\t파일데이터와 연결된 InputStream을 반환");
+			System.out.printf("\tInputStream getInputStream() : %s\n",multipartFile.getInputStream());
+			System.out.println("\t파일의 저장");
+			System.out.printf("\ttransferTo(File file) lllll");
 			
 			System.out.println("여기서부터 실제 소스코드 시작!!!");
 			log.info("upload File Name : {}",multipartFile.getOriginalFilename());
 			log.info("upload File Size : {}",multipartFile.getSize());
 			
+			String uploadFileName = multipartFile.getOriginalFilename();
+			log.info("uploadFileName : {}",uploadFileName);
 			
+			// IE has file path
+			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
+			log.info("uploadFileName : {}",uploadFileName);
+			
+			File saveFile = new File(uploadFolder,uploadFileName);
+			
+			try {
+				log.info("multipartFile.transferTo(File file)");
+				multipartFile.transferTo(saveFile);
+				log.info("!!!!success upload File!!!!");
+			}catch(Exception e) {
+				e.printStackTrace();
+				log.error(e.getMessage());
+			}	// end try-catch
 			
 			log.info("---------------------------------");
-		}	// end ofr 
+			
+			
+			
+		}	// end for
 		
-		
-	}	// en duploadAjaxPost
+		return "controller의 uploadAjaxAction 끝남";
+	}	// end duploadAjaxPost
+	
+	
+	
+	
 	
 	
 	// 첨부파일 삭제까지 적용된 부분 
@@ -271,64 +295,64 @@ public class UploadController {
 //		
 //	}	// end uploadAjaxPost
 	
-	private String getFolder() {
+//	private String getFolder() {
+//		
+//		this.getThisClassInfo();
+//		log.info("getFolder() invoked.");
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//		log.info("sdf : {}",sdf);
+//		
+//		Date date = new Date();
+//		log.info("date : {}",date);
+//		
+//		String str = sdf.format(date);
+//		log.info("str : {}",str);
+//		
+//		String result = str.replace("-", File.separator);
+//		log.info("result : {}",result);
+//		
+//		return result;
+//	}	// end getFolder
 		
-		this.getThisClassInfo();
-		log.info("getFolder() invoked.");
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		log.info("sdf : {}",sdf);
-		
-		Date date = new Date();
-		log.info("date : {}",date);
-		
-		String str = sdf.format(date);
-		log.info("str : {}",str);
-		
-		String result = str.replace("-", File.separator);
-		log.info("result : {}",result);
-		
-		return result;
-	}	// end getFolder
-		
-	private boolean checkImageType(File file) {
-		try {
-			String contentType = Files.probeContentType(file.toPath());
-			log.info("contentType : {}",contentType);
-			
-			return contentType.startsWith("image");
-
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return false;
-	}	// end checkImageType
+//	private boolean checkImageType(File file) {
+//		try {
+//			String contentType = Files.probeContentType(file.toPath());
+//			log.info("contentType : {}",contentType);
+//			
+//			return contentType.startsWith("image");
+//
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}	// end checkImageType
 	
-	@GetMapping("/display")
-	@ResponseBody
-	public ResponseEntity<byte[]> getFile(String fileName){
-		this.getThisClassInfo();
-		log.info("getFile() invoked.");
-		log.info("fileName : {}",fileName);
-		
-		// Check if fileName is not null or empty
-		if(fileName == null || fileName.isEmpty()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}
-		
-		File file = new File("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
-		log.info("file : {}",file);
-		ResponseEntity<byte[]> result = null;
-		
-		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("content-Type", Files.probeContentType(file.toPath()));
-			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
-			
-		}catch(IOException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}	// end getFile
+//	@GetMapping("/display")
+//	@ResponseBody
+//	public ResponseEntity<byte[]> getFile(String fileName){
+//		this.getThisClassInfo();
+//		log.info("getFile() invoked.");
+//		log.info("fileName : {}",fileName);
+//		
+//		// Check if fileName is not null or empty
+//		if(fileName == null || fileName.isEmpty()) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}
+//		
+//		File file = new File("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+//		log.info("file : {}",file);
+//		ResponseEntity<byte[]> result = null;
+//		
+//		try {
+//			HttpHeaders header = new HttpHeaders();
+//			header.add("content-Type", Files.probeContentType(file.toPath()));
+//			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
+//			
+//		}catch(IOException e) {
+//			e.printStackTrace();
+//		}
+//		return result;
+//	}	// end getFile
 	
 //	@GetMapping(value="/download",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 //	@ResponseBody
@@ -369,86 +393,86 @@ public class UploadController {
 //
 //	}	// downloadFile
 
-	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	@ResponseBody
-	public ResponseEntity<Resource> downloadFile(@RequestHeader("UserAgent") String userAgent, String fileName){
-		
-		this.getThisClassInfo();
-		log.info("downloadFile(userAgent : {}, fileName : {}) invoked.",userAgent,fileName);
-		
-		Resource resource = new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
-		log.info("resource : {}",resource);
-		
-		if(resource.exists() == false) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}// end if
-		
-		String resourceName = resource.getFilename();
-		log.info("resource : {}",resource);
-		
-		// remove UUID
-		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
-		log.info("resourceOriginalName : {}",resourceOriginalName);
-		
-		HttpHeaders headers = new HttpHeaders();
-		log.info("headers : {}",headers);
-		
-		try {
-			String downloadName = null;
-			if(userAgent.contains("Trident")) {
-				log.info("IE browser");
-//				downloadName = URLEncoder.encode(resourceName,"UTF-8").replaceAll("\\+", " ");
-				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8").replaceAll("\\+", " ");
-				log.info("downloadName : {}",downloadName);
-			}else if(userAgent.contains("Edge")){
-				log.info("Edge borwser");
-//				downloadName = URLEncoder.encode(resourceName,"UTF-8");
-				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8");
-				log.info("downloadName : {}",downloadName);
-			}else {
-				log.info("Chrome browser");
-//				downloadName = new String(resourceName.getBytes("UTF-8"),"ISO-8858-1");
-				downloadName = new String(resourceOriginalName.getBytes("UTF-8"),"ISO-8859-1");
-				log.info("downloadName : {}",downloadName);
-			}	// end if - else
-			
-			log.info("downloadName : {}",downloadName);
-			
-			headers.add("Content-Disposition","attachment; filename="+downloadName);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-		}	// end try-catch
-		
-		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
-		
-	}	// end downloadFile
+//	@GetMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<Resource> downloadFile(@RequestHeader("UserAgent") String userAgent, String fileName){
+//		
+//		this.getThisClassInfo();
+//		log.info("downloadFile(userAgent : {}, fileName : {}) invoked.",userAgent,fileName);
+//		
+//		Resource resource = new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+//		log.info("resource : {}",resource);
+//		
+//		if(resource.exists() == false) {
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}// end if
+//		
+//		String resourceName = resource.getFilename();
+//		log.info("resource : {}",resource);
+//		
+//		// remove UUID
+//		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
+//		log.info("resourceOriginalName : {}",resourceOriginalName);
+//		
+//		HttpHeaders headers = new HttpHeaders();
+//		log.info("headers : {}",headers);
+//		
+//		try {
+//			String downloadName = null;
+//			if(userAgent.contains("Trident")) {
+//				log.info("IE browser");
+////				downloadName = URLEncoder.encode(resourceName,"UTF-8").replaceAll("\\+", " ");
+//				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8").replaceAll("\\+", " ");
+//				log.info("downloadName : {}",downloadName);
+//			}else if(userAgent.contains("Edge")){
+//				log.info("Edge borwser");
+////				downloadName = URLEncoder.encode(resourceName,"UTF-8");
+//				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8");
+//				log.info("downloadName : {}",downloadName);
+//			}else {
+//				log.info("Chrome browser");
+////				downloadName = new String(resourceName.getBytes("UTF-8"),"ISO-8858-1");
+//				downloadName = new String(resourceOriginalName.getBytes("UTF-8"),"ISO-8859-1");
+//				log.info("downloadName : {}",downloadName);
+//			}	// end if - else
+//			
+//			log.info("downloadName : {}",downloadName);
+//			
+//			headers.add("Content-Disposition","attachment; filename="+downloadName);
+//			
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//		}	// end try-catch
+//		
+//		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+//		
+//	}	// end downloadFile
 	
-	@PostMapping("/deleteFile")
-	@ResponseBody
-	public ResponseEntity<String> deleteFile(String fileName,String type){
-		this.getThisClassInfo();
-		log.info("deleteFile() invoked.");
-		log.info("fileName : {}",fileName);
-		log.info("type : {}",type);
-		
-		File file;
-		
-		try {
-			file = new File("/Users/wisdlogos/Temp/upload/tmp/"+URLDecoder.decode(fileName,"UTF-8"));
-			log.info("file : {}",file);
-			file.delete();
-			if(type.equals("image")) {
-				String largeFileName = file.getAbsolutePath().replace("s_","");
-				log.info("largeFileName : {}",largeFileName);
-				file.delete();
-			}	// end if
-		}catch(Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		}	// end try-catch
-		return new ResponseEntity<String>("deleted",HttpStatus.OK);
-	}	// end deleteFile
+//	@PostMapping("/deleteFile")
+//	@ResponseBody
+//	public ResponseEntity<String> deleteFile(String fileName,String type){
+//		this.getThisClassInfo();
+//		log.info("deleteFile() invoked.");
+//		log.info("fileName : {}",fileName);
+//		log.info("type : {}",type);
+//		
+//		File file;
+//		
+//		try {
+//			file = new File("/Users/wisdlogos/Temp/upload/tmp/"+URLDecoder.decode(fileName,"UTF-8"));
+//			log.info("file : {}",file);
+//			file.delete();
+//			if(type.equals("image")) {
+//				String largeFileName = file.getAbsolutePath().replace("s_","");
+//				log.info("largeFileName : {}",largeFileName);
+//				file.delete();
+//			}	// end if
+//		}catch(Exception e) {
+//			e.printStackTrace();
+//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//		}	// end try-catch
+//		return new ResponseEntity<String>("deleted",HttpStatus.OK);
+//	}	// end deleteFile
 	
 	
 }	// end class

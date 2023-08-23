@@ -10,20 +10,13 @@
 </head>
 <body>
 	<h1>Upload with Ajax</h1>
+	
+	
 	<div class='uploadDiv'>
 		<input type='file' name='uploadFile' multiple>
-		<button id='uploadBtn'>Upload</button>
 	</div>
-	<div class='uploadResult'>
-		<ul>
-		
-		</ul>
-	</div>
-	<div class='bigPictureWrapper'>
-		<div class='bigPicture'>
-		
-		</div>
-	</div>
+	
+	<button id='uploadBtn'>Upload</button>
 	<script>
 		$(document).ready(function(){
 			
@@ -31,59 +24,58 @@
 			var maxSize = 5242880;	// 5MB
 			
 			function checkExtension(fileName, fileSize){
-				if(fileSize >=maxSize){
-					alert("파일 사이즈 초과!");
+				if(fileSize >= maxSize){
+					alert("파일 사이즈 초과!!!");
 					return false;
 				}	// end if
 				
 				if(regex.test(fileName)){
-					alert("해당 종류이 파일은 업로드 할 수 없습니다.");
+					alert("해당 종류의 파일은 업로드할 수 없습니다.");
 					return false;
 				}	// end if
 				
 				return true;
-			}	// end checkExtension
-			
+			}
 			
 			
 			$('#uploadBtn').on("click",function(e){
 				var formData = new FormData();
-				var inputFile = $("input[name='uploadFile']");
-				var files = inputFile[0].files;
-				console.log(files);
+				console.log("formData : ",formData);
+				var inputFile = $("input[name='uploadFile']").prop('files');
+				var files = inputFile;
+				console.log("inputFile : ",inputFile);
+				console.log("files : ",inputFile);
 				
-				// add File Data to formData
-				for(let i = 0 ; i < files.length ; i++){
+				
+				// add File Data to forData
+				for(let i = 0 ; i < inputFile.length ; i++){
 					
 					if(!checkExtension(files[i].name, files[i].size)){
 						return false;
 					}
 					
-					
-					formData.append("uploadFile",files[i]);
-					console.log("formData : ",formData);
-					console.log("uploadFile : ",inputFile);
-				}	// end for
+					formData.append("uploadFile",inputFile[i]);
+				}
+				console.log("formData : ",formData);
 				
 				$.ajax({
-					url : '/uploadAjaxAction',
+					url:'/uploadAjaxAction',
 					processData : false,
 					contentType : false,
-					data : formData,
-					type : 'post',
-					success:function(result){
-						console.log("ajax통신성공!!!!!");
-						console.log("data : ",result);
-					},error:function(error){
-						console.log(error);
-					}	// end
-					
+					data :formData,
+					type : 'POST',
+					dataType:'json',
+					success : function(data){
+						alert("성공!!");
+						alert("Uploaded : ",data);
+					},error:function(xhr,status,error){
+						console.log("Ajax오류 발생 : ");
+						console.log("상태 코드 : ",xhr.status);
+						console.log("error : ",error);
+					}
 				});	// end ajax
 				
-				console.log("uploadBtn의 젤 밑단!");
-				
-			});// end uploadBtn
-			
+			});	// end uploadBtn
 		});	// end jq
 	</script>
 </body>
