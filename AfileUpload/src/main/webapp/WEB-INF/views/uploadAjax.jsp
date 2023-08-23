@@ -191,6 +191,29 @@
 				
 			};	// end showImage
 			
+			$(".uploadResult").on("click","span",function(e){
+				var targetFile = $(this).data("file");
+				var type = $(this).data("type");
+				console.log("targetFile : ",targetFile);
+				
+				$.ajax({
+					url: '/deleteFile',
+					data:{
+							fileName : targetFile,
+							type : type 	
+						},
+					type:'post',
+					success:function(result){
+						console.log("result : ",result);
+						console.log("ajax통신 성공!!!");
+						
+					},error:function(error){
+						console.log(error);
+					}
+				});	// end ajax
+			});	// end uploadResult
+			
+			
 		});	// end jq
 	</script>
 </body>
