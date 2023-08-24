@@ -8,6 +8,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.4.1/jquery-migrate.min.js"></script>
 <title>Insert title here</title>
 </head>
+<style>
+	.uploadResult{
+		width:100%;
+		background-color:white;
+	}
+	.uploadResult ul{
+		display:flex;
+		flex-flow:row;
+		justify-content:center;
+		align-items:center;
+	}
+	.uploadResult ul li{
+		list-style:none;
+		padding:10px;
+	}
+	.uploadResult ul li img{
+		width:20px;
+	}
+</style>
 <body>
 	<h1>Upload with Ajax</h1>
 	<div class='uploadDiv'>

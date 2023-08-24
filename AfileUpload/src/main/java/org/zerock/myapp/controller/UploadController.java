@@ -11,11 +11,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -228,6 +230,28 @@ public class UploadController {
 		return false;
 	}	// end checkImageType
 	
+	@ResponseBody
+	@GetMapping("/display")
+	public ResponseEntity<byte[]> getFile(String fileName){
+		this.getThisClassInfo();
+		log.info("getFile(fileName : {}) invoked.",fileName);
+		
+		File file = new File("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+		log.info("file : {}",file);
+		
+		ResponseEntity<byte[]> result = null;
+		
+		try {
+			HttpHeaders header = new HttpHeaders();
+			log.info("header : {}",header);
+			
+			header.add("Content-Type", Files.probeContentType(file.toPath()));
+			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}	// end getFile
 	
 	// 첨부파일 삭제까지 적용된 부분 
 //	@SuppressWarnings("deprecation")
