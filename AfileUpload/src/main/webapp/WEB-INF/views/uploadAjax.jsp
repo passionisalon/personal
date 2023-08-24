@@ -68,10 +68,18 @@
 			function showUploadedFile(uploadResultArr){
 				var str="";
 				$(uploadResultArr).each(function(i,obj){
-					str += "<li>" + obj.fileName + "</li>";
+					
+					if(!obj.image){
+						str += "<li><img src='/resources/img/attach.png'>"+obj.fileName+"</li>";
+					}else{
+						str += "<li>" + obj.fileName + "</li>";	
+					}
+					
+					
 				});
 				uploadResult.append(str);
-			}
+			}	// end showUploadFile
+			
 			
 			var cloneObj = $(".uploadDiv").clone();
 			

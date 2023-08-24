@@ -4,6 +4,7 @@ package org.zerock.myapp.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,6 +12,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -252,6 +255,36 @@ public class UploadController {
 		}
 		return result;
 	}	// end getFile
+	
+	@GetMapping(value="/download",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	@ResponseBody
+	public ResponseEntity<Resource> downloadFile(String fileName){
+		this.getThisClassInfo();
+		log.info("downloadFile(fileName : {}) invoked.",fileName);
+		
+		FileSystemResource resource =
+				new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
+		log.info("resource : {}",resource);
+		
+		String resourceName = resource.getFilename();
+		log.info("resourceName : {}",resourceName);
+		
+		HttpHeaders headers = new HttpHeaders();
+		log.info("headers : {}",headers);
+		
+		try {
+			headers.add(
+					"Content-Disposition",
+					"attachment; filename="+new String(resourceName.getBytes("UTF-8"),
+							"ISO-8859-1"));
+		}catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}	// end try-catch
+		
+		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+		
+	}	// end downloadFile
+	
 	
 	// 첨부파일 삭제까지 적용된 부분 
 //	@SuppressWarnings("deprecation")
