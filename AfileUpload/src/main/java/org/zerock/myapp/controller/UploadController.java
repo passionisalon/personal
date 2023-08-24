@@ -6,14 +6,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.zerock.myapp.domain.AttachFileDTO;
 
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -95,10 +102,13 @@ public class UploadController {
 		log.info("upload ajax");
 	}	// end uploadAjax
 	
-	@PostMapping("/uploadAjaxAction")
-	public String uploadAjaxPost(MultipartFile[] uploadFile) throws IOException {
+	@ResponseBody
+	@PostMapping(value="/uploadAjaxAction",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) throws IOException {
 		this.getThisClassInfo();
 		log.info("uploadAjaxPost() invoked.");
+		
+		List<AttachFileDTO> list = new ArrayList<>();
 		
 		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
 		log.info("uploadFolder : {}",uploadFolder);
@@ -130,6 +140,9 @@ public class UploadController {
 			System.out.printf("\ttransferTo(File file) lllll");
 			
 			System.out.println("여기서부터 실제 소스코드 시작!!!");
+			
+			AttachFileDTO attachDTO = new AttachFileDTO();
+
 			log.info("upload File Name : {}",multipartFile.getOriginalFilename());
 			log.info("upload File Size : {}",multipartFile.getSize());
 			
@@ -140,26 +153,37 @@ public class UploadController {
 			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
 			log.info("uploadFileName : {}",uploadFileName);
 			
+			attachDTO.setFileName(uploadFileName);
+			
 			// UUID 만들어 넣기
 			UUID uuid = UUID.randomUUID();
 			uploadFileName = uuid.toString()+"_"+uploadFileName;
 			log.info("uploadFileName : {}",uploadFileName);
 			
-			// uploadFolder-> uploadPath로 변경해야하나 다시 받아 와야하기 때문에 그냥 그대로 tmp 디렉토리에 저장을 함.
-			File saveFile = new File(uploadFolder,uploadFileName);
-			log.info("saveFile : {}",saveFile);
 			try {
+				// uploadFolder-> uploadPath로 변경해야하나 다시 받아 와야하기 때문에 그냥 그대로 tmp 디렉토리에 저장을 함.
+				File saveFile = new File(uploadFolder,uploadFileName);
+				log.info("saveFile : {}",saveFile);
+				
 				log.info("multipartFile.transferTo(File file)");
 				multipartFile.transferTo(saveFile);
 				log.info("!!!!success upload File!!!!");
+
+				attachDTO.setUuid(uuid.toString());
+				attachDTO.setUploadPath(uploadFolder);
 				
 				// check image type file
 				if(this.checkImageType(saveFile)) {
+					attachDTO.setImage(true);
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder,"s_"+uploadFileName));
 					log.info("thumbnail : {}",thumbnail);
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
 					thumbnail.close();
 				}	// end if
+				
+				// add to List
+				list.add(attachDTO);
+				log.info("list : {}",list);
 			}catch(Exception e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
@@ -169,7 +193,7 @@ public class UploadController {
 				
 		}	// end for
 		
-		return "controller의 uploadAjaxAction 끝남";
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}	// end duploadAjaxPost
 	
 	// 후속 디렉토리 경로 만들기

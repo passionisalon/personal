@@ -71,6 +71,7 @@
 					contentType : false,
 					data : formData,
 					type : 'post',
+					dataType: 'json',
 					success:function(result){
 						console.log("ajax통신성공!!!!!");
 						console.log("data : ",result);
