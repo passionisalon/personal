@@ -113,8 +113,10 @@ public class UploadController {
 		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
 		log.info("uploadFolder : {}",uploadFolder);
 		
+		String uploadFolderPath = getFolder();
+		log.info("uploadFolderPath : {}",uploadFolderPath);
 		// 후속 디렉토리 경로 만들기
-		File uploadPath = new File(uploadFolder,this.getFolder());
+		File uploadPath = new File(uploadFolder,uploadFolderPath);
 		log.info("upload path : {}",uploadPath);
 		
 		if(uploadPath.exists() == false) {
@@ -162,7 +164,7 @@ public class UploadController {
 			
 			try {
 				// uploadFolder-> uploadPath로 변경해야하나 다시 받아 와야하기 때문에 그냥 그대로 tmp 디렉토리에 저장을 함.
-				File saveFile = new File(uploadFolder,uploadFileName);
+				File saveFile = new File(uploadPath,uploadFileName);
 				log.info("saveFile : {}",saveFile);
 				
 				log.info("multipartFile.transferTo(File file)");
@@ -170,12 +172,12 @@ public class UploadController {
 				log.info("!!!!success upload File!!!!");
 
 				attachDTO.setUuid(uuid.toString());
-				attachDTO.setUploadPath(uploadFolder);
+				attachDTO.setUploadPath(uploadFolderPath);
 				
 				// check image type file
 				if(this.checkImageType(saveFile)) {
 					attachDTO.setImage(true);
-					FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder,"s_"+uploadFileName));
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+uploadFileName));
 					log.info("thumbnail : {}",thumbnail);
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
 					thumbnail.close();

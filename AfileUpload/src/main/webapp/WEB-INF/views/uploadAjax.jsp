@@ -44,7 +44,17 @@
 				return true;
 			}	// end checkExtension
 			
+			var uploadResult = $(".uploadResult ul");
 			
+			function showUploadedFile(uploadResultArr){
+				var str="";
+				$(uploadResultArr).each(function(i,obj){
+					str += "<li>" + obj.fileName + "</li>";
+				});
+				uploadResult.append(str);
+			}
+			
+			var cloneObj = $(".uploadDiv").clone();
 			
 			$('#uploadBtn').on("click",function(e){
 				var formData = new FormData();
@@ -75,6 +85,11 @@
 					success:function(result){
 						console.log("ajax통신성공!!!!!");
 						console.log("data : ",result);
+						
+						showUploadedFile(result);
+						
+						$(".uploadDiv").html(cloneObj.html());
+						
 					},error:function(error){
 						console.log(error);
 					}	// end
