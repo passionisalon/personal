@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.myapp.domain.AttachFileDTO;
@@ -184,7 +186,7 @@ public class UploadController {
 					attachDTO.setImage(true);
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+uploadFileName));
 					log.info("thumbnail : {}",thumbnail);
-					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,300,300);
 					thumbnail.close();
 				}	// end if
 				
@@ -249,7 +251,9 @@ public class UploadController {
 			log.info("header : {}",header);
 			
 			header.add("Content-Type", Files.probeContentType(file.toPath()));
+			log.info("header : {}",header);
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
+			log.info("result : {}",result);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -258,7 +262,7 @@ public class UploadController {
 	
 	@GetMapping(value="/download",produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
 	@ResponseBody
-	public ResponseEntity<Resource> downloadFile(String fileName){
+	public ResponseEntity<Resource> downloadFile(@RequestHeader("User-Agent") String userAgent,String fileName){
 		this.getThisClassInfo();
 		log.info("downloadFile(fileName : {}) invoked.",fileName);
 		
@@ -266,17 +270,43 @@ public class UploadController {
 				new FileSystemResource("/Users/wisdlogos/Temp/upload/tmp/"+fileName);
 		log.info("resource : {}",resource);
 		
+		if(resource.exists() == false) {
+			log.info("reousrce.exists false일 경우!");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}	// end if
+		
 		String resourceName = resource.getFilename();
 		log.info("resourceName : {}",resourceName);
+		
+		// UUID 삭제
+		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
 		
 		HttpHeaders headers = new HttpHeaders();
 		log.info("headers : {}",headers);
 		
 		try {
+			
+			String downloadName = null;
+			
+			if(userAgent.contains("trident")) {
+				log.info("IE browser");
+				downloadName = 
+						URLEncoder.encode(resourceOriginalName,"UTF-8").replaceAll("\\","");
+			}else if(userAgent.contains("Edge")) {
+				log.info("Edge browser");
+				downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8");
+				log.info("Edge name : "+downloadName);
+			}else {
+				log.info("Chrome browser");
+				downloadName = new String(resourceOriginalName.getBytes("UTF-8"),"ISO-8859-1");
+			}	// end if-else if -else
+			
+			log.info("downloadName : {}",downloadName);
+			
 			headers.add(
 					"Content-Disposition",
-					"attachment; filename="+new String(resourceName.getBytes("UTF-8"),
-							"ISO-8859-1"));
+					"attachment; filename="+downloadName);
+			log.info("headers : {}",headers);
 		}catch(UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}	// end try-catch
