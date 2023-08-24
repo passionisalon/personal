@@ -4,30 +4,16 @@ package org.zerock.myapp.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.zerock.myapp.domain.AttachFileDTO;
 
 import lombok.extern.log4j.Log4j2;
 import net.coobird.thumbnailator.Thumbnailator;
@@ -117,6 +103,15 @@ public class UploadController {
 		String uploadFolder = "/Users/wisdlogos/Temp/upload/tmp/";
 		log.info("uploadFolder : {}",uploadFolder);
 		
+		// 후속 디렉토리 경로 만들기
+		File uploadPath = new File(uploadFolder,this.getFolder());
+		log.info("upload path : {}",uploadPath);
+		
+		if(uploadPath.exists() == false) {
+			uploadPath.mkdirs();
+		}
+		
+		
 		for(MultipartFile multipartFile : uploadFile) {
 			log.info("---------------------------------");
 			System.out.println("\t파라미터의 이름 <input> 태그의 이름");
@@ -145,29 +140,67 @@ public class UploadController {
 			uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("\\")+1);
 			log.info("uploadFileName : {}",uploadFileName);
 			
-			File saveFile = new File(uploadFolder,uploadFileName);
+			// UUID 만들어 넣기
+			UUID uuid = UUID.randomUUID();
+			uploadFileName = uuid.toString()+"_"+uploadFileName;
+			log.info("uploadFileName : {}",uploadFileName);
 			
+			// uploadFolder-> uploadPath로 변경해야하나 다시 받아 와야하기 때문에 그냥 그대로 tmp 디렉토리에 저장을 함.
+			File saveFile = new File(uploadFolder,uploadFileName);
+			log.info("saveFile : {}",saveFile);
 			try {
 				log.info("multipartFile.transferTo(File file)");
 				multipartFile.transferTo(saveFile);
 				log.info("!!!!success upload File!!!!");
+				
+				// check image type file
+				if(this.checkImageType(saveFile)) {
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadFolder,"s_"+uploadFileName));
+					log.info("thumbnail : {}",thumbnail);
+					Thumbnailator.createThumbnail(multipartFile.getInputStream(),thumbnail,100,100);
+					thumbnail.close();
+				}	// end if
 			}catch(Exception e) {
 				e.printStackTrace();
 				log.error(e.getMessage());
 			}	// end try-catch
 			
 			log.info("---------------------------------");
-			
-			
-			
+				
 		}	// end for
 		
 		return "controller의 uploadAjaxAction 끝남";
 	}	// end duploadAjaxPost
 	
+	// 후속 디렉토리 경로 만들기
+	private String getFolder() {
+		this.getThisClassInfo();
+		log.info("getFolder() invoked.");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = new Date();
+		
+		String str = sdf.format(date);
+		
+		return str.replace("-",File.separator);
+	}	// end getFolder
 	
-	
-	
+	// 이미지 첵크
+	private boolean checkImageType(File file) {
+		this.getThisClassInfo();
+		log.info("checkImageType(File : {}) invoked.",file);
+		try {
+			log.info("file.toPath() : {}",file.toPath());
+			String contentType = Files.probeContentType(file.toPath());
+			log.info("contentType : {}",contentType);
+			
+			return contentType.startsWith("image");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}	// end checkImageType
 	
 	
 	// 첨부파일 삭제까지 적용된 부분 
