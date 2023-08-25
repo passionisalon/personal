@@ -5,7 +5,8 @@ import javax.servlet.ServletRegistration;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebConfig 
+extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
@@ -35,6 +36,8 @@ public class WebConfig extends AbstractAnnotationConfigDispatcherServletInitiali
 						20971520
 						);
 		registration.setMultipartConfig(multipartConfig);
-	}
+		
+		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+	}	// customizeRegistration
 
-}
+}	// end class

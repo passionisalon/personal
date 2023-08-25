@@ -13,6 +13,8 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @ComponentScan(basePackages= {"org.zerock.myapp.controller"})
+@ComponentScan(basePackages= {"org.zerock.myapp.exception"})
+@ComponentScan(basePackages= {"org.zerock.myapp.service"})
 public class ServletConfig implements WebMvcConfigurer {
 
 	@Override

@@ -11,7 +11,7 @@
 <style>
 	.uploadResult{
 		width:100%;
-		background-color:white;
+		background-color:black;
 	}
 	.uploadResult ul{
 		display:flex;
@@ -108,8 +108,13 @@
 					if(!obj.image){
 // 						str += "<li><img src='/resources/img/attach.png'>"+obj.fileName+"</li>";
 						var fileCallPath = encodeURIComponent(obj.uploadPath+"/"+obj.uuid+"_"+obj.fileName);
-						str+="<li><a href='/download?fileName="+fileCallPath+"'>"
-								+"<img src='/resources/img/asuka5.png'>"+obj.fileName+"</a></li>";
+						
+						var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+						
+						str+="<li><div><a href='/download?fileName="+fileCallPath+"'>"
+								+"<img src='/resources/img/asuka5.png'>"+obj.fileName+"</a>"+
+								"<span data-file=\'"+fileCallPath+"\' data-type='file'>X</span>"+
+								"<div></li>";
 					}else{
 // 						str += "<li>" + obj.fileName + "</li>";
 // 						var fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
@@ -122,7 +127,10 @@
 						originPath = originPath.replace(new RegExp(/\\/g),"/");
 						console.log("originPath : ",originPath);
 						
-						str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\"><img src='/display?fileName="+fileCallPath+"'></a><li>";
+						str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\">"+
+								"<img src='/display?fileName="+fileCallPath+"'></a>"+
+								"<span data-file=\'"+fileCallPath+"\' data-type='image'>X</span>"+
+								"<li>";
 
 						console.log("str : ",str);
 					}	// end if-else
@@ -184,7 +192,29 @@
 				setTimeout(()=>{
 					$(this).hide();
 				},1000);
-			})
+			});	// end bigPictureWrapper
+			
+			$(".uploadResult").on("click","span",function(e){
+				var targetFile = $(this).data("file");
+				var type = $(this).data("type");
+				console.log("targetFile : ",targetFile);
+				
+				$.ajax({
+					url:'/deleteFile',
+					data:{
+						fileName : targetFile,
+						type : type	
+					},
+					dataType:'text',
+					type:'post',
+					success:function(result){
+						console.log('ajax성공!!');
+						console.log("result : ",result);
+					},error:function(error){
+						console.log("error : ",error);
+					}
+				});	// end ajax
+			});	// end uploadResult
 		});	// end jq
 	</script>
 </body>
