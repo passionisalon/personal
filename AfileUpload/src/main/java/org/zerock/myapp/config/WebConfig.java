@@ -37,7 +37,7 @@ extends AbstractAnnotationConfigDispatcherServletInitializer {
 						);
 		registration.setMultipartConfig(multipartConfig);
 		
-		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
+//		registration.setInitParameter("throwExceptionIfNoHandlerFound", "true");
 	}	// customizeRegistration
 
 }	// end class

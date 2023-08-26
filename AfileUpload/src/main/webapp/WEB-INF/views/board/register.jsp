@@ -2,13 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<%-- <%@ include file="../includes/header.jsp" %> --%>
+<%@ include file="../includes/header.jsp" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+
+
+
 <body>
 	<div class="row">
 		<div class="col-lg-12">
@@ -72,7 +76,7 @@
 
 
 
-<%-- <%@include file="../includes/footer.jsp" %> --%>
+<%@include file="../includes/footer.jsp" %>
 <script>
 	$(document).ready(function(e){
 		
@@ -103,7 +107,7 @@
 					var fileCallPath = encodeURIComponent(obj.uploadPath+"/s_"+obj.uuid+"_"+obj.fileName);
 					str+="<li><div>";
 					str+="<span>"+obj.filename+"</span>";
-					str+="<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+					str+="<button type='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
 					str+="<img src='/display?fileName="+fileCallPath+"'>";
 					str+="</div>";
 					str+="</li>";
@@ -114,21 +118,21 @@
 
 					str+="<li><div>";
 					str+="<span>"+obj.fileName+"</span>";
-					str+="<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
-					str+="<img str='/resources/img/asuka5.pan'></a>";
+					str+="<button type='button' data-file='\'"+fileCallPath+"\' data-type='file' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+					str+="<img src='/resources/img/asuka5.png'></a>";
 					str+="</div>";
 					str+="</li>";
 					
 				}
 			});// uploadReusltArr
 			
-			uploadUl.appned(str);
+			uploadUL.append(str);
 		}	// end showUploadResult
 		
 		$("input[type='file']").change(function(e){
 			var formData = new FormData();
 			var inputFile = $("input[name='uploadFile']");
-			var files = inputFile[0].filse;
+			var files = inputFile[0].files;
 			
 			for(let i = 0 ; i < files.length ; i++){
 				if(!checkExtension(files[i].name,files[i].size)){
@@ -139,7 +143,7 @@
 			
 			$.ajax({
 				url:'/uploadAjaxAction',
-				processData:false;,
+				processData:false,
 				contentType:false,
 				data:formData,
 				type:'post',
@@ -163,7 +167,30 @@
 		
 		$(".uploadResult").on("click","button",function(e){
 			console.log("delete file");
-		})
+			
+			var targetFile = $(this).data("file");
+			var type = $(this).data("type");
+			
+			var targetLi = $(this).closest("li");
+			
+			$.ajax({
+				url:'/deleteFile',
+				data:{
+					fileName:targetFile,
+					type:type
+				},
+				dataType:'text',
+				type:'post',
+				success:function(result){
+					alert(result);
+						targetLi.remove();
+				},error: function(error){
+					console.log(error);
+					
+				}
+			});	// end ajax
+			
+		})	// end uploadResult click
 	});	// end jq
 </script>
 </body>
