@@ -5,7 +5,7 @@
 <mapper namespace="org.zerock.myapp.mapper.BoardAttachMapper">
 
 	<insert id="insert">
-		INSERT INTO tbl_attch(uuid,uploadpath,filename,filetype,bno)
+		INSERT INTO tbl_attach(uuid,uploadPath,fileName,fileType,bno)
 		VALUES (#{uuid},#{uploadPath},#{fileName},#{fileType},#{bno})
 	</insert>
 	

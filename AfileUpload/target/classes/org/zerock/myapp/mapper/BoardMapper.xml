@@ -17,7 +17,7 @@
 		VALUES(seq_board.nextval, #{title},#{content},#{writer})
 	</insert>
 	
-	<insert id="isnertSelectKey">
+	<insert id="insertSelectKey">
 		<selectKey keyProperty="bno" order="BEFORE" resultType="long">
 			SELECT seq_board.nextval FROM dual
 		</selectKey>
