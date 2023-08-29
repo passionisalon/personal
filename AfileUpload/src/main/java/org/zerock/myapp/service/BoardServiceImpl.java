@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.zerock.myapp.domain.BoardAttachVO;
 import org.zerock.myapp.domain.BoardVO;
 import org.zerock.myapp.mapper.BoardAttachMapper;
 import org.zerock.myapp.mapper.BoardMapper;
@@ -53,9 +54,18 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public BoardVO get(Long bno) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+		this.getClassInfo();
+		log.info("get() invoked.");
+		log.info("bno : {}",bno);
+		
+		BoardVO vo = this.mapper.read(bno);
+		this.getClassInfo();
+		log.info("vo : {}",vo);
+		
+		return vo;
+		
+	}	// end get
 
 	@Override
 	public boolean modify(BoardVO board) {
@@ -71,8 +81,24 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> getList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		this.getClassInfo();
+		log.info("getList() invoked.");
+		
+		List<BoardVO> result = this.mapper.getList();
+		result.forEach(log::info);
+		return result;
+	}	// end getList
 
-}
+	// 게시물의 첨부파일들의 목록을 가져옴
+	@Override
+	public List<BoardAttachVO> getAttachList(Long bno){
+		this.getClassInfo();
+		log.info("getAttachList(bno : {}) invoked.",bno);
+		
+		List<BoardAttachVO> result = this.attachMapper.findByBno(bno);
+		this.getClassInfo();
+		result.forEach(log::info);
+		return result;
+	}	// end getAttachList
+	
+}	// end class

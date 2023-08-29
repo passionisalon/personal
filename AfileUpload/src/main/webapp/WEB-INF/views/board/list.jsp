@@ -28,7 +28,7 @@
 							<th>수정일</th>
 						</tr>
 					</thead>
-					<c:forEach items="${__LIST__}" var="board">
+					<c:forEach items="${boardList}" var="board">
 						<tr>
 							<td>
 								<c:out value="${board.bno}"/>
@@ -40,10 +40,10 @@
 								<c:out value="${board.writer}"/>
 							</td>
 							<td>
-								<fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate} }"/>
+								<fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}"/>
 							</td>
 							<td>
-								<fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate} }"/>
+								<fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}"/>
 							</td>
 						</tr>
 					</c:forEach>
