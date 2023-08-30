@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="org.zerock.myapp.mapper.CommonMapper">
+
+	<insert id="insertUserImageUpload">
+	
+		INSERT INTO 
+			tbl_member_attach
+		VALUES (
+			    tbl_member_attach_seq.NEXTVAL,
+			    email = #{userEmail},
+			    fileName = #{fileName},
+			    uploadpath = #{uploadPath},
+			    uuid = #{uuid},
+			    checkimage = #{checkImage}
+		)
+	</insert>
+	
+	<select id="getUserImageInfo" resultType="org.zerock.myapp.domain.AttachFileDTO">
+		SELECT 
+			*
+		FROM 
+			tbl_member_attach
+		WHERE 
+			email = #{userEmail}
+		ORDER BY 
+			seq DESC
+			FETCH NEXT 1 ROWS ONLY
+	</select>
+
+</mapper>
+  	
