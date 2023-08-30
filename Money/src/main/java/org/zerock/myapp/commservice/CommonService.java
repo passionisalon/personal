@@ -1,19 +1,27 @@
 package org.zerock.myapp.commservice;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
+import java.util.UUID;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.zerock.myapp.domain.AttachFileDTO;
 import org.zerock.myapp.exception.ServiceException;
 
 import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Log4j2
 public final class CommonService {
@@ -206,7 +214,7 @@ public final class CommonService {
 		
 		// 교재 
 		// 공용 makeDir
-		private String getFolder() throws ServiceException{
+		private static String getFolder() throws ServiceException{
 			CommonService.CommonServiceInfo();
 			log.trace("getFolder() invoked.");
 			
@@ -223,7 +231,7 @@ public final class CommonService {
 		}	// end getFolder
 		
 		// 이미지 첵크
-		private boolean checkImageType(File file) throws ServiceException{
+		private static boolean checkImageType(File file) throws ServiceException{
 			CommonService.CommonServiceInfo();
 			log.trace("checkImageType() invoked.");
 			log.info("file : {}",file);
@@ -242,24 +250,205 @@ public final class CommonService {
 		}	// checkImageType
 		
 		// uploadAjaxAction.
-		public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) throws ServiceException{
-			return null;
-		}
+		public static ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile,String boardName)
+				throws ServiceException{
+			CommonService.CommonServiceInfo();
+			log.trace("uploadAjaxPost() invoked.");
+			log.info("uploadFile : {}",uploadFile);
+			log.info("boardName : {}",boardName);
+			
+			if(boardName == null | boardName.isEmpty()) {
+				log.info("boardName이 비어있습니다. 해당 첨부파일을 처리할 수 없습니다.");
+				log.info("boardName의 값은 {} 입니다. 확인부탁드립니다.",boardName);
+				
+				return null;
+			}
+			
+			if(uploadFile == null) {
+				log.info("uploadFile이 비어있습니다. 해당 첨부파일을 처리 할 수 없습니다. ");
+				log.info("uploadFile의 값은 {}입니다. 확인부탁드립니다.",uploadFile);
+				
+				return null;
+			}
+			
+			String uploadFolder = "/resources/upload/";
+			log.info("uploadFolder : {}",uploadFolder);
+			
+			String uploadFolderPath = CommonService.getFolder();
+			log.info("uploadFolderPath : {}",uploadFolderPath);
+			
+			File uploadPath = new File(uploadFolder, uploadFolderPath);
+			log.info("uploadPath : {}",uploadPath);
+			
+			if(uploadPath.exists() == false) {
+				log.info("정확한 디렉토리 경로가 없기 때문에 해당 uploadPath에 맞는 디렉토리를 생성합니다.");
+				uploadPath.mkdirs();
+			}	// end if
+			
+			List<AttachFileDTO> list = new ArrayList<>();
+			
+			
+			for(MultipartFile multiFile : uploadFile) {
+				
+				AttachFileDTO attachDTO = new AttachFileDTO();
+				
+				String uploadFileName = multiFile.getOriginalFilename();
+				log.info("upload File Name : {}",uploadFileName);
+				log.info("upload File Size : {}",multiFile.getSize());
+
+				// IE has file path
+				uploadFileName = uploadFileName.substring(uploadFileName.lastIndexOf("//")+1);
+				log.info("upload File Name : {}",uploadFileName);
+				
+				// attachDTO에 uploadFileName을 넣는다.
+				attachDTO.setFileName(uploadFileName);
+				log.info("attachDTO에 setFileName Set!!!");
+								
+				// UUID 만들어 넣기
+				UUID uuid = UUID.randomUUID();
+				uploadFileName = uuid.toString()+"_"+uploadFileName;
+				log.info("uploadFileName : {}",uploadFileName);
+				
+				try {
+					File saveFile = new File(uploadPath, uploadFileName);
+					log.info("saveFile : {}",saveFile);
+					
+					log.info("multiFile.transferTo(File file)");
+					multiFile.transferTo(saveFile);
+					log.info("!!!Success upload File!!!");
+					
+					attachDTO.setUuid(uuid.toString());
+					attachDTO.setUploadPath(uploadFolderPath);
+					log.info("uuid.toString() : {}",uuid.toString());
+					log.info("uploadPath : {}",uploadFolderPath);
+					
+					if(CommonService.checkImageType(saveFile)) {
+						attachDTO.setImage(true);
+						FileOutputStream thumbnail = 
+								new FileOutputStream(new File(uploadPath,"s_"+uploadFileName));
+						log.info("thumbnail : {}",thumbnail);
+						Thumbnailator.createThumbnail(multiFile.getInputStream(),thumbnail,100,100);
+						thumbnail.close();
+					}	// end if
+					
+					
+					// add to List
+					list.add(attachDTO);
+					log.info("list : {}",list);
+					
+				}catch(Exception e) {
+					throw new ServiceException(e);
+				}	// end try-catch
+				
+				
+			}	// end for
+			
+			
+			return new ResponseEntity<>(list,HttpStatus.OK);
+		}	// uploadAjaxPost
 		
 		// display
-		public ResponseEntity<byte []> getFile(String fileName) throws ServiceException{
-			return null;
-		}
+		public static ResponseEntity<byte []> getFile(String fileName) throws ServiceException{
+			CommonService.CommonServiceInfo();
+			log.trace("getFile() invoked.");
+			log.info("fileName : {}",fileName);
+			
+			File file = new File("/resources/upload/"+fileName);
+			log.info("file : {}",file);
+			
+			ResponseEntity<byte[]> result = null;
+			
+			try {
+				HttpHeaders header = new HttpHeaders();
+				log.info("header : {}",header);
+				header.add("Content-Type", Files.probeContentType(file.toPath()));
+				log.info("header : {}",header);
+				result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
+				log.info("result : {}",result);
+				
+				return result;
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}	// end try-catch
+			
+		}	// end getFile
 		
 		// download
-		public ResponseEntity<Resource> downloadFile(String userAgent, String fileName) throws ServiceException{
-			return null;
-		}
+		public static ResponseEntity<Resource> downloadFile(String userAgent, String fileName) throws ServiceException{
+			CommonService.CommonServiceInfo();
+			log.trace("downloadFile() invoked.");
+			log.info("userAgent : {}",userAgent);
+			log.info("fileName : {}",fileName);
+			
+			FileSystemResource resource = 
+					new FileSystemResource("/resources/upload"+fileName);
+			log.info("resource : {}",resource);
+			
+			if(resource.exists() == false) {
+				log.info("resource.exists false입니다.");
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}	// end if
+			
+			String resourceName = resource.getFilename();
+			log.info("resourceName : {}",resourceName);
+			
+			String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
+			
+			HttpHeaders headers = new HttpHeaders();
+			log.info("headers : {}",headers);
+			
+			try {
+				String downloadName = null;
+				
+				if(userAgent.contains("trident")) {
+					log.info("IE browser");
+					downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8");
+				}else if(userAgent.contains("Edge browser")) {
+					log.info("Edge brwser");
+					downloadName = URLEncoder.encode(resourceOriginalName,"UTF-8");
+				}else {
+					log.info("Chrome browser");
+					downloadName = new String(resourceOriginalName.getBytes("UTF-8"),"ISO-8859-1");
+				}
+				
+				log.info("downloadName : {}",downloadName);
+				
+				headers.add("Content-Disposition","attachment; filename="+downloadName);
+				log.info("headers : {}",headers);
+						
+				return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}	// end try-catch
+			
+		}	// end downloadFile
 		
 		// deleteFile
-		public ResponseEntity<String> deleteFile(String fileName, String type) throws ServiceException{
-			return null;
-		}
+		public static ResponseEntity<String> deleteFile(String fileName, String type) throws ServiceException{
+			CommonService.CommonServiceInfo();
+			log.trace("deleteFile() invoked.");
+			log.info("fileName : {}",fileName);
+			log.info("type : {}",type);
+			
+			File file;
+			try {
+				file = new File("/resources/upload/"+URLDecoder.decode(fileName,"UTF-8"));
+				log.info("file : {}",file);
+				file.delete();
+				
+				if(type.equals("image")) {
+					String largeFileName = file.getAbsolutePath().replace("s_","");
+					log.info("largeFileName : {}",largeFileName);
+					file = new File(largeFileName);
+					file.delete();
+				}	// end if
+				
+				return new ResponseEntity<String>("deleted",HttpStatus.OK);
+			}catch(Exception e) {
+				throw new ServiceException(e);
+			}	// end try-catch
+			
+		}	// deleteFile
 	
 	
 }	// end class
