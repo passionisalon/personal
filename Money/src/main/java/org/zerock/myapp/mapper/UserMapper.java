@@ -28,5 +28,5 @@ public interface UserMapper {
 	public abstract UserDTO findPassword(String Email,String userEmail);
 	
 	// 사용자 비밀번호 변경
-	public abstract Boolean changePassword(String Email , String Pw);
+	public abstract Boolean changePassword(String Email , String Password);
 }	//	end interface

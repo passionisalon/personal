@@ -153,9 +153,7 @@ public class TravelController {
 	public Integer selectLikeList(@RequestBody LikeDTO request) throws ControllerException{
 		this.getThisClassInfo();
 		log.info("LikeDTO : {}",request);
-//		log.info("Email : {}",Email);
-//		log.info("board_seq : {}",board_seq);
-//		log.info("board : {}",board);
+
 		
 		try {
 			LikeDTO result = this.likeService.selectLikeList(request);
@@ -169,12 +167,7 @@ public class TravelController {
 				return result.getBoard_seq();
 				
 			}
-//			LikeDTO result = this.likeService.selectLikeList(Email, board_seq,board);
-			
-//			Map<String,Object> map = new HashMap<>();
-//			map.getOrDefault("email",result.getEmail());
-//			map.getOrDefault("board_seq", result.getBoard_seq());
-//			map.getOrDefault("board", result.getBoard());
+
 			
 		}catch(Exception e) {
 			throw new ControllerException(e);

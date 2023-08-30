@@ -266,6 +266,7 @@ public class UserController {
 		log.info("\n\t findEmail() invoked.");
 	}	// end GetMapping findEmail
 	
+	// 이메일 찾기
 	@ResponseBody
 	@PostMapping("/sendEmailForFindEmail")
 	public Map<String,Object> sendEmailForFindEmail(String userEmail) throws ControllerException{
