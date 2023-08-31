@@ -82,6 +82,7 @@ public final class CommonService {
 		}	// end originUpload
 		
 		// 단일 파일용 업로드할 때 쓰는 메소드 
+		// 패스설정해야함 
 		public static String changeUpload(MultipartFile multiFile, String path) throws ServiceException{
 			
 			CommonService.CommonServiceInfo();
@@ -154,6 +155,10 @@ public final class CommonService {
 			
 			
 		}	// end upload
+		
+		
+		
+		
 		
 		private static String generateChangeName(MultipartFile multiFile) throws ServiceException{
 			
