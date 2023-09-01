@@ -14,6 +14,7 @@
 			    tbl_member_attach_seq.NEXTVAL,
 			    email = #{userEmail},
 			    fileName = #{fileName},
+			    uuidFileName = #{uuidFileName},
 			    uploadpath = #{uploadPath},
 			    uuid = #{uuid},
 			    checkimage = #{checkImage}

@@ -147,8 +147,12 @@
                 </div>
                 <br>
                 <div class="individual_wrap">
-                    <div>이미지</div>
-                    <button class="Btn">파일추가</button>
+                    <div class='uploadResult'>
+						<ul>
+		
+						</ul>
+					</div>
+                    <input type='file' name='uploadFile'>
                     <button for="ProfileImg" class="Btn">사진 업로드</button>
                 </div>
                 <br>

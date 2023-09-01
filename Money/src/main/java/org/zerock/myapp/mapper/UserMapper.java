@@ -2,11 +2,13 @@ package org.zerock.myapp.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Select;
 import org.zerock.myapp.domain.UserDTO;
 
 public interface UserMapper {
 	
 	// 회원정보 확인
+	
 	public abstract UserDTO UserInfo(String Email);
 	
 	//	사용자 정보확인 로그인 시

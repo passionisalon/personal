@@ -80,13 +80,17 @@ public final class CommonService {
 			}	// end try-catch
 		
 		}	// end originUpload
+
+		
 		
 		// 단일 파일용 업로드할 때 쓰는 메소드 
-		// 패스설정해야함 
-		public static String changeUpload(MultipartFile multiFile, String path) throws ServiceException{
+		// 패스설정해야함
+		// userEmail, fileName, uploadPath, uuid, image
+		public static ResponseEntity<AttachFileDTO> changeUpload(String userEmail,MultipartFile multiFile, String path) throws ServiceException{
 			
 			CommonService.CommonServiceInfo();
 			log.trace("changeUpload() invoked.");
+			log.info("userEmail : {}",userEmail);
 			log.info("multiFile : {}",multiFile);
 			log.info("path : {}",path);
 			
@@ -97,23 +101,90 @@ public final class CommonService {
 			
 			try {
 				
-				String changeName = CommonService.generateChangeName(multiFile);
-				log.info("changeName : {}",changeName);
+				AttachFileDTO attachDTO = new AttachFileDTO();
+				// userEmail , fileName, uuidFileName, uploadPath , uuid , image
+				String fileName = multiFile.getOriginalFilename();
+				fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
+				log.info("fileName : {}",fileName);
 				
-				File target = new File(path+changeName);
-				log.info("target : {}",target);
+				UUID uuid = CommonService.uuidGenerate();
+				log.info("uuid : {}",uuid);
 				
-				multiFile.transferTo(target);
+				String uuidFileName = uuid.toString()+"_"+fileName;
+				log.info("uuidFileName : {}",uuidFileName);
+
+				String uploadPathMkdir = CommonService.uploadPathMkdir();
+				log.info("uploadPathMkdir : {}",uploadPathMkdir);
+				
+				String totalPath = path+uploadPathMkdir;
+				log.info("totalPath : {}",totalPath);
+				
+				File uploadPath = new File(totalPath,uuidFileName);
+				log.info("uploadPath : {}",uploadPath);
+				
+				if(uploadPath.exists() == false) {
+					log.info("만약 디렉토리가 존재하지 않는다면 디렉토리를 생성합니다.!!");
+					uploadPath.mkdirs();
+				}
+				
+				attachDTO.setUserEmail(userEmail);
+				attachDTO.setFileName(fileName);
+				attachDTO.setUuidFileName(uuidFileName);
+				attachDTO.setUploadPath(uploadPath.toString());
+				attachDTO.setUuid(uuidFileName);
+				
+				if(CommonService.checkImageType(uploadPath)) {
+					log.info("이미지타입을 첵크하고 섬네일 생성!!!");
+					attachDTO.setImage(true);
+					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+fileName));
+					log.info("thumbnail : {}",thumbnail);
+					Thumbnailator.createThumbnail(multiFile.getInputStream(),thumbnail,300,300);
+					thumbnail.close();
+				}
+
+				multiFile.transferTo(uploadPath);
 				log.info("파일 업로드 성공!!!");
 				
-				return changeName;
+				return new ResponseEntity<>(attachDTO,HttpStatus.OK);
 				
 			}catch(Exception e) {
 				throw new ServiceException(e);
 			}	// end try-catch
 			
-			
 		}	// end changeUpload
+		
+		// userEmail, fileName, uploadPath, uuid, image
+		// uuid 생성 
+		public static UUID uuidGenerate() throws ServiceException {
+			
+			CommonService.CommonServiceInfo();
+			log.info("uuidGnerate() invoked.");
+			
+			UUID uuid = UUID.randomUUID();
+			log.info("uuid : {}",uuid);
+			
+			return uuid;		
+			
+		}	// end uuidGenerate
+		
+		public static String uploadPathMkdir() throws ServiceException{
+			
+			CommonService.CommonServiceInfo();
+			log.info("uploadPathMKdir() invoked.");
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			Date date = new Date();
+			
+			String str = sdf.format(date);
+			log.info("str : {}",str);
+			
+			String result = str.replace("-",File.separator);
+			log.info("result : {}",result);
+			
+			return result;
+			
+		}	// end uploadPahMKdir
 		
 		public static List<String> upload(List<MultipartFile> fileList,String path) throws ServiceException{
 			
