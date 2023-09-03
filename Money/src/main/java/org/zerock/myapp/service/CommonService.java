@@ -108,6 +108,7 @@ public final class CommonService {
 				log.info("fileName : {}",fileName);
 				
 				UUID uuid = CommonService.uuidGenerate();
+				
 				log.info("uuid : {}",uuid);
 				
 				String uuidFileName = uuid.toString()+"_"+fileName;
@@ -116,10 +117,10 @@ public final class CommonService {
 				String uploadPathMkdir = CommonService.uploadPathMkdir();
 				log.info("uploadPathMkdir : {}",uploadPathMkdir);
 				
-//				String totalPath = path+uploadPathMkdir;
-//				log.info("totalPath : {}",totalPath);
+				String totalPath = path+uploadPathMkdir;
+				log.info("totalPath : {}",totalPath);
 				
-				File uploadPath = new File(path,uploadPathMkdir);
+				File uploadPath = new File(totalPath,uuidFileName);
 				log.info("uploadPath : {}",uploadPath);
 //				log.info("uploadPath.toPath() : {}",uploadPath.toPath());
 //				log.info("uploadPath.contentType : {}",Files.probeContentType(uploadPath.toPath()));
@@ -142,9 +143,11 @@ public final class CommonService {
 				attachDTO.setFileName(fileName);
 				attachDTO.setUuidFileName(uuidFileName);
 				attachDTO.setUploadPath(uploadPath.toString());
-				attachDTO.setUuid(uuidFileName);
+				attachDTO.setUuid(uuid.toString());
 				
 				attachDTO.setImage(false);
+				
+				log.info("attachDTO : {}",attachDTO);
 				
 //				if(CommonService.checkImageType(uploadPath)) {
 //					log.info("이미지타입을 첵크하고 섬네일 생성!!!");
