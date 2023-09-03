@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -40,6 +41,9 @@ import lombok.extern.log4j.Log4j2;
 @RequestMapping("/user")
 @Controller
 public class UserController {
+	
+	@Value("${root}")
+	private String root;
 	
 	@Setter(onMethod_= {@Autowired})
 	private UserService userSerivce;
@@ -367,7 +371,10 @@ public class UserController {
 	
 	@ResponseBody
 	@PostMapping(value="/joinUploadFile" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<AttachFileDTO> joinUploadFile(String userEmail , MultipartFile multiFile) throws ControllerException{
+	public ResponseEntity<AttachFileDTO> joinUploadFile(
+			String userEmail , 
+			MultipartFile multiFile
+			) throws ControllerException{
 		
 		CommonService.getThisClassInfo(this);
 		
@@ -375,7 +382,9 @@ public class UserController {
 		log.info("userEmail : {}",userEmail);
 		log.info("multiFile : {}",multiFile);
 		
-		String path = "/resources/upload/user";
+//		String rootPath = environment.getProperty("rootPath");
+//		log.info("rootPath : {}",rootPath);
+		String path = root+"/resources/upload/user/";
 		log.info("path : {}",path);
 		ResponseEntity<AttachFileDTO> result;
 		

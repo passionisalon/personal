@@ -116,15 +116,26 @@ public final class CommonService {
 				String uploadPathMkdir = CommonService.uploadPathMkdir();
 				log.info("uploadPathMkdir : {}",uploadPathMkdir);
 				
-				String totalPath = path+uploadPathMkdir;
-				log.info("totalPath : {}",totalPath);
+//				String totalPath = path+uploadPathMkdir;
+//				log.info("totalPath : {}",totalPath);
 				
-				File uploadPath = new File(totalPath,uuidFileName);
+				File uploadPath = new File(path,uploadPathMkdir);
 				log.info("uploadPath : {}",uploadPath);
+//				log.info("uploadPath.toPath() : {}",uploadPath.toPath());
+//				log.info("uploadPath.contentType : {}",Files.probeContentType(uploadPath.toPath()));
 				
 				if(uploadPath.exists() == false) {
+					log.info("uploadPath.exists() : {}",uploadPath.exists());
 					log.info("만약 디렉토리가 존재하지 않는다면 디렉토리를 생성합니다.!!");
-					uploadPath.mkdirs();
+					if(uploadPath.mkdirs()) {
+						log.info("디렉토리 생성 성공! : {}",uploadPath);
+					}else {
+						log.error("디렉토리 생성 실패!!! : {} ",uploadPath);
+					}
+					
+					
+				}else {
+					log.info("디렉토리 이미 존재함!: {}",uploadPath);
 				}
 				
 				attachDTO.setUserEmail(userEmail);
@@ -133,16 +144,19 @@ public final class CommonService {
 				attachDTO.setUploadPath(uploadPath.toString());
 				attachDTO.setUuid(uuidFileName);
 				
-				if(CommonService.checkImageType(uploadPath)) {
-					log.info("이미지타입을 첵크하고 섬네일 생성!!!");
-					attachDTO.setImage(true);
-					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+fileName));
-					log.info("thumbnail : {}",thumbnail);
-					Thumbnailator.createThumbnail(multiFile.getInputStream(),thumbnail,300,300);
-					thumbnail.close();
-				}
-
+				attachDTO.setImage(false);
+				
+//				if(CommonService.checkImageType(uploadPath)) {
+//					log.info("이미지타입을 첵크하고 섬네일 생성!!!");
+//					attachDTO.setImage(true);
+//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+fileName));
+//					log.info("thumbnail : {}",thumbnail);
+//					Thumbnailator.createThumbnail(multiFile.getInputStream(),thumbnail,300,300);
+//					thumbnail.close();
+//				}
+				log.info("CheckPoint1");
 				multiFile.transferTo(uploadPath);
+				log.info("CheckPoint2");
 				log.info("파일 업로드 성공!!!");
 				
 				return new ResponseEntity<>(attachDTO,HttpStatus.OK);

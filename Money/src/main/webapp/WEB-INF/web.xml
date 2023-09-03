@@ -27,6 +27,13 @@ xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 
+
+		<init-param>
+			<param-name>rootPath</param-name>
+			<param-value>/</param-value>
+		</init-param>
+
+
 		<init-param>
 			<param-name>throwExceptionIfNoHandlerFound</param-name>
 			<param-value>true</param-value>

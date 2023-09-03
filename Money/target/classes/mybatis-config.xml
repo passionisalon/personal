@@ -6,6 +6,8 @@
 
 <configuration>
 
-  
+  <typeAliases>
+  	<typeAlias type="org.zerock.myapp.domain.TravelDTO" alias="ppp"/>
+  </typeAliases>
 
 </configuration>

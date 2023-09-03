@@ -15,6 +15,8 @@
 		
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
+
+
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<description>HikariCP Configuration</description>
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
@@ -68,7 +70,7 @@
 	   </property>
 	</bean>
 
-
+	
 	
 	<mybatis-spring:scan base-package="org.zerock.myapp.mapper" />
 	<context:component-scan base-package="org.zerock.myapp.service" />
