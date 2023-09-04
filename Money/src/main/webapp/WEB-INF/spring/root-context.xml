@@ -15,7 +15,9 @@
 		
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
-
+	<bean id="rootPath" class="java.lang.String">
+	    <constructor-arg value="/Users/wisdlogos/eclipse-workspace/2023/workspace/jee-2023-03/Money/src/main/webapp" />
+	</bean>
 
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<description>HikariCP Configuration</description>
@@ -44,7 +46,7 @@
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="hikariDataSource" />
 		<property name="configLocation" value="classpath:mybatis-config.xml" />
-		<!-- <property name="mapperLocations" value="classpath:mappers/*.xml" /> -->
+<!-- 		<property name="mapperLocations" value="classpath:mappers/*.xml" /> -->
 	</bean>
 
 	<bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>

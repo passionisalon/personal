@@ -34,11 +34,15 @@ import net.coobird.thumbnailator.Thumbnailator;
 @NoArgsConstructor
 public final class CommonService {
 	
-	@Setter(onMethod_= {@Autowired})
-	CommonMapper commonMapper;
+	
+		@Setter(onMethod_= {@Autowired})
+		private CommonMapper commonMapper;
+	
+		
+	
 	
 	// 해당 클래스의 정보를 가져오는 메소드 완전 공용 
-		public static void getThisClassInfo(Object ClassName){
+		public void getThisClassInfo(Object ClassName){
 			
 			System.out.println();
 			System.out.println();
@@ -46,49 +50,21 @@ public final class CommonService {
 			System.out.println();
 		}	// end getThisClassInfo
 
-		public static void CommonServiceInfo() throws ServiceException{
+		public void CommonServiceInfo() throws ServiceException{
 			System.out.println();
 			System.out.println();
 			log.trace("this class if CommonService");
 			System.out.println();
 		}
 		
-		// 진영이 행님 
-		// 파일명 그대로 업로드하는 메소드 
-		public static String originUpload(MultipartFile multiFile, String path) throws ServiceException{
-			
-			CommonService.CommonServiceInfo();
-			log.info("originUpload() invoked.");
-			log.info("multiFile : {}",multiFile);
-			log.info("path : {}",path);
-			
-			if(multiFile == null || multiFile.isEmpty()) { 
-				log.info("파일 업로드 실패!!!");
-				return null;
-			}	// end if 
-			
-			String originName = multiFile.getOriginalFilename();
-			
-			File target = new File(path+originName);
-			
-			try {
-				multiFile.transferTo(target);
-				log.info("파일 업로드 성공!!!");
-				return originName;
-			}catch(Exception e) {
-				throw new ServiceException(e);
-			}	// end try-catch
-		
-		}	// end originUpload
-
 		
 		
 		// 단일 파일용 업로드할 때 쓰는 메소드 
 		// 패스설정해야함
 		// userEmail, fileName, uploadPath, uuid, image
-		public static ResponseEntity<AttachFileDTO> changeUpload(String userEmail,MultipartFile multiFile, String path) throws ServiceException{
+		public String changeUpload(String userEmail,MultipartFile multiFile, String path) throws ServiceException{
 			
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			log.trace("changeUpload() invoked.");
 			log.info("userEmail : {}",userEmail);
 			log.info("multiFile : {}",multiFile);
@@ -107,14 +83,14 @@ public final class CommonService {
 				fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
 				log.info("fileName : {}",fileName);
 				
-				UUID uuid = CommonService.uuidGenerate();
+				UUID uuid = this.uuidGenerate();
 				
 				log.info("uuid : {}",uuid);
 				
 				String uuidFileName = uuid.toString()+"_"+fileName;
 				log.info("uuidFileName : {}",uuidFileName);
 
-				String uploadPathMkdir = CommonService.uploadPathMkdir();
+				String uploadPathMkdir = this.uploadPathMkdir();
 				log.info("uploadPathMkdir : {}",uploadPathMkdir);
 				
 				String totalPath = path+uploadPathMkdir;
@@ -122,8 +98,8 @@ public final class CommonService {
 				
 				File uploadPath = new File(totalPath,uuidFileName);
 				log.info("uploadPath : {}",uploadPath);
-//				log.info("uploadPath.toPath() : {}",uploadPath.toPath());
-//				log.info("uploadPath.contentType : {}",Files.probeContentType(uploadPath.toPath()));
+				log.info("uploadPath.toPath() : {}",uploadPath.toPath());
+				log.info("uploadPath.contentType : {}",Files.probeContentType(uploadPath.toPath()));
 				
 				if(uploadPath.exists() == false) {
 					log.info("uploadPath.exists() : {}",uploadPath.exists());
@@ -133,7 +109,6 @@ public final class CommonService {
 					}else {
 						log.error("디렉토리 생성 실패!!! : {} ",uploadPath);
 					}
-					
 					
 				}else {
 					log.info("디렉토리 이미 존재함!: {}",uploadPath);
@@ -149,20 +124,30 @@ public final class CommonService {
 				
 				log.info("attachDTO : {}",attachDTO);
 				
-//				if(CommonService.checkImageType(uploadPath)) {
-//					log.info("이미지타입을 첵크하고 섬네일 생성!!!");
-//					attachDTO.setImage(true);
-//					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath,"s_"+fileName));
-//					log.info("thumbnail : {}",thumbnail);
-//					Thumbnailator.createThumbnail(multiFile.getInputStream(),thumbnail,300,300);
-//					thumbnail.close();
-//				}
-				log.info("CheckPoint1");
+				if(this.checkImageType(uploadPath)) {
+					log.info("이미지타입을 첵크하고 섬네일 생성!!!");
+					attachDTO.setImage(true);
+					FileOutputStream thumbnail = new FileOutputStream(new File(totalPath,"s_"+fileName));
+					log.info("thumbnail : {}",thumbnail);
+					Thumbnailator.createThumbnail(multiFile.getInputStream(),thumbnail,300,300);
+					thumbnail.close();
+				}
+				
+				
 				multiFile.transferTo(uploadPath);
-				log.info("CheckPoint2");
 				log.info("파일 업로드 성공!!!");
 				
-				return new ResponseEntity<>(attachDTO,HttpStatus.OK);
+				log.info("여기서부터는 Mapper부분!");
+				
+				
+				
+				Integer mapperResult = this.commonMapper.insertUserImageUpload(attachDTO);
+				this.CommonServiceInfo();
+				log.info("mapperResult : {}",mapperResult);
+				
+				ResponseEntity<AttachFileDTO> result = new ResponseEntity<>(attachDTO,HttpStatus.OK);
+				log.info("result : {}",result);
+				return uploadPath.toString();
 				
 			}catch(Exception e) {
 				throw new ServiceException(e);
@@ -172,9 +157,9 @@ public final class CommonService {
 		
 		// userEmail, fileName, uploadPath, uuid, image
 		// uuid 생성 
-		public static UUID uuidGenerate() throws ServiceException {
+		public UUID uuidGenerate() throws ServiceException {
 			
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			log.info("uuidGnerate() invoked.");
 			
 			UUID uuid = UUID.randomUUID();
@@ -184,9 +169,9 @@ public final class CommonService {
 			
 		}	// end uuidGenerate
 		
-		public static String uploadPathMkdir() throws ServiceException{
+		public String uploadPathMkdir() throws ServiceException{
 			
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			log.info("uploadPathMKdir() invoked.");
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -203,9 +188,41 @@ public final class CommonService {
 			
 		}	// end uploadPahMKdir
 		
-		public static List<String> upload(List<MultipartFile> fileList,String path) throws ServiceException{
+		
+		// 진영이 행님 
+				// 파일명 그대로 업로드하는 메소드 
+		public String originUpload(MultipartFile multiFile, String path) throws ServiceException{
+					
+					this.CommonServiceInfo();
+					log.info("originUpload() invoked.");
+					log.info("multiFile : {}",multiFile);
+					log.info("path : {}",path);
+					
+					if(multiFile == null || multiFile.isEmpty()) { 
+						log.info("파일 업로드 실패!!!");
+						return null;
+					}	// end if 
+					
+					String originName = multiFile.getOriginalFilename();
+					
+					File target = new File(path+originName);
+					
+					try {
+						multiFile.transferTo(target);
+						log.info("파일 업로드 성공!!!");
+						return originName;
+					}catch(Exception e) {
+						throw new ServiceException(e);
+					}	// end try-catch
+				
+				}	// end originUpload
+
+				
+		
+		
+		public List<String> upload(List<MultipartFile> fileList,String path) throws ServiceException{
 			
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			log.trace("upload() invoked.");
 			log.info("fileList : {}",fileList);
 			log.info("path : {}",path);
@@ -222,7 +239,7 @@ public final class CommonService {
 				for(MultipartFile multiFile : fileList) {
 					
 					// changeName 만들기
-					String changeName = CommonService.generateChangeName(multiFile);
+					String changeName = this.generateChangeName(multiFile);
 					log.info("changeName : {}",changeName);
 					
 					changeNameList.add(changeName);
@@ -248,9 +265,9 @@ public final class CommonService {
 		
 		
 		
-		private static String generateChangeName(MultipartFile multiFile) throws ServiceException{
+		private String generateChangeName(MultipartFile multiFile) throws ServiceException{
 			
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			
 			log.trace("generateChangeName() invoked.");
 			log.info("multiFile : {}",multiFile);
@@ -283,9 +300,9 @@ public final class CommonService {
 			
 		}	// end generateChangeName
 		
-		private static List<String> getOriginNameList(List<MultipartFile> fileList) throws ServiceException{
+		private List<String> getOriginNameList(List<MultipartFile> fileList) throws ServiceException{
 			
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			log.trace("getOriginNameList() invoked.");
 			log.info("fileList : {}",fileList);
 			
@@ -318,8 +335,8 @@ public final class CommonService {
 		
 		// 교재 
 		// 공용 makeDir
-		private static String getFolder() throws ServiceException{
-			CommonService.CommonServiceInfo();
+		private String getFolder() throws ServiceException{
+			this.CommonServiceInfo();
 			log.trace("getFolder() invoked.");
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -335,8 +352,8 @@ public final class CommonService {
 		}	// end getFolder
 		
 		// 이미지 첵크
-		private static boolean checkImageType(File file) throws ServiceException{
-			CommonService.CommonServiceInfo();
+		private boolean checkImageType(File file) throws ServiceException{
+			this.CommonServiceInfo();
 			log.trace("checkImageType() invoked.");
 			log.info("file : {}",file);
 			
@@ -354,9 +371,9 @@ public final class CommonService {
 		}	// checkImageType
 		
 		// uploadAjaxAction.
-		public static ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile,String boardName)
+		public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile,String boardName)
 				throws ServiceException{
-			CommonService.CommonServiceInfo();
+			this.CommonServiceInfo();
 			log.trace("uploadAjaxPost() invoked.");
 			log.info("uploadFile : {}",uploadFile);
 			log.info("boardName : {}",boardName);
@@ -378,7 +395,7 @@ public final class CommonService {
 			String uploadFolder = "/resources/upload/";
 			log.info("uploadFolder : {}",uploadFolder);
 			
-			String uploadFolderPath = CommonService.getFolder();
+			String uploadFolderPath = this.getFolder();
 			log.info("uploadFolderPath : {}",uploadFolderPath);
 			
 			File uploadPath = new File(uploadFolder, uploadFolderPath);
@@ -426,7 +443,7 @@ public final class CommonService {
 					log.info("uuid.toString() : {}",uuid.toString());
 					log.info("uploadPath : {}",uploadFolderPath);
 					
-					if(CommonService.checkImageType(saveFile)) {
+					if(this.checkImageType(saveFile)) {
 						attachDTO.setImage(true);
 						FileOutputStream thumbnail = 
 								new FileOutputStream(new File(uploadPath,"s_"+uploadFileName));
@@ -452,8 +469,8 @@ public final class CommonService {
 		}	// uploadAjaxPost
 		
 		// display
-		public static ResponseEntity<byte []> getFile(String fileName) throws ServiceException{
-			CommonService.CommonServiceInfo();
+		public ResponseEntity<byte []> getFile(String fileName) throws ServiceException{
+			this.CommonServiceInfo();
 			log.trace("getFile() invoked.");
 			log.info("fileName : {}",fileName);
 			
@@ -478,8 +495,8 @@ public final class CommonService {
 		}	// end getFile
 		
 		// download
-		public static ResponseEntity<Resource> downloadFile(String userAgent, String fileName) throws ServiceException{
-			CommonService.CommonServiceInfo();
+		public ResponseEntity<Resource> downloadFile(String userAgent, String fileName) throws ServiceException{
+			this.CommonServiceInfo();
 			log.trace("downloadFile() invoked.");
 			log.info("userAgent : {}",userAgent);
 			log.info("fileName : {}",fileName);
@@ -528,8 +545,8 @@ public final class CommonService {
 		}	// end downloadFile
 		
 		// deleteFile
-		public static ResponseEntity<String> deleteFile(String fileName, String type) throws ServiceException{
-			CommonService.CommonServiceInfo();
+		public ResponseEntity<String> deleteFile(String fileName, String type) throws ServiceException{
+			this.CommonServiceInfo();
 			log.trace("deleteFile() invoked.");
 			log.info("fileName : {}",fileName);
 			log.info("type : {}",type);

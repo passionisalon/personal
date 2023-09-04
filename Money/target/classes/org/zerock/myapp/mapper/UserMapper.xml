@@ -44,8 +44,8 @@
   	
   	<!-- 회원가입 -->
 	<insert id="insertJoin">
-	    INSERT INTO tbl_member (Email, Password,userEmail, Nickname, Birth_Date, Join_date, Gender, Introduction)
-	    VALUES (#{Email}, #{Password},#{userEmail}, #{NickName}, TO_DATE(#{BIRTH_DATE}, 'yyyymmdd'), current_date, #{GENDER}, #{Introduction})
+	    INSERT INTO tbl_member (Email, Password,userEmail, Nickname, Birth_Date, Join_date, Gender, Introduction,Profile_img)
+	    VALUES (#{Email}, #{Password},#{userEmail}, #{NickName}, TO_DATE(#{BIRTH_DATE}, 'yyyymmdd'), current_date, #{GENDER}, #{Introduction},#{ProfileImg})
 	</insert>
 	
 	<select id="findEmail" resultType="java.lang.String">

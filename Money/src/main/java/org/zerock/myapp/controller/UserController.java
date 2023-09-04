@@ -57,6 +57,9 @@ public class UserController {
 	@Setter(onMethod_= {@Autowired})
 	private LikeService likeService;
 	
+	@Setter(onMethod_= {@Autowired})
+	private CommonService commonService;
+	
 	public void getThisClassInfo() {
 		System.out.printf("\n\t");
 		log.info("\n\t thisClass : {}",this.getClass().getName());
@@ -146,7 +149,7 @@ public class UserController {
 			String BIRTH_DATE,
 			String GENDER,
 			String INTRODUCTION,
-			String ProfileImg,
+			MultipartFile ProfileImg,
 			HttpServletRequest hsr, 
 			RedirectAttributes rttrs
 			) throws ControllerException{
@@ -171,7 +174,23 @@ public class UserController {
 			userDTO.setBIRTH_DATE(BIRTH_DATE);
 			userDTO.setGENDER(GENDER);
 			userDTO.setIntroduction(INTRODUCTION);
-//			userDTO.setProfileImg(ProfileImg); //미구현
+			
+			String ProfileImgPath;
+			
+			if(ProfileImg.isEmpty()) {
+				log.info("프로파일 이미지가 null일경우");
+				ProfileImgPath = "/Users/wisdlogos/eclipse-workspace/2023/workspace/jee-2023-03/Money/src/main/webapp/resources/upload/user/asuka5.png";
+				
+			}else {
+				log.info("프로파일 이미지를 설정되었을 경우");
+				ProfileImgPath = this.joinUploadFile(userEmail, ProfileImg);
+				commonService.getThisClassInfo(this.getClass().getName());
+				
+				userDTO.setProfileImg(ProfileImgPath);
+			}
+			
+			log.info("ProfileImgPath : {}",ProfileImgPath);
+//			
 			log.info("\n\t UserDTO : {}",userDTO);
 			log.info("User's password : {}",Pw);
 			if(Pw == null | Pw.isEmpty()) {
@@ -198,6 +217,39 @@ public class UserController {
 			throw new ControllerException(e);
 		}	// end try-catch
 	}	// 	end PostMapping join
+	
+//	@ResponseBody
+//	@PostMapping(value="/joinUploadFile" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public String joinUploadFile(
+			String userEmail , 
+			MultipartFile multiFile
+			) throws ControllerException{
+		
+		commonService.getThisClassInfo(this);
+		
+		log.info("joinUploadFile() invoked.");
+		log.info("userEmail : {}",userEmail);
+		log.info("multiFile : {}",multiFile);
+		
+//		String rootPath = environment.getProperty("rootPath");
+//		log.info("rootPath : {}",rootPath);
+		String path = root+"/resources/upload/user/";
+		log.info("path : {}",path);
+		String result;
+		
+		// CommonService클래스의 changeUpload메소드로 전송
+		try {
+			result = commonService.changeUpload(userEmail,multiFile, path);
+			commonService.getThisClassInfo(this.getClass().getName());
+			log.info("result : {}",result);
+			
+			return result;
+		} catch (ServiceException e) {
+			// TODO Auto-generated catch block
+			throw new ControllerException(e);
+		}	// end try-catch
+		
+	}	// end 	joinUploadFile
 	
 	// 이메일 중복검사 
 	
@@ -369,38 +421,7 @@ public class UserController {
 		}	// end try-catch
 	}	// end mutiChangePassword
 	
-	@ResponseBody
-	@PostMapping(value="/joinUploadFile" , produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<AttachFileDTO> joinUploadFile(
-			String userEmail , 
-			MultipartFile multiFile
-			) throws ControllerException{
-		
-		CommonService.getThisClassInfo(this);
-		
-		log.info("joinUploadFile() invoked.");
-		log.info("userEmail : {}",userEmail);
-		log.info("multiFile : {}",multiFile);
-		
-//		String rootPath = environment.getProperty("rootPath");
-//		log.info("rootPath : {}",rootPath);
-		String path = root+"/resources/upload/user/";
-		log.info("path : {}",path);
-		ResponseEntity<AttachFileDTO> result;
-		
-		// CommonService클래스의 changeUpload메소드로 전송
-		try {
-			result = CommonService.changeUpload(userEmail,multiFile, path);
-			CommonService.getThisClassInfo(result);
-			log.info("result : {}",result);
-			
-			return result;
-		} catch (ServiceException e) {
-			// TODO Auto-generated catch block
-			throw new ControllerException(e);
-		}	// end try-catch
-		
-	}	// end 	joinUploadFile
+	
 	
 	@GetMapping("/mypage")
 	public void mypage(Model model,HttpSession session) throws ControllerException{

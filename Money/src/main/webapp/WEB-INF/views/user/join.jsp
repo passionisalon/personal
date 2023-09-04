@@ -197,71 +197,7 @@
         	var passCondition2 = new Array(8).fill(false);
         	//0이메일,1이메일 중복확인,2이메일 확인 , 3패스워드, 4패스워드 확인, 5생년월일,6성별,7닉네임 8중복확인 
         	
-        	var regex = new RegExp("(.*?)\.(jpg|jpeg|png)$");
-        	var maxSize = 5242880; // 5MB
-        	//변경된 부분은 정규 표현식입니다. (jpg|jpeg|png)는 jpg, jpeg, png 중 하나의 확장자와 일치하는지 확인합니다. 이제 해당 코드로 이미지 파일 업로드를 구현할 때, jpg, jpeg, png 이외의 확장자를 가진 파일은 거부됩니다.
         	
-        	function checkExtension(fileName,fileSize){
-        		var result = fileSize >= maxSize ? true : false;
-        		console.log("파일 사이즈 첵크 : ",result);
-        		console.log("파일 확장자명 첵크 : ",regex.test(fileName));
-        		if(fileSize >= maxSize){
-        			alert("파일 사이즈 초과!");
-        			return false;
-        		}	// end if
-        		if(!regex.test(fileName)){
-        			alert("해당 종류의 파일은 업로드 할 수 없습니다.");
-        			return false;
-        		}	// end if
-        		
-        		return true;
-        	}	// end checkExtension
-        	
-        	$('#imgUploadBtn').on("click",function(){
-        		console.log("regex : ",regex);
-        		console.log("maxSize : ",maxSize);
-        		userEmail = $('#UserEmail').val();
-        		var inputFile = $("input[name='uploadFile']").get(0);
-        		var selectedFile = inputFile.files[0];
-        		
-        		console.log("inputFile : ",inputFile);
-        		console.log("selectedFile Name : ",selectedFile.name);
-        		console.log("selectedFile Size : ",selectedFile.size);
-        		
-        		
-        		if(checkExtension(selectedFile.name , selectedFile.size) == false){
-        			alert("첨부파일 확인 검사 실패!!!");
-        			return false;
-        		}	// end if
-        		
-        		var formData = new FormData();
-        		console.log("formData : ",formData);
-        		formData.append('userEmail',userEmail);
-        		formData.append('multiFile',selectedFile);
-        		
-        		
-        		$.ajax({
-        			
-        			url:'/user/joinUploadFile',
-    				processData : false,
-    				contentType : false,
-        			type:'post',
-        			data:formData,
-        			dataType: 'json',
-        			success : function(data){
-        				console.log("ajax통신성공!!!");
-        				console.log("data : ",data);
-        			},error:function(xhr,status,error){
-        				console.log("xhr : ",xhr);
-        				console.log("status : ",status);
-        				console.log("error : ",error);
-        			}
-        			
-        		});	// end ajax
-        		
-        		
-        		
-        	});	// end imgUploadBtn
         	
         	
         	// 이메일 유효성 검사 
@@ -637,19 +573,44 @@
         			}	// end if -else
         		}	// end for
         		
+        		console.log("regex : ",regex);
+        		console.log("maxSize : ",maxSize);
+        		
+        		
+        		
+        		var inputFile = $("input[name='uploadFile']").get(0);
+        		var selectedFile = inputFile.files[0];
+        		
+        		console.log("inputFile : ",inputFile);
+        		console.log("selectedFile : ",selectedFile);
+        		console.log("selectedFile Name : ",selectedFile.name);
+        		console.log("selectedFile Size : ",selectedFile.size);
+        		
+        		if(checkExtension(selectedFile.name , selectedFile.size) == false){
+        			alert("첨부파일 확인 검사 실패!!!");
+        			return false;
+        		}	// end if
+        		
+        		
+        		var formData = new FormData();
+        		console.log("formData : ",formData);
+        		formData.append('Email', $('#UserEmail').val());
+        		formData.append('Pw',$('#password1').val());
+        		formData.append('userEmail', $('#SendEmail').val());
+        		formData.append('NickName',$('#userNickName').val());
+        		formData.append('BIRTH_DATE',$('#BIRTH_DATE').val());
+        		formData.append('GENDER',$('#GENDER').val());
+        		formData.append('INTRODUCTION',$('#comment').val());
+        		formData.append('ProfileImg',selectedFile);
+
+        		
+        		
         		$.ajax({
         			type:'post',
         			url:"/user/join",
-        			data : {
-        				Email : $('#UserEmail').val(),
-        				Pw : $('#password1').val(),
-        				userEmail : $('#SendEmail').val(),
-        				NickName : $('#userNickName').val(),
-        				BIRTH_DATE : $('#BIRTH_DATE').val(),
-        				GENDER : $('#GENDER').val(),
-        				INTRODUCTION : $('#comment').val(),
-        				ProfileImg : 'aaa',
-        			},
+        			processData : false,
+    				contentType : false,
+        			data:formData,
         			dataType:'json',
         			success : function(data){
         				console.log("ajax!성공!!!");
@@ -669,9 +630,80 @@
         			}
         		});	// end ajax
         		
-        		
+//         		$.ajax({
+        			
+//         		});	// end ajax
         		
         	}	//	end abc
+        	
+        	
+        	var regex = new RegExp("(.*?)\.(jpg|jpeg|png)$");
+        	var maxSize = 5242880; // 5MB
+        	//변경된 부분은 정규 표현식입니다. (jpg|jpeg|png)는 jpg, jpeg, png 중 하나의 확장자와 일치하는지 확인합니다. 이제 해당 코드로 이미지 파일 업로드를 구현할 때, jpg, jpeg, png 이외의 확장자를 가진 파일은 거부됩니다.
+        	
+        	function checkExtension(fileName,fileSize){
+        		var result = fileSize >= maxSize ? true : false;
+        		console.log("파일 사이즈 첵크 : ",result);
+        		console.log("파일 확장자명 첵크 : ",regex.test(fileName));
+        		if(fileSize >= maxSize){
+        			alert("파일 사이즈 초과!");
+        			return false;
+        		}	// end if
+        		if(!regex.test(fileName)){
+        			alert("해당 종류의 파일은 업로드 할 수 없습니다.");
+        			return false;
+        		}	// end if
+        		
+        		return true;
+        	}	// end checkExtension
+        	
+//         	$('#imgUploadBtn').on("click",function(){
+//         		console.log("regex : ",regex);
+// //         		console.log("maxSize : ",maxSize);
+//         		userEmail = $('#UserEmail').val();
+//         		var inputFile = $("input[name='uploadFile']").get(0);
+//         		var selectedFile = inputFile.files[0];
+        		
+//         		console.log("inputFile : ",inputFile);
+//         		console.log("selectedFile Name : ",selectedFile.name);
+//         		console.log("selectedFile Size : ",selectedFile.size);
+        		
+        		
+//         		if(checkExtension(selectedFile.name , selectedFile.size) == false){
+//         			alert("첨부파일 확인 검사 실패!!!");
+//         			return false;
+//         		}	// end if
+        		
+//         		var formData = new FormData();
+//         		console.log("formData : ",formData);
+//         		formData.append('userEmail',userEmail);
+//         		formData.append('multiFile',selectedFile);
+        		
+        		
+//         		$.ajax({
+        			
+//         			url:'/user/joinUploadFile',
+//     				processData : false,
+//     				contentType : false,
+//         			type:'post',
+//         			data:formData,
+//         			dataType: 'json',
+//         			success : function(data){
+//         				console.log("ajax통신성공!!!");
+//         				console.log("data : ",data);
+//         			},error:function(xhr,status,error){
+//         				console.log("xhr : ",xhr);
+//         				console.log("status : ",status);
+//         				console.log("error : ",error);
+//         			}
+        			
+//         		});	// end ajax
+        		
+        		
+        		
+//         	});	// end imgUploadBtn
+        	
+        	
         	
         });	// end jq
     </script>

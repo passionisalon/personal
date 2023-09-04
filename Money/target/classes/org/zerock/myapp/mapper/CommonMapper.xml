@@ -6,18 +6,25 @@
   
 <mapper namespace="org.zerock.myapp.mapper.CommonMapper">
 
-	<insert id="insertUserImageUpload">
+	<insert id="insertUserImageUpload" parameterType="org.zerock.myapp.domain.AttachFileDTO">
 	
 		INSERT INTO 
-			tbl_member_attach
-		VALUES (
+			tbl_member_attach(
+        		seq,
+        		email,
+        		fileName,
+        		uuidFileName,
+        		uploadPath,
+        		UUID,
+        		CHECKIMAGE
+    		) VALUES (
 			    tbl_member_attach_seq.NEXTVAL,
-			    email = #{userEmail},
-			    fileName = #{fileName},
-			    uuidFileName = #{uuidFileName},
-			    uploadpath = #{uploadPath},
-			    uuid = #{uuid},
-			    checkimage = #{checkImage}
+			    #{userEmail},
+			    #{fileName},
+			    #{uuidFileName},
+			    #{uploadPath},
+			    #{uuid},
+			    #{image}
 		)
 	</insert>
 	
