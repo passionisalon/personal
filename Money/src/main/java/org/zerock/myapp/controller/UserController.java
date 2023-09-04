@@ -179,14 +179,15 @@ public class UserController {
 			
 			if(ProfileImg.isEmpty()) {
 				log.info("프로파일 이미지가 null일경우");
-				ProfileImgPath = "/Users/wisdlogos/eclipse-workspace/2023/workspace/jee-2023-03/Money/src/main/webapp/resources/upload/user/asuka5.png";
+//				ProfileImgPath = "/Users/wisdlogos/eclipse-workspace/2023/workspace/jee-2023-03/Money/src/main/webapp/resources/upload/user/asuka5.png";
+				ProfileImgPath = "/resources/upload/user/asuka5.png";
 				
 			}else {
 				log.info("프로파일 이미지를 설정되었을 경우");
 				ProfileImgPath = this.joinUploadFile(userEmail, ProfileImg);
 				commonService.getThisClassInfo(this.getClass().getName());
 				
-				userDTO.setProfileImg(ProfileImgPath);
+				userDTO.setProfile_Img(ProfileImgPath);
 			}
 			
 			log.info("ProfileImgPath : {}",ProfileImgPath);
@@ -430,6 +431,10 @@ public class UserController {
 		
 		try {
 			String userEmail = (String) session.getAttribute("USER_EMAIL");
+			UserDTO dto = this.userSerivce.userInfo(userEmail);
+			this.getThisClassInfo();
+//			log.info("dto : {}",dto);
+//			model.addAttribute("userInfo",dto);
 			LinkedList<TotalBoardDTO> result = this.likeService.getLikeList(userEmail);
 			model.addAttribute("__LIKELIST__", result);
 		}catch(Exception e) {

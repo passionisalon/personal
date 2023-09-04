@@ -297,7 +297,9 @@
     <div class="myCont left_menu clear">
         <!-- 프로필 -->
         <p class="user_box">
-            <img src="/resources/img/user.png" alt="프로필">
+<!--             <img src="/resources/img/user.png" alt="프로필"> -->
+<!--             <img src="/resources/upload/user/asuka5.png" alt="프로필"> -->
+            <img src="${USER_PROFILEIMG}" alt="프로필">
             <span class="user_id">"${USER_NICKNAME}"</span>
         </p>
         <!-- 사이드메뉴 -->

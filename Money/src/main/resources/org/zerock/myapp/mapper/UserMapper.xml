@@ -6,6 +6,7 @@
   
   <mapper namespace="org.zerock.myapp.mapper.UserMapper">
  
+ 
  	<!-- UserInfo -->
   	<select id="UserInfo" resultType="org.zerock.myapp.domain.UserDTO">
   		SELECT *

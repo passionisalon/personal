@@ -13,6 +13,9 @@ public interface UserService {
 	// 로그인 
 	public abstract Boolean UserLogin(String Email,String Pw,HttpServletRequest hsr,Model model) throws ServiceException;
 	
+	// 유저정보
+	public abstract UserDTO userInfo(String Email) throws ServiceException;
+	
 	// 이메일 중복첵크
 	public abstract Integer distinckedEmail(String Email) throws ServiceException;
 	

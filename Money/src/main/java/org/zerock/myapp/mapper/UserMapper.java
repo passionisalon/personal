@@ -7,8 +7,8 @@ import org.zerock.myapp.domain.UserDTO;
 
 public interface UserMapper {
 	
-	// 회원정보 확인
 	
+	// 회원정보 확인 로그인 시 
 	public abstract UserDTO UserInfo(String Email);
 	
 	//	사용자 정보확인 로그인 시

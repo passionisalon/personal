@@ -601,7 +601,7 @@
         		formData.append('BIRTH_DATE',$('#BIRTH_DATE').val());
         		formData.append('GENDER',$('#GENDER').val());
         		formData.append('INTRODUCTION',$('#comment').val());
-        		formData.append('ProfileImg',selectedFile);
+        		formData.append('Profile_Img',selectedFile);
 
         		
         		

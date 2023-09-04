@@ -27,7 +27,7 @@ public class UserDTO {
 	private Date JOIN_DATE;
 	private String GENDER;
 	private String Introduction="";
-	private String ProfileImg="";
+	private String Profile_Img="";
 	private String RememberMe="";
 	private Date RememberMeAge;
 	private Integer Auth;

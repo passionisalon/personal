@@ -74,11 +74,18 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 				if(session != null) {
 					session.invalidate();
 					log.info("\n\t 세션 invalidate");
+					
+					String[] changePassProfile = userInfo.getProfile_Img().split("webapp", 0);
+					for(String str : changePassProfile) {
+						System.out.println(str);
+					}
+					log.info("changePassProfile[1] : {}",changePassProfile[1]);
 
 					session = hsr.getSession();
 					session.setAttribute("USER_EMAIL", userInfo.getEmail());
 					session.setAttribute("USER_NICKNAME",userInfo.getNickName());
-					session.setAttribute("USER_PROFILEIMG",userInfo.getProfileImg());
+//					session.setAttribute("USER_PROFILEIMG",userInfo.getProfile_Img());
+					session.setAttribute("USER_PROFILEIMG",changePassProfile[1]);
 					session.setAttribute("USER_BIRTHDATE",userInfo.getBIRTH_DATE());
 					session.setAttribute("USER_JOINDATE",userInfo.getJOIN_DATE());
 					session.setAttribute("USER_GENDER",userInfo.getGENDER());
@@ -112,6 +119,24 @@ public class UserServiceImpl implements UserService, InitializingBean, Disposabl
 		}	// end try-catch
 		
 	}	// end UserLogin
+	
+	public UserDTO userInfo(String Email) throws ServiceException{
+		
+		this.getThisClassInfo();
+		log.info("userInfo(Email : {}) invoked.");
+		UserDTO userDTO = this.userMapper.UserInfo(Email);
+		this.getThisClassInfo();
+		log.info("userDTO : {}",userDTO);
+		
+//		userDTO.setPassword(null);
+//		userDTO.setUserEmail(null);
+//		userDTO.setRememberMe(null);
+//		userDTO.setRememberMeAge(null);
+//		userDTO.setAuth(null);
+//		
+//		log.info("userDTO 보안 사항 null 적용 : {}",userDTO);
+		return userDTO;
+	}
 	
 	// 이메일 중복첵크
 	public Integer distinckedEmail(String Email) throws ServiceException{

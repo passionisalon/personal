@@ -97,6 +97,7 @@ public final class CommonService {
 				log.info("totalPath : {}",totalPath);
 				
 				File uploadPath = new File(totalPath,uuidFileName);
+//				File uploadPath = new File(totalPath);
 				log.info("uploadPath : {}",uploadPath);
 				log.info("uploadPath.toPath() : {}",uploadPath.toPath());
 				log.info("uploadPath.contentType : {}",Files.probeContentType(uploadPath.toPath()));
@@ -113,7 +114,7 @@ public final class CommonService {
 				}else {
 					log.info("디렉토리 이미 존재함!: {}",uploadPath);
 				}
-				
+				multiFile.transferTo(uploadPath);
 				attachDTO.setUserEmail(userEmail);
 				attachDTO.setFileName(fileName);
 				attachDTO.setUuidFileName(uuidFileName);
@@ -134,7 +135,7 @@ public final class CommonService {
 				}
 				
 				
-				multiFile.transferTo(uploadPath);
+				
 				log.info("파일 업로드 성공!!!");
 				
 				log.info("여기서부터는 Mapper부분!");
