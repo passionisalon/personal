@@ -1,0 +1,70 @@
+plugins {
+
+    // id 'org.springframework.boot' version '3.0.11' // Spring Boot 버전 변경
+    // id 'io.spring.dependency-management' version '3.0.11' // io.spring.dependency-management 버전 변경
+    // id 'java'
+
+    id 'org.springframework.boot' version '2.5.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    // id 'org.springframework.boot' version '3.0.11-SNAPSHOT'
+    // id 'io.spring.dependency-management' version '1.1.3'
+}
+
+group = 'com.folder'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    // sourceCompatibility = '17'
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+}
+
+// implementation group: 'org.springframework', name: 'spring-web', version: '6.0.11'
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.0' // 버전 변경
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.oracle.database.jdbc:ojdbc8:19.3.0.0' // Oracle JDBC 드라이버 의존성 추가
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.2.0' // 버전 변경
+
+
+
+
+    // implementation 'org.springframework.boot:spring-boot-starter-web'
+    // implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.2'
+    // compileOnly 'org.projectlombok:lombok'
+    // developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:11.1.2'
+    // implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.4' // 또는 최신 버전
+    
+    // implementation 'com.oracle.database.jdbc:ojdbc8:19.3.0.0' // Oracle JDBC 드라이버 의존성 추가
+
+    // implementation 'com.oracle.database.jdbc:ojdbc8:19.3.0.0' // Oracle JDBC 드라이버 의존성 추가
+    
+    
+    // annotationProcessor 'org.projectlombok:lombok'
+    // testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.2'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

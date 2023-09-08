@@ -14,17 +14,15 @@ import com.folder.app.service.UserService;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@CrossOrigin(origins = "http://localhost:8800")
 @RestController
 public class DataController {
     
     @Autowired UserService userService;
 
     public void getThisClassInfo(){
-        log.info("thisClass is {}",this.getClass().getName());
     }
 
-    
+    @CrossOrigin(origins = "http://localhost:8800")
     @GetMapping("/")
     public String home(){
         return "Data 준비 중....";
@@ -38,9 +36,8 @@ public class DataController {
 
     @PostMapping("/findAll")
     public ResultDTO findAll(){
-        log.info("findAll() invoked.");
-        return this.userService.findAll();
-    }   // end findAll
+        return null;
+    }
 
     @PostMapping("/editById")
     public ResultDTO editById(){
