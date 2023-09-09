@@ -39,14 +39,14 @@ public class UserDaoImpl implements UserDao {
     public int delete(int no) {
         this.getThisClassInfo();
         log.info("delete(int : {}) invoked.",no);
-        return this.userMapper.delete(no);
+        return 0;
     }
 
     @Override
     public int save(UserDTO uDto) {
         this.getThisClassInfo();
         log.info("save(UserDTO : {}) invoked.",uDto);
-        return this.userMapper.save(uDto);
+        return 0;
     }
     
 }

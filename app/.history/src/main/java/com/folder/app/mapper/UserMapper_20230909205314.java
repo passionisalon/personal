@@ -18,7 +18,7 @@ public interface UserMapper {
 
     @Update("""
         UPDATE USER3 SET 
-            name = #{name}, 
+            NAME = #{name}, 
             pwd = #{pwd},
             gender = #{gender} 
         WHERE no = #{no}

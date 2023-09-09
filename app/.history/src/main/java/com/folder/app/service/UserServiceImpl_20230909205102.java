@@ -82,13 +82,13 @@ public class UserServiceImpl implements UserService{
         this.getThisClassInfo();
         log.info("editById(UserDTO : {}) invoked.",uDto);
         resultDTO = new ResultDTO();
-        int state = userDao.save(uDto);
+        int state = userDao.delete(no);
         if(state == 1){
             resultDTO.setState(true);
-            resultDTO.setMessage("사용자 생성이 성공하였습니다.");
+            resultDTO.setMessage("사용자 삭제가 성공하였습니다.");
         }else{
             resultDTO.setState(false);
-            resultDTO.setMessage("사용자 생성을 실패하였습니다.");
+            resultDTO.setMessage("사용자 삭제가 실패하였습니다.");
         }
         return this.resultDTO;
     }   // end save

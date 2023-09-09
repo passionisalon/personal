@@ -54,7 +54,7 @@ public class DataController {
     }
 
     @DeleteMapping("/delete")
-    public ResultDTO delete(@RequestParam("no")int no){
+    public ResultDTO delete(@RequestParam("no)int no){
         this.getThisClassInfo();
         log.info("delete(int no : {}) invoked.",no);
 
@@ -62,7 +62,7 @@ public class DataController {
     }
 
     @PutMapping("/save")
-    public ResultDTO save(@RequestBody UserDTO userDTO){
+    public ResultDTO save(UserDTO userDTO){
         this.getThisClassInfo();
         log.info("save(UserDTO : {}) invoked.",userDTO);
         return this.userService.save(userDTO);

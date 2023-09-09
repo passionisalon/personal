@@ -46,7 +46,7 @@ public class UserDaoImpl implements UserDao {
     public int save(UserDTO uDto) {
         this.getThisClassInfo();
         log.info("save(UserDTO : {}) invoked.",uDto);
-        return this.userMapper.save(uDto);
+        return 0;
     }
     
 }

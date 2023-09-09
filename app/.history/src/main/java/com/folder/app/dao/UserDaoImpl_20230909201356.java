@@ -32,21 +32,20 @@ public class UserDaoImpl implements UserDao {
     public int editById(UserDTO uDto) {
         this.getThisClassInfo();
         log.info("editById(UserDTO : {}) invoked.",uDto);
-        return this.userMapper.editById(uDto);
+        return 0;
     }
 
     @Override
     public int delete(int no) {
         this.getThisClassInfo();
-        log.info("delete(int : {}) invoked.",no);
-        return this.userMapper.delete(no);
+        log.info("editById(UserDTO : {}) invoked.",uDto);
+        return 0;
     }
 
     @Override
     public int save(UserDTO uDto) {
-        this.getThisClassInfo();
-        log.info("save(UserDTO : {}) invoked.",uDto);
-        return this.userMapper.save(uDto);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
     }
     
 }

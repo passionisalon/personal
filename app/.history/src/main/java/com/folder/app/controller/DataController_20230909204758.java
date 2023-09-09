@@ -62,7 +62,7 @@ public class DataController {
     }
 
     @PutMapping("/save")
-    public ResultDTO save(@RequestBody UserDTO userDTO){
+    public ResultDTO save(UserDTO userDTO){
         this.getThisClassInfo();
         log.info("save(UserDTO : {}) invoked.",userDTO);
         return this.userService.save(userDTO);
