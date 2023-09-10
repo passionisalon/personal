@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
 
         if(resultList != null){
             resultDTO.setState(true);
-            resultDTO.setResult(resultList);
+            resultDTO.setResult(resultList);(resultList);
         }else{
             resultDTO.setState(false);
         }
