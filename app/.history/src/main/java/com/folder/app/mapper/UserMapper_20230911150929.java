@@ -13,7 +13,7 @@ import com.folder.app.dto.UserDTO;
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT * FROM user3 WHERE del != 0")
+    @Select("SELECT * FROM user3 WHERE del NOT IN true")
     public List<UserDTO> findAll();
 
     @Update("""
