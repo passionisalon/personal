@@ -7,14 +7,15 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.mapping.StatementType;
+
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 
 import com.folder.app.dto.UserDTO;
 
 @Mapper
 public interface UserMapper {
 
-    @Select("SELECT * FROM user3 WHERE del != 1")
+    @Select("SELECT * FROM user3 WHERE del != 0")
     public List<UserDTO> findAll();
 
     @Update("""
@@ -34,7 +35,7 @@ public interface UserMapper {
             """)
     public int delete(int no);
 
-    @SelectKey(statementType = StatementType.PREPARED, statement="select last_insert_id() as no", keyProperty = "no",before=false,resultType = int.class)
+    @SelectKey(statementType = org.apache.ibatis.mapping.StatementType.PREPARED, statement="select last_insert_id() as no", keyProperty = "no",before=false,resultType = int.class)
     @Insert("""
         INSERT INTO user3 
             (name,email,pwd,gender) 

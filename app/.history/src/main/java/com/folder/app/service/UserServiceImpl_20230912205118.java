@@ -81,15 +81,12 @@ public class UserServiceImpl implements UserService{
     public ResultDTO save(UserDTO uDto){
         this.getThisClassInfo();
         log.info("editById(UserDTO : {}) invoked.",uDto);
-
-        this.resultDTO = new ResultDTO();
-        this.resultDTO = userDao.save(uDto);
-        this.getThisClassInfo();
-        log.info("resultDTO : {}",this.resultDTO);
-        if(this.resultDTO.getState()){
-            this.resultDTO.setMessage("사용자 생성이 성공하였습니다.");
+        resultDTO = new ResultDTO();
+        ResultDTO resultDTO = userDao.save(uDto);
+        if(resultDTO.getState()){
+            resultDTO.setMessage("사용자 생성이 성공하였습니다.");
         }else{
-            this.resultDTO.setMessage("사용자 생성을 실패하였습니다.");
+            resultDTO.setMessage("사용자 생성을 실패하였습니다.");
         }
         return this.resultDTO;
     }   // end save

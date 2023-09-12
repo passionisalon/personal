@@ -68,7 +68,7 @@ public class DataController {
         ResultDTO result = this.userService.save(userDTO);
         this.getThisClassInfo();
         log.info("result : {}",result);
-        return result;
+        return 
     }
     // @CrossOrigin(origins="http://localhost:8800")
     // @PostMapping("/api")

@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public ResultDTO save(UserDTO uDto) {
+    public int save(UserDTO uDto) {
         this.getThisClassInfo();
         log.info("save(UserDTO : {}) invoked.",uDto);
         

@@ -44,7 +44,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public ResultDTO save(UserDTO uDto) {
+    public int save(UserDTO uDto) {
         this.getThisClassInfo();
         log.info("save(UserDTO : {}) invoked.",uDto);
         
@@ -53,14 +53,14 @@ public class UserDaoImpl implements UserDao {
         log.info("state : {}",state);
         ResultDTO resultDTO = new ResultDTO();
         if(state == 1){
-            resultDTO.setState(true);
-            resultDTO.setResult(uDto);
+        
         }else{
-            resultDTO.setState(false);
-        }   // end if - else
-        log.info("ResultDTO : {}",resultDTO);
-
-        return  resultDTO;
+        
+        }
+        
+        
+        
+        return  result;
     }
     
 }
