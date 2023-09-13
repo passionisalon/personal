@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService{
             this.resultDTO.setState(false);
             this.resultDTO.setMessage("사용자 수정에 실패하였습니다.");
         }
-        log.info("resultDTO : {}",resultDTO);
+        
         return this.resultDTO;
     }   // end editById
 
