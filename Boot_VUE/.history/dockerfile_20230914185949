@@ -1,0 +1,9 @@
+FROM gradle:lastest as builder
+
+WORKDIR /app
+COPY . .
+RUN ./gradlew bootJar
+
+FROM openjdk:latest
+
+EXPOSE 8080

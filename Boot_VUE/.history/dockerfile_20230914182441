@@ -1,0 +1,3 @@
+FROM gradle:lastest as builder
+
+EXPOSE 8080

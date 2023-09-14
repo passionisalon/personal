@@ -1,0 +1,6 @@
+sevices:
+  db:
+    image: mariadb:latest
+    container_name: db
+    restart: always
+    

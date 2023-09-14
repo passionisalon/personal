@@ -1,0 +1,6 @@
+FROM gradle:lastest as builder
+
+WORKDIR /app
+COPY . .
+
+EXPOSE 8080

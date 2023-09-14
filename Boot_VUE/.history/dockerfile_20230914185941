@@ -1,0 +1,7 @@
+FROM gradle:lastest as builder
+
+WORKDIR /app
+COPY . .
+RUN ./gradlew bootJar
+
+EXPOSE 8080

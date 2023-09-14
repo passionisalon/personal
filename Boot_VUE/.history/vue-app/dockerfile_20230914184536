@@ -1,0 +1,10 @@
+FROM node:lastest as builder
+
+WORKDIR /app
+COPY package.json ./
+RUN yarn install
+COPY . .
+RUN yarn run build
+
+
+EXPOSE 80

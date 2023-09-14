@@ -1,0 +1,6 @@
+FROM node:lastest as builder
+
+WORKDIR /app
+
+
+EXPOSE 80

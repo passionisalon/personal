@@ -1,0 +1,10 @@
+FROM gradle:lastest as builder
+
+WORKDIR /app
+COPY . .
+RUN ./gradlew bootJar
+
+FROM openjdk:latest
+COPY --from=builder /app/build/libs/ /app
+
+EXPOSE 8080

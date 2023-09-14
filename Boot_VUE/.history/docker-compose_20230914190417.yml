@@ -1,0 +1,3 @@
+sevices:
+  db:
+    image: mariadb:latest

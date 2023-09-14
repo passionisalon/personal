@@ -1,0 +1,14 @@
+sevices:
+  db:
+    image: mariadb:latest
+    container_name: db
+    restart: always
+    ports:
+      - 23306:3306
+    networks:
+      myNet:
+        ipv4_address: 192.168.100.1
+      volumes:
+        - ./mariadb/conf.d:/etc/mysql/conf.d:ro
+        - ./mariadb/data:/var/lib/mysql:rw
+        - ./mariadb/initdb.d:/docker-entrypoint-initdb:dro

@@ -1,0 +1,25 @@
+sevices:
+  db:
+    image: mariadb:latest
+    container_name: db
+    restart: always
+    ports:
+      - 23306:3306
+    networks:
+      myNet:
+        ipv4_address: 192.168.100.1
+      volumes:
+        - ./mariadb/conf.d:/etc/mysql/conf.d:ro
+        - ./mariadb/data:/var/lib/mysql:rw
+        - ./mariadb/initdb.d:/docker-entrypoint-initdb.d:ro
+      environment:
+        - MYSQL_HOST=localhost
+        - MYSQL_PORT=3306
+        - MYSQPL_ROOT-PASSWORD=4451668play!@
+        - MYSQL_DATABASE=edudb
+        - MYSQL_USER=edu
+        - MYSQL_PASSWORD=1234
+        - TZ=Asia/Seoul
+  vue:
+  boot:
+networks:
