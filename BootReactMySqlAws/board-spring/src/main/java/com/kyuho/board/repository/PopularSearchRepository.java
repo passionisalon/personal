@@ -7,4 +7,4 @@ import com.kyuho.board.entity.PopularSearchEntity;
 @Repository
 public interface PopularSearchRepository extends JpaRepository<PopularSearchEntity, String> {
 
-}
+}	// end interfa
