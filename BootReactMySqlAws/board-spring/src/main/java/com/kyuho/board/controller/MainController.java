@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(originPatterns="http://localhost:3000")
+//@CrossOrigin(originPatterns="http://localhost:3000")
 public class MainController {
 	
 	// filed

@@ -1,6 +1,6 @@
 package com.kyuho.board.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,14 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kyuho.board.dto.ResponseDto;
 import com.kyuho.board.dto.SignUpDto;
-import com.kyuho.board.dto.SignUpResponseDto;
+import com.kyuho.board.service.AuthService;
 
-@CrossOrigin(originPatterns = "http://localhost:3000")
+//@CrossOrigin(originPatterns = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 	
 	// field
+	@Autowired
+	AuthService authService;
 	
 	// method
 	
@@ -26,13 +28,17 @@ public class AuthController {
 	}
 	
 	@PostMapping("/signUp")
-	public ResponseDto<SignUpResponseDto> signUp(
+	public ResponseDto<?> signUp(
 			@RequestBody SignUpDto requestBody
 			){
 		this.getThisClassInfo();
 		System.out.printf("signUp(requestBody : %s) invoked.",requestBody.toString());
 		
-		return null;
+		ResponseDto<?> result = authService.signUp(requestBody);
+		this.getThisClassInfo();
+		System.out.printf("result : %s\n",result);
+		System.out.println("Controller signUp method complete");
+		return result;
 	}	// end signUp
 	
 }	// end class
