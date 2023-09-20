@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kyuho.board.dto.ResponseDto;
+import com.kyuho.board.dto.SignInDto;
+import com.kyuho.board.dto.SignInResponseDto;
 import com.kyuho.board.dto.SignUpDto;
 import com.kyuho.board.service.AuthService;
 
@@ -40,5 +42,17 @@ public class AuthController {
 		System.out.println("Controller signUp method complete");
 		return result;
 	}	// end signUp
+	
+	@PostMapping("/signIn")
+	public ResponseDto<SignInResponseDto> signIn(@RequestBody SignInDto requestBody){
+		this.getThisClassInfo();
+		System.out.println("Controller signIn method invoked.");
+		System.out.printf("requestBody : %s\n",requestBody);
+		
+		ResponseDto<SignInResponseDto> result = this.authService.signIn(requestBody);
+		System.out.printf("result : %s\n",result);
+		
+		return result;
+	}	// end signIn
 	
 }	// end class

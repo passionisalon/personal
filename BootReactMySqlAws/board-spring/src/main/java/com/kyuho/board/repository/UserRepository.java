@@ -6,5 +6,7 @@ import com.kyuho.board.entity.UserEntity;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
-
+	
+	public boolean existsByUserEmailAndUserPassword(String userEmail, String userPassword);
+	
 }	// end interface

@@ -1,6 +1,6 @@
 package com.kyuho.board.dto;
 
-import com.kyuho.board.entity.UserEntity;
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,9 +9,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignInResponseDto {
+public class SignInDto {
 	
-	private String token;
-	private int exprTime;
-	private UserEntity user;
+	@NotBlank
+	private String userEmail;
+	@NotBlank
+	private String userPassword;
+	
+	
 }	// end class
