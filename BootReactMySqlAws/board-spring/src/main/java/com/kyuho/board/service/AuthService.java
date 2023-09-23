@@ -1,6 +1,8 @@
 package com.kyuho.board.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.kyuho.board.dto.ResponseDto;
@@ -20,6 +22,9 @@ public class AuthService {
 	
 	@Autowired
 	TokenProvider tokenProvider;
+	
+	private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+	
 	// method
 	
 	public void getThisClassInfo() {
@@ -67,6 +72,11 @@ public class AuthService {
 		this.getThisClassInfo();
 		System.out.println("UserEntity 생성!");
 		
+		// 비밀번호 암호화
+		String passwordEncodeResult = this.passwordEncoder.encode(userPassword);
+		System.out.printf("passwordEncodeResult : %s\n",passwordEncodeResult);
+		userEntity.setUserPassword(passwordEncodeResult);
+		
 		// UserRepository를 이용해서 DB에 Entity를 저장한다!
 		try {
 			this.userRepository.save(userEntity);
@@ -82,7 +92,9 @@ public class AuthService {
 		return ResponseDto.setSuccess("SignUp Success!", null);
 	}	// end signUp
 	
+	
 	public ResponseDto<SignInResponseDto> signIn(SignInDto dto){
+		
 		this.getThisClassInfo();
 		System.out.printf("signIn(SignInDto : %s) invoked.\n",dto);
 		String userEmail = dto.getUserEmail();
@@ -90,27 +102,27 @@ public class AuthService {
 		System.out.printf("userEmail : %s\n",userEmail);
 		System.out.printf("userPassword : %s\n",userPassword);
 		
-		try {
-			boolean existAccount = this.userRepository.existsByUserEmailAndUserPassword(userEmail,userPassword);
-			this.getThisClassInfo();
-			System.out.printf("existAccount : %s\n",existAccount);
-			if(existAccount == false) {
-				System.out.println("로그인 정보가 일치하지 않습니다.");
-				return ResponseDto.setFailed("Sign In Information Does Not Match");
-			}	// end if
-		}catch(Exception e) {
-			e.printStackTrace();
-			return ResponseDto.setFailed("DB ERROR");
-		}	// end try-cath
-		
 		UserEntity userEntity;
 		
 		try {
 			
-			userEntity = this.userRepository.findById(userEmail).get();
-			System.out.printf("userEntity's Email : %s\n",userEntity.getUserEmail());
-			userEntity.setUserPassword("");
-			System.out.printf("userEntity's Password : %s\n",userEntity.getUserPassword());
+//			userEntity = this.userRepository.findById(userEmail).get();
+			userEntity = this.userRepository.findByUserEmail(userEmail);
+			this.getThisClassInfo();
+			System.out.printf("userEntity : %s\n", userEntity);
+			
+			// 잘못된 이메일 
+			if(userEntity == null) {
+				System.out.println("userEntity가 null입니다.");
+				return ResponseDto.setFailed("Sign In Failed!!!");
+			}	// end if
+			
+			// 잘못된 패스워드 
+			if( !this.passwordEncoder.matches(userPassword, userEntity.getUserPassword()) ) {
+				System.out.println("password가 다릅니다.!");
+				return ResponseDto.setFailed("Sign In Failed!!!");
+			}	// end if
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseDto.setFailed("DB ERROR");

@@ -10,6 +10,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+// JWT : 전자 서명이 된 토큰
+// JSON 형태로 구성된 토큰
+// (header).[payload].(signature) 
+
+// header : type (해당 토큰의 타입), algorithim (토큰을 서명하기위해 사용된 해시 알고리즘)
+// payload : sub(해당 토큰의 주인) iat (토큰이 발행된 시간), exp (토큰이 만료되는 시간)
+
 @Service
 public class TokenProvider {
 	
