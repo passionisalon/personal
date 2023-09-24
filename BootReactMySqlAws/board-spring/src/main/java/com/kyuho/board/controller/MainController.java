@@ -12,8 +12,6 @@ public class MainController {
 	
 	// filed
 	
-	
-	
 	// Method
 	
 	public void getThisClassInfo() {
@@ -27,5 +25,5 @@ public class MainController {
 		this.getThisClassInfo();
 		System.out.printf("hello() invoked.\n");
 		return "Connextion Successful";
-	}
+	}	// end hello
 }	// end class
