@@ -68,6 +68,8 @@ public class BoardService {
 	}	// end getList
 	
 	public ResponseDto<List<PopularSearchEntity>> getPopularsearchList(){
+		this.thisClassInfo();
+		System.out.println("getPopularsearchList() invoked.");
 		List<PopularSearchEntity> popularSearchList = new ArrayList<PopularSearchEntity>();
 		
 		try {
@@ -79,5 +81,20 @@ public class BoardService {
 		
 		return ResponseDto.setSuccess("Success", popularSearchList);
 	}	// end getPopularsearchList
+	
+	public ResponseDto<List<BoardEntity>> getSearchList(String boardTitle){
+		this.thisClassInfo();
+		System.out.printf("getSearchList(boardTitle : %s) invoked\n",boardTitle);
+		
+		List<BoardEntity> boardList = new ArrayList<BoardEntity>();
+		
+		try {
+			boardList = this.boardRepository.findByBoardTitleContains(boardTitle);
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseDto.setFailed("DB Error");
+		}
+		return ResponseDto.setSuccess("Success", boardList);
+	}	// end getSearchList
 	
 }	// end class

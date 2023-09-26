@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,11 +46,24 @@ public class BoardController {
 	
 	@GetMapping("/list")
 	public ResponseDto<List<BoardEntity>> getList(){
+		this.thisClassInfo();
+		System.out.println("getList() invoked.");
 		return this.boardSerivce.getList();
 	}	// end getList
 	
 	@GetMapping("/popularsearchList")
 	public ResponseDto<List<PopularSearchEntity>> getPopularsearchList(){
+		this.thisClassInfo();
+		System.out.println("getPopularsearchList() invoked.");
 		return this.boardSerivce.getPopularsearchList();
 	}	// end getPopularsearchList
+	
+	@GetMapping("/search{boardTitle}")
+	public ResponseDto<List<BoardEntity>> getSearchList(@PathVariable("boardTitle") String title){
+		
+		return null;
+		
+	}
+	
+	
 }	// end class

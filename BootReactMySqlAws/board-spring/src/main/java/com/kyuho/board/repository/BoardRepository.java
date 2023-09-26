@@ -19,4 +19,5 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 	
 	public abstract List<BoardEntity> findByOrderByBoardWriteDateDesc();
 	
+	public abstract List<BoardEntity> findByBoardTitleContains(String boardTitle);
 }	// end interface
