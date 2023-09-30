@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -38,5 +39,42 @@ public class HelloController {
 
         return "hello-template";
     }   // end helloMvc
+
+    @GetMapping("hello-string")
+    @ResponseBody
+    public String helloString(@RequestParam(value="name", required = true)String name){
+        this.thisClassInfo();
+        logger.info("helloString(name : {}) invoked.",name);
+        String result = "hello "+name;
+        logger.info("result : {",result);
+        return result;
+    }   // end helloString
+
+    @GetMapping("hello-api")
+    @ResponseBody
+    public Hello helloApi(@RequestParam(value="name",required = true)String name){
+        this.thisClassInfo();
+        logger.info("helloApi(name : {}) invoked.",name);
+
+        Hello hello = new Hello();
+        hello.setName(name);
+        logger.info("Hello : {}",hello);
+        return hello;
+
+    }   // end helloApi
+
+    static class Hello{
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }   // end static Hello Class
+
+
 
 }   // end class
