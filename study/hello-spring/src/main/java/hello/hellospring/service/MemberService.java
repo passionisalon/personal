@@ -10,8 +10,11 @@ import java.util.Optional;
 public class MemberService {
 
     // filed
-    private final MemberRepository memberRepository =
-            new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository){
+        this.memberRepository = memberRepository;
+    }
 
     // methods
     /**
