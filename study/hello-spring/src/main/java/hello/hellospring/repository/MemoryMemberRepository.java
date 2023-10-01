@@ -71,5 +71,9 @@ public class MemoryMemberRepository implements MemberRepository {
         return result;
     }   // end findAll
 
-
+    public void clearStore(){
+        this.thisClassInfo();
+        logger.info("clearStore() invoked.");
+        MemoryMemberRepository.store.clear();
+    }
 }   // end class
