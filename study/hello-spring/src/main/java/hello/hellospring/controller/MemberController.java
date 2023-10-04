@@ -1,12 +1,18 @@
 package hello.hellospring.controller;
 
 
+import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 //import hello.hellospring.service.MemberServiceBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller
 public class MemberController {
@@ -59,7 +65,35 @@ public class MemberController {
         System.out.println();
     }   // end thisClassInfo
 
+    @GetMapping("/members/new")
+    public String createForm(){
+        this.thisClassInfo();
+        logger.info("createfrom() invoked.");
+        return "members/createMemberForm";
+    }   // end createForm
+
+    @PostMapping("/members/new")
+    public String create(MemberForm form){
+        this.thisClassInfo();
+        logger.info("create(MemberForm : {}) invoked.",form);
+        Member member = new Member();
+        member.setName(form.getName());
+        this.memberService.join(member);
+
+        return "redirect:/";
+    }   // end create
+
+    @GetMapping("/members")
+    public String list(Model model){
+        this.thisClassInfo();
+        logger.info("list(Model : {}) invoked.",model);
+
+        List<Member> members = this.memberService.findMembers();
+        logger.info("members : {}",members);
+        model.addAttribute("members",members);
 
 
+        return "members/memberList";
+    }   // end list
 
 }   // end class
