@@ -2,8 +2,9 @@ package hello.hellospring.controller;
 
 
 import hello.hellospring.domain.Member;
-import hello.hellospring.service.MemberService;
+//import hello.hellospring.service.MemberService;
 //import hello.hellospring.service.MemberServiceBean;
+import hello.hellospring.service.MemberServiceBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,10 +49,10 @@ public class MemberController {
 
 //    요새는 생성자로 만드는 것이 좋다. 객체가 생성되면서 하나씩 연결이 되기 떄문이다.
 
-    private MemberService memberService;
+    private MemberServiceBean memberService;
 
     @Autowired
-    public MemberController(MemberService memberService){
+    public MemberController(MemberServiceBean memberService){
         this.memberService = memberService;
 
     }

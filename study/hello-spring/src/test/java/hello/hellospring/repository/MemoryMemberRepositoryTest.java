@@ -17,8 +17,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class MemoryMemberRepositoryTest {
 
 //    MemberRepository memoryMemberRepository = new MemoryMemberRepository();
-    MemoryMemberRepository memoryMemberRepository = new MemoryMemberRepository();
-    private static final Logger logger = LoggerFactory.getLogger(MemoryMemberRepository.class);
+    MemoryMemberRepositoryBean memoryMemberRepository = new MemoryMemberRepositoryBean();
+    private static final Logger logger = LoggerFactory.getLogger(MemoryMemberRepositoryBean.class);
 
     private void thisClassInfo(){
         System.out.println();
