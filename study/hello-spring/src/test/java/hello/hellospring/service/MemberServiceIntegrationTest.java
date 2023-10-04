@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-// Test가 끝나면 롤백을 해줌. 테스트케이스에서 작동한 ddl 문장을 다시 롤백해줌.  
+// Test가 끝나면 롤백을 해줌. 테스트케이스에서 작동한 ddl 문장을 다시 롤백해줌.
 class MemberServiceIntegrationTest {
 
     // fields
