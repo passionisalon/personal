@@ -6,3 +6,4 @@ CREATE TABEL member (
     name varchar(255),
     primary key (id)
 );
+
