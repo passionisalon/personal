@@ -3,14 +3,13 @@ package hello.hellospring.repository;
 import hello.hellospring.domain.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 
 public class MemoryMemberRepositoryBean implements MemberRepository {
 
-    private static Map<Long,Member> store = new HashMap<>();
+    private static Map<Long, Member> store = new HashMap<>();
 
     private static long sequence = 0L;
 
