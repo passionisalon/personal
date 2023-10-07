@@ -54,6 +54,7 @@ public class MemberController {
     @Autowired
     public MemberController(MemberServiceBean memberService){
         this.memberService = memberService;
+        System.out.printf("this.memberService : %s\n",this.memberService.getClass());
 
     }
 
