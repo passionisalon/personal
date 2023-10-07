@@ -24,7 +24,21 @@ public class MemberServiceBean {
      * 회원 가입
      */
     public Long join(Member member){
-        System.out.printf("join(Member : %s) invoked.\n",member);
+        long start = System.currentTimeMillis();
+
+        try{
+            System.out.printf("join(Member : %s) invoked.\n",member);
+            // 중복 회원 검증
+            this.validateDuplicateMember(member);
+
+            this.memberRepository.save(member);
+            return member.getId();
+        }finally {
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.printf("timeMs of join's method : %s\n",timeMs);
+        }
+
 
         // 같은 이름이 있는 중복회원이 있으면 안된다.
         // 원래 코드
@@ -35,11 +49,7 @@ public class MemberServiceBean {
 //            throw new IllegalStateException("이미 존재하는 회원입니다.");
 //        });
 
-        // 중복 회원 검증
-        this.validateDuplicateMember(member);
 
-        this.memberRepository.save(member);
-        return member.getId();
     }   // end join
 
     private void validateDuplicateMember(Member member) {
@@ -53,12 +63,20 @@ public class MemberServiceBean {
      * 전체 회원 조회
      */
     public List<Member> findMembers(){
-        System.out.printf("findMembers() invoked.\n");
+        long start = System.currentTimeMillis();
+        try{
+            System.out.printf("findMembers() invoked.\n");
 
-        List<Member> result = this.memberRepository.findAll();
-        System.out.printf("result : %s\n",result);
+            List<Member> result = this.memberRepository.findAll();
+            System.out.printf("result : %s\n",result);
 
-        return result;
+            return result;
+        }finally{
+            long finish = System.currentTimeMillis();
+            long timeMs = finish - start;
+            System.out.printf("timeMs of findMembers'method : %s\n",timeMs);
+        }
+
     }   // end findMembers
 
     public Optional<Member> findOne(Long memberId){
