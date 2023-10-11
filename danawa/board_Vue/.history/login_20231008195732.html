@@ -1,42 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <style>
-    .body_login{
+    .body_login {
         width: 600px;
-        height:100%;
-        margin:0 auto;
+        height: 100%;
+        margin: 0 auto;
         background-color: #fff;
-        border:1px solid red;
+        border: 1px solid red;
     }
-    .login_header{
-        width:440px;
+
+    .login_header {
+        width: 440px;
         margin: 0 auto;
         padding: 100px 0 0;
-        position:relative;
+        position: relative;
         border: 1px solid blue;
     }
-    .login_header_inner{
+
+    .login_header_inner {
         display: flex;
     }
-    .login_header_inner_1{
-        
+
+    .login_header_inner_1 {}
+
+    .login_header_inner_2 {
+        width: 10%;
     }
-    .login_header_inner_2{
-        width:10%;
+
+    .login_header_inner_3 {}
+
+    .selectArea {
+        display: flex;
     }
-    .login_header_inner_3{
-    
+
+    .selectAreaForm {
+
+        display: flex;
+        width: 100%;
+    }
+
+    .rdo_list {
+        display: flex;
+    }
+
+    li {
+        list-style: none;
     }
 </style>
+
 <body>
     <div class="body_login">
         <div class="login_wrap">
+
             <div class="login_header">
+
                 <div class="login_header_inner">
                     <div class="login_header_inner_1">
                         <h1 class="logo">
@@ -53,12 +76,41 @@
                             <a href="">비로그인 주문조회</a>
                         </h1>
                     </div>
-                    
                 </div>
-               
+
+                <div class="login_header_outter">
+                    <div class="selectArea">
+
+                        <div class="selectAreaForm">
+                            <input type="checkbox" name="autoLogin" value="true">
+                            <label for="danawa-member-login-autoLogin">로그인 상테 유지</label>
+                        </div>
+                        <div class="">
+
+                        </div>
+                        <div class="selectAreaForm">
+                            <li>
+                                <input type="radio">
+                                <label for="">일반회원</label>
+                            </li>
+                            <li>
+                                <input type="radio">
+                                <label for="">협력사 관리자</label>
+                            </li>
+                        </div>
+                        <li>
+
+                        </li>
+
+
+
+                    </div>
+                </div>
+
 
             </div>
         </div>
     </div>
 </body>
+
 </html>
